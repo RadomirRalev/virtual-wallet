@@ -5,11 +5,12 @@ import com.example.demo.models.card.DebitCard;
 
 import java.util.Base64;
 
+
 public class User {
 
     private String username;
 
-    private int enable;
+    private int enabled;
 
     private String email;
 
@@ -35,12 +36,12 @@ public class User {
         this.username = username;
     }
 
-    public int getEnable() {
-        return enable;
+    public int getEnabled() {
+        return enabled;
     }
 
-    public void setEnable(int enable) {
-        this.enable = enable;
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     public String getEmail() {
