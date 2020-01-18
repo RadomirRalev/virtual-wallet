@@ -1,11 +1,17 @@
 package com.example.demo.models.card;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "debit_card")
 public class DebitCard {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-
+    @Column(name = "number")
     private String number;
-
+    @Column(name = "status")
     private int status;
 
     public DebitCard() {

@@ -3,26 +3,41 @@ package com.example.demo.models.user;
 import com.example.demo.models.card.CreditCard;
 import com.example.demo.models.card.DebitCard;
 
+
+import javax.persistence.*;
 import java.util.Base64;
+import java.util.Set;
 
-
+@Entity
+@Table(name = "users")
 public class User {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "username")
     private String username;
-
+    @Column(name = "enabled")
     private int enabled;
-
+    @Column(name = "email")
     private String email;
-
+    @Column(name = "password")
     private String password;
-
+    @OneToOne
+    @JoinColumn(name = "debit_card")
     private DebitCard debitCard;
-
+    @OneToOne
+    @JoinColumn(name = "credit_card")
     private CreditCard creditCard;
-
+    @Column(name = "phone_number")
     private String phoneNumber;
-
+    @Lob
+    @Column(name = "picture")
     private byte[] picture;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+    joinColumns = @JoinColumn(name = "user_username"),
+    inverseJoinColumns = @JoinColumn(name = "role_username"))
+    private Set<Role> roles;
 
 
     public User() {
@@ -90,5 +105,13 @@ public class User {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
