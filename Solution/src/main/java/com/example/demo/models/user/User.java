@@ -3,7 +3,6 @@ package com.example.demo.models.user;
 import com.example.demo.models.card.creditcard.CreditCard;
 import com.example.demo.models.card.debitcard.DebitCard;
 
-
 import javax.persistence.*;
 import java.util.Base64;
 import java.util.Set;

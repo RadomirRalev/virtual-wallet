@@ -1,6 +1,8 @@
 package com.example.demo.models.user;
 
 import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 public class UserRegistrationDTO {
@@ -10,33 +12,28 @@ public class UserRegistrationDTO {
     private String username;
 
     private int enabled;
-
+    @Email(regexp = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)"
+            , message = "Please provide a valid email address.")
     private String email;
-//    @Length(min = 8, max = 16)
+    //    @Length(min = 8, max = 16)
 //    @Pattern(regexp = "^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)+[!-~]+$",
 //            message = "Password may contain little letters, big letters and numbers")
     private String password;
-//    @Length(min = 8, max = 16)
+    //    @Length(min = 8, max = 16)
 //    @Pattern(regexp = "^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)+[!-~]+$",
 //            message = "Password may contain little letters, big letters and numbers")
     private String passwordConfirmation;
-//TODO regex !!!
-    private String debitCardNumber;
-//TODO regex !!!
-    private String creditCardNumber;
-//TODO regex !!!
+    //TODO regex !!!
     private String phoneNumber;
     private byte[] picture;
 
-    public UserRegistrationDTO(String username, int enabled, String email, String password, String passwordConfirmation,
-                               String debitCardNumber, String creditCardNumber, String phoneNumber, byte[] picture) {
+    public UserRegistrationDTO(String username, int enabled, String email, String password,
+                               String passwordConfirmation, String phoneNumber, byte[] picture) {
         this.username = username;
         this.enabled = enabled;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
-        this.debitCardNumber = debitCardNumber;
-        this.creditCardNumber = creditCardNumber;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
     }
@@ -79,22 +76,6 @@ public class UserRegistrationDTO {
 
     public void setPasswordConfirmation(String passwordConfirmation) {
         this.passwordConfirmation = passwordConfirmation;
-    }
-
-    public String getDebitCardNumber() {
-        return debitCardNumber;
-    }
-
-    public void setDebitCardNumber(String debitCardNumber) {
-        this.debitCardNumber = debitCardNumber;
-    }
-
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
     }
 
     public String getPhoneNumber() {

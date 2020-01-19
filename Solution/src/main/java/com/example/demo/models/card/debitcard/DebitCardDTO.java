@@ -4,7 +4,6 @@ import javax.validation.constraints.Pattern;
 
 public class DebitCardDTO {
 
-    private int id;
     //TODO
 //@Pattern(regexp = "\\b4[0-9]{3}[-][0-9]{4}[-][0-9]{4}[-][0-9](?:[0-9]{3})?", message = "Visa regex")
     private String number;
@@ -14,20 +13,11 @@ public class DebitCardDTO {
     private int securityCode;
     private int status;
 
-    public DebitCardDTO(int id, String number, String expirationDate, int securityCode, int status) {
-        this.id = id;
+    public DebitCardDTO(String number, String expirationDate, int securityCode, int status) {
         this.number = number;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;
         this.status = status;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNumber() {

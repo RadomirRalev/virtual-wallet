@@ -52,14 +52,15 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
         }
 
-        if (creditCardService.creditCardExist(userRegistrationDTO.getCreditCardNumber())) {
-            throw new DuplicateEntityException(CREDIT_CARD_EXISTS, userRegistrationDTO.getCreditCardNumber());
-        }
-
-        if (debitCartService.debitCardExist(userRegistrationDTO.getDebitCardNumber())) {
-            throw new DuplicateEntityException(DEBIT_CARD_EXISTS, userRegistrationDTO.getDebitCardNumber());
-        }
         //TODO logic for optional cards !
+
+//        if (creditCardService.creditCardExist(userRegistrationDTO.getCreditCardNumber())) {
+//            throw new DuplicateEntityException(CREDIT_CARD_EXISTS, userRegistrationDTO.getCreditCardNumber());
+//        }
+//
+//        if (debitCartService.debitCardExist(userRegistrationDTO.getDebitCardNumber())) {
+//            throw new DuplicateEntityException(DEBIT_CARD_EXISTS, userRegistrationDTO.getDebitCardNumber());
+//        }
 
         return userMapper.validationData(userRegistrationDTO);
 

@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User" +
+            Query<User> query = session.createQuery("from User " +
                     " where username = :username and enabled = :status ", User.class);
             query.setParameter("username", username);
             query.setParameter("status", ENABLE);
@@ -61,7 +61,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByPhoneNumber(String phoneNumber) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User" +
+            Query<User> query = session.createQuery("from User " +
                     " where phoneNumber = :phoneNumber and enabled = :status ", User.class);
             query.setParameter("phoneNumber", phoneNumber);
             query.setParameter("status", ENABLE);
@@ -75,7 +75,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User" +
+            Query<User> query = session.createQuery("from User " +
                     " where email = :email and enabled = :status ", User.class);
             query.setParameter("email", email);
             query.setParameter("status", ENABLE);
@@ -91,7 +91,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.createQuery("update User " +
-                    "set enabled = :status where username = :username ")
+                    " set enabled = :status where username = :username ")
                     .setParameter("username", username)
                     .setParameter("status", status)
                     .executeUpdate();
@@ -114,7 +114,7 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean usernameExist(String username) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
-                    "where username = :username", User.class)
+                    " where username = :username", User.class)
                     .setParameter("username", username)
                     .list().isEmpty();
         }
@@ -124,7 +124,7 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean emailExist(String email) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
-                    "where email = :email", User.class)
+                    " where email = :email", User.class)
                     .setParameter("email", email)
                     .list().isEmpty();
         }
@@ -134,7 +134,7 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean phoneNumberExist(String phoneNumber) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
-                    "where phoneNumber = :phoneNumber", User.class)
+                    " where phoneNumber = :phoneNumber", User.class)
                     .setParameter("phoneNumber", phoneNumber)
                     .list().isEmpty();
         }
