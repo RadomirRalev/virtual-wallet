@@ -30,7 +30,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan("com.beertag.demo.models");
+        sessionFactory.setPackagesToScan("com.example.demo.models");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
     }
