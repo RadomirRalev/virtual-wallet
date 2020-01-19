@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +13,6 @@ import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.SQLQueryConstants.*;
-
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -33,11 +33,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(User user, Role role) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(user);
-            String sql = String.format(INSERT_USER_ROLE_SQL, user.getUsername());
+            session.save(role);
+            String sql = String.format(ADD_USER_ROLE, user.getId(), role.getId());
             session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
         }

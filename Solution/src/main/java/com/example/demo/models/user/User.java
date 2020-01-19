@@ -4,7 +4,6 @@ import com.example.demo.models.card.creditcard.CreditCard;
 import com.example.demo.models.card.debitcard.DebitCard;
 
 import javax.persistence.*;
-import java.util.Base64;
 import java.util.Set;
 
 @Entity
@@ -12,6 +11,8 @@ import java.util.Set;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private int id;
     @Column(name = "username")
     private String username;
     @Column(name = "enabled")
@@ -34,12 +35,20 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_username"),
-    inverseJoinColumns = @JoinColumn(name = "role_username"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
 
     public User() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -98,8 +107,8 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPicture() {
-        return Base64.getEncoder().encodeToString(picture);
+    public byte[] getPicture() {
+        return picture;
     }
 
     public void setPicture(byte[] picture) {

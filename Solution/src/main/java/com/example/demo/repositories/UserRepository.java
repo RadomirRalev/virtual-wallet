@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public interface UserRepository {
 
     List<User> getUsers();
 
-    User createUser(User user);
+    User createUser(User user, Role role);
 
     User getByUsername(String username);
 

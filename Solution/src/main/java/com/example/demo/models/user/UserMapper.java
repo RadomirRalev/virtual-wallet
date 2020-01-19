@@ -2,14 +2,15 @@ package com.example.demo.models.user;
 
 import org.springframework.stereotype.Component;
 
-import static com.example.demo.constants.SQLQueryConstants.ENABLE;
+import static com.example.demo.constants.SQLQueryConstants.*;
 
 @Component
 public class UserMapper {
-//TODO logic for optional credit/debit validation !
+
+    //TODO logic for optional credit/debit validation !
 
 
-    public User validationData(UserRegistrationDTO userRegistrationDTO) {
+    public User setUser(UserRegistrationDTO userRegistrationDTO) {
         User user = new User();
         user.setUsername(userRegistrationDTO.getUsername());
 //        user.setCreditCard(userRegistrationDTO.getCreditCard());
@@ -21,4 +22,13 @@ public class UserMapper {
         user.setPicture(userRegistrationDTO.getPicture());
         return user;
     }
+
+    public Role setRole(UserRegistrationDTO userRegistrationDTO) {
+        Role role = new Role();
+        role.setUsername(userRegistrationDTO.getUsername());
+        role.setRole(ROLE_USER);
+        return role;
+    }
+
+
 }

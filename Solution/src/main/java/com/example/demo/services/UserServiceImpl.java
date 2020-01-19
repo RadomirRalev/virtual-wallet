@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
@@ -39,7 +40,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserRegistrationDTO userRegistrationDTO) {
 
-
         if (usernameExist(userRegistrationDTO.getUsername())) {
             throw new DuplicateEntityException(USER_USERNAME_EXISTS, userRegistrationDTO.getUsername());
         }
@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService {
 //        if (debitCartService.debitCardExist(userRegistrationDTO.getDebitCardNumber())) {
 //            throw new DuplicateEntityException(DEBIT_CARD_EXISTS, userRegistrationDTO.getDebitCardNumber());
 //        }
-
-        return userMapper.validationData(userRegistrationDTO);
-
+        User user = userMapper.setUser(userRegistrationDTO);
+        Role role = userMapper.setRole(userRegistrationDTO);
+        return userRepository.createUser(user, role);
     }
 
     @Override
