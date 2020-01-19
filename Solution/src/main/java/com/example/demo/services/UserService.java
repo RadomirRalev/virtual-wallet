@@ -1,14 +1,15 @@
-package com.example.demo.repositories;
+package com.example.demo.services;
 
 import com.example.demo.models.user.User;
+import com.example.demo.models.user.UserRegistrationDTO;
 
 import java.util.List;
 
-public interface UserRepository {
+public interface UserService {
 
     List<User> getUsers();
 
-    User createUser(User user);
+    User createUser(UserRegistrationDTO userRegistrationDTO);
 
     User getByUsername(String username);
 

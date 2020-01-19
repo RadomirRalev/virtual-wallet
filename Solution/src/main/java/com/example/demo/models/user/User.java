@@ -1,7 +1,7 @@
 package com.example.demo.models.user;
 
-import com.example.demo.models.card.CreditCard;
-import com.example.demo.models.card.DebitCard;
+import com.example.demo.models.card.creditcard.CreditCard;
+import com.example.demo.models.card.debitcard.DebitCard;
 
 
 import javax.persistence.*;

@@ -1,7 +1,6 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,10 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.example.demo.constants.ExceptionConstants.USER_PHONE_NUMBER_NOT_FOUND;
-import static com.example.demo.constants.ExceptionConstants.USER_USERNAME_NOT_FOUND;
-import static com.example.demo.constants.SQLQueryConstants.ENABLE;
-import static com.example.demo.constants.SQLQueryConstants.INSERT_USER_ROLE_SQL;
+import static com.example.demo.constants.ExceptionConstants.*;
+import static com.example.demo.constants.SQLQueryConstants.*;
+
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -47,14 +45,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getByUsername(String name) {
+    public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User" +
-                    " where username = :name and enabled = :status ", User.class);
-            query.setParameter("name", name);
+                    " where username = :username and enabled = :status ", User.class);
+            query.setParameter("username", username);
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
-                throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, name);
+                throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
             }
             return query.list().get(0);
         }
@@ -69,6 +67,20 @@ public class UserRepositoryImpl implements UserRepository {
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
                 throw new EntityNotFoundException(USER_PHONE_NUMBER_NOT_FOUND, phoneNumber);
+            }
+            return query.list().get(0);
+        }
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User" +
+                    " where email = :email and enabled = :status ", User.class);
+            query.setParameter("email", email);
+            query.setParameter("status", ENABLE);
+            if (query.list().size() != 1) {
+                throw new EntityNotFoundException(USER_EMAIL_NOT_FOUND, email);
             }
             return query.list().get(0);
         }
@@ -99,11 +111,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean usernameExist(String name) {
+    public boolean usernameExist(String username) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
-                    "where username = :name", User.class)
-                    .setParameter("name", name)
+                    "where username = :username", User.class)
+                    .setParameter("username", username)
                     .list().isEmpty();
         }
     }

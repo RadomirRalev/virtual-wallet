@@ -1,20 +1,24 @@
-package com.example.demo.models.card;
+package com.example.demo.models.card.debitcard;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "debit_card")
-public class CreditCard {
+public class DebitCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "number")
     private String number;
+    @Column(name = "expiration_date")
+    private String expirationDate;
+    @Column(name = "security_code")
+    private int securityCode;
     @Column(name = "status")
     private int status;
 
-    public CreditCard() {
+    public DebitCard() {
     }
 
     public int getId() {
@@ -39,5 +43,21 @@ public class CreditCard {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public int getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(int securityCode) {
+        this.securityCode = securityCode;
     }
 }
