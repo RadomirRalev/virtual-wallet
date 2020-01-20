@@ -1,12 +1,12 @@
-package com.example.demo.models.user;
+package com.example.demo.models.registration;
 
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-public class UserRegistrationDTO {
-    @Length(min = 6, max = 30)
+public class RegistrationDTO {
+    @Length(min = 4, max = 30)
     @Pattern(regexp = "^[\\w-]+$",
             message = "Username may only contain alpha-numeric characters, underscores, and dashes.")
     private String username;
@@ -27,8 +27,16 @@ public class UserRegistrationDTO {
     private String phoneNumber;
     private byte[] picture;
 
-    public UserRegistrationDTO(String username, int enabled, String email, String password,
-                               String passwordConfirmation, String phoneNumber, byte[] picture) {
+    private String number;
+    private String expirationDate;
+    private int securityCode;
+
+    public RegistrationDTO() {
+    }
+
+    public RegistrationDTO(String username, int enabled, String email, String password,
+                           String passwordConfirmation, String phoneNumber, byte[] picture,
+                           String number, String expirationDate, int securityCode) {
         this.username = username;
         this.enabled = enabled;
         this.email = email;
@@ -36,6 +44,9 @@ public class UserRegistrationDTO {
         this.passwordConfirmation = passwordConfirmation;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
+        this.number = number;
+        this.expirationDate = expirationDate;
+        this.securityCode = securityCode;
     }
 
     public String getUsername() {
@@ -92,5 +103,29 @@ public class UserRegistrationDTO {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public int getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(int securityCode) {
+        this.securityCode = securityCode;
     }
 }

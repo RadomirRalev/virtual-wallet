@@ -1,16 +1,21 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.InvalidOptionalFieldParameter;
+import com.example.demo.models.card.physical.PhysicalCard;
+import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
+import com.example.demo.models.registration.RegistrationMapper;
+import com.example.demo.models.registration.RegistrationDTO;
 import com.example.demo.models.user.UserMapper;
-import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static com.example.demo.constants.ExceptionConstants.*;
+import static com.example.demo.helpers.RegistrationChecker.*;
 
 import java.util.List;
 
@@ -18,17 +23,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private DebitCartService debitCartService;
-    private CreditCardService creditCardService;
+    private PhysicalCartService physicalCartService;
+    private VirtualCardService virtualCardService;
+    private RegistrationMapper registrationMapper;
     private UserMapper userMapper;
 
-
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, DebitCartService debitCartService,
-                           CreditCardService creditCardService, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, PhysicalCartService physicalCartService,
+                           VirtualCardService virtualCardService, RegistrationMapper registrationMapper,
+                           UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.debitCartService = debitCartService;
-        this.creditCardService = creditCardService;
+        this.physicalCartService = physicalCartService;
+        this.virtualCardService = virtualCardService;
+        this.registrationMapper = registrationMapper;
         this.userMapper = userMapper;
     }
 
@@ -38,31 +45,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserRegistrationDTO userRegistrationDTO) {
+    public User createUser(RegistrationDTO registrationDTO) {
 
-        if (usernameExist(userRegistrationDTO.getUsername())) {
-            throw new DuplicateEntityException(USER_USERNAME_EXISTS, userRegistrationDTO.getUsername());
+        if (isUsernameExist(registrationDTO.getUsername())) {
+            throw new DuplicateEntityException(USER_USERNAME_EXISTS, registrationDTO.getUsername());
         }
 
-        if (emailExist(userRegistrationDTO.getEmail())) {
-            throw new DuplicateEntityException(USER_EMAIL_EXISTS, userRegistrationDTO.getEmail());
+        if (isEmailExist(registrationDTO.getEmail())) {
+            throw new DuplicateEntityException(USER_EMAIL_EXISTS, registrationDTO.getEmail());
         }
 
-        if (phoneNumberExist(userRegistrationDTO.getPhoneNumber())) {
-            throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
+        if (isPhoneNumberExist(registrationDTO.getPhoneNumber())) {
+            throw new DuplicateEntityException(USER_PHONE_EXISTS, registrationDTO.getPhoneNumber());
         }
 
-        //TODO logic for optional cards !
+        if (!areCardFieldEmpty(registrationDTO) && !areCardFieldNotEmpty(registrationDTO)) {
+            throw new InvalidOptionalFieldParameter(FILL_ALL_FIELDS);
+        }
 
-//        if (creditCardService.creditCardExist(userRegistrationDTO.getCreditCardNumber())) {
-//            throw new DuplicateEntityException(CREDIT_CARD_EXISTS, userRegistrationDTO.getCreditCardNumber());
-//        }
-//
-//        if (debitCartService.debitCardExist(userRegistrationDTO.getDebitCardNumber())) {
-//            throw new DuplicateEntityException(DEBIT_CARD_EXISTS, userRegistrationDTO.getDebitCardNumber());
-//        }
-        User user = userMapper.setUser(userRegistrationDTO);
-        Role role = userMapper.setRole(userRegistrationDTO);
+        User user = registrationMapper.mapUser(registrationDTO);
+        Role role = registrationMapper.mapRole(registrationDTO);
+
+        if (areCardFieldNotEmpty(registrationDTO)) {
+            PhysicalCard physicalCard = physicalCartService.createPhysicalCard(registrationDTO);
+            user.setPhysicalCard(physicalCard);
+        }
         return userRepository.createUser(user, role);
     }
 
@@ -87,22 +94,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        throw new NotImplementedException();
+    public User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) {
+        if (!user.getEmail().equals(profileUpdateDTO.getEmail())
+                && isEmailExist(profileUpdateDTO.getEmail())) {
+            throw new DuplicateEntityException(
+                    String.format(EMAIL_ALREADY_REGISTERED, profileUpdateDTO.getEmail()));
+        }
+        if (!user.getPhoneNumber().equals(profileUpdateDTO.getPhoneNumber())
+                && isPhoneNumberExist(profileUpdateDTO.getPhoneNumber())) {
+            throw new DuplicateEntityException(
+                    String.format(PHONE_NUMBER_ALREADY_REGISTERED, profileUpdateDTO.getPhoneNumber()));
+        }
+        User userToUpdate = userMapper.updateProfile(user, profileUpdateDTO);
+        return userRepository.updateUser(userToUpdate);
     }
 
     @Override
-    public boolean usernameExist(String username) {
-        return userRepository.usernameExist(username);
+    public boolean isUsernameExist(String username) {
+        return userRepository.isUsernameExist(username);
     }
 
     @Override
-    public boolean emailExist(String email) {
-        return userRepository.emailExist(email);
+    public boolean isEmailExist(String email) {
+        return userRepository.isEmailExist(email);
     }
 
     @Override
-    public boolean phoneNumberExist(String phoneNumber) {
-        return userRepository.phoneNumberExist(phoneNumber);
+    public boolean isPhoneNumberExist(String phoneNumber) {
+        return userRepository.isPhoneNumberExist(phoneNumber);
     }
 }

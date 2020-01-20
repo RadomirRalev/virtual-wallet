@@ -14,5 +14,7 @@ public class ExceptionConstants {
     public static final String DEBIT_CARD_NOT_EXISTS = "Debit card with number %s not exist.";
     public static final String USER_CAN_NOT_MODIFY = "User with username %s can not modify beer with name %s.";
     public static final String PASSWORD_DO_NOT_MATCH = "Password doesn't match!";
-
+    public static final String FILL_ALL_FIELDS = "If you want to register your card, please fill in all the fields";
+    public static final String EMAIL_ALREADY_REGISTERED = "Email %s already registered.";
+    public static final String PHONE_NUMBER_ALREADY_REGISTERED = "Phone number %s already registered.";
 }

@@ -21,10 +21,10 @@ public interface UserRepository {
 
     User updateUser(User user);
 
-    boolean usernameExist(String username);
+    boolean isUsernameExist(String username);
 
-    boolean emailExist(String email);
+    boolean isEmailExist(String email);
 
-    boolean phoneNumberExist(String phoneNumber);
+    boolean isPhoneNumberExist(String phoneNumber);
 
 }

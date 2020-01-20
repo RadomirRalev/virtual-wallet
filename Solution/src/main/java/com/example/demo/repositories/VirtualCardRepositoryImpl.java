@@ -1,8 +1,8 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.card.virtual.VirtualCard;
 
-import com.example.demo.models.card.debitcard.DebitCard;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -13,53 +13,52 @@ import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.SQLQueryConstants.*;
 
 @Repository
-public class DebitCardRepositoryImpl implements DebitCardRepository {
+public class VirtualCardRepositoryImpl implements VirtualCardRepository {
 
-    private SessionFactory sessionFactory;
+    SessionFactory sessionFactory;
 
     @Autowired
-    public DebitCardRepositoryImpl(SessionFactory sessionFactory) {
+    public VirtualCardRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
-    public DebitCard createDebitCard(DebitCard debitCard) {
+    public VirtualCard createCreditCard(VirtualCard virtualCard) {
         try (Session session = sessionFactory.openSession()) {
-            session.save(debitCard);
+            session.save(virtualCard);
         }
-        return debitCard;
+        return virtualCard;
     }
 
     @Override
-    public DebitCard updateDebitCard(DebitCard debitCard) {
+    public VirtualCard updateCreditCard(VirtualCard virtualCard) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.update(debitCard);
+            session.update(virtualCard);
             session.getTransaction().commit();
         }
-        return debitCard;
+        return virtualCard;
     }
 
     @Override
-    public DebitCard getByNumber(String number) {
+    public VirtualCard getByNumber(String number) {
         try (Session session = sessionFactory.openSession()) {
-            Query<DebitCard> query = session.createQuery("from DebitCard " +
-                    " where number = :number and status = :status ", DebitCard.class);
+            Query<VirtualCard> query = session.createQuery("from VirtualCard " +
+                    " where number = :number and status = :status ", VirtualCard.class);
             query.setParameter("number", number);
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
-                throw new EntityNotFoundException(DEBIT_CARD_NOT_EXISTS, number);
+                throw new EntityNotFoundException(CREDIT_CARD_NOT_EXISTS, number);
             }
             return query.list().get(0);
         }
     }
 
     @Override
-    public void setStatusDebitCard(String number, int status) {
+    public void setStatusCreditCard(String number, int status) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.createQuery("update DebitCard " +
+            session.createQuery("update VirtualCard " +
                     "set status = :status where number = :number ")
                     .setParameter("number", number)
                     .setParameter("status", status)
@@ -70,10 +69,10 @@ public class DebitCardRepositoryImpl implements DebitCardRepository {
     }
 
     @Override
-    public boolean debitCardExist(String number) {
+    public boolean creditCardExist(String number) {
         try (Session session = sessionFactory.openSession()) {
-            return !session.createQuery("from DebitCard " +
-                    "where number = :number", DebitCardRepository.class)
+            return !session.createQuery("from VirtualCard " +
+                    "where number = :number", VirtualCard.class)
                     .setParameter("number", number)
                     .list().isEmpty();
         }

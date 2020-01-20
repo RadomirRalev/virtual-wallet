@@ -113,7 +113,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean usernameExist(String username) {
+    public boolean isUsernameExist(String username) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
                     " where username = :username", User.class)
@@ -123,7 +123,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean emailExist(String email) {
+    public boolean isEmailExist(String email) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
                     " where email = :email", User.class)
@@ -133,7 +133,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean phoneNumberExist(String phoneNumber) {
+    public boolean isPhoneNumberExist(String phoneNumber) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
                     " where phoneNumber = :phoneNumber", User.class)

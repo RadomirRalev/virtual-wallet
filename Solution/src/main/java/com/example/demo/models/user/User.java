@@ -1,7 +1,7 @@
 package com.example.demo.models.user;
 
-import com.example.demo.models.card.creditcard.CreditCard;
-import com.example.demo.models.card.debitcard.DebitCard;
+import com.example.demo.models.card.virtual.VirtualCard;
+import com.example.demo.models.card.physical.PhysicalCard;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -23,10 +23,10 @@ public class User {
     private String password;
     @OneToOne
     @JoinColumn(name = "debit_card")
-    private DebitCard debitCard;
+    private PhysicalCard physicalCard;
     @OneToOne
     @JoinColumn(name = "credit_card")
-    private CreditCard creditCard;
+    private VirtualCard virtualCard;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Lob
@@ -83,20 +83,20 @@ public class User {
         this.password = password;
     }
 
-    public DebitCard getDebitCard() {
-        return debitCard;
+    public PhysicalCard getPhysicalCard() {
+        return physicalCard;
     }
 
-    public void setDebitCard(DebitCard debitCard) {
-        this.debitCard = debitCard;
+    public void setPhysicalCard(PhysicalCard physicalCard) {
+        this.physicalCard = physicalCard;
     }
 
-    public CreditCard getCreditCard() {
-        return creditCard;
+    public VirtualCard getVirtualCard() {
+        return virtualCard;
     }
 
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
+    public void setVirtualCard(VirtualCard virtualCard) {
+        this.virtualCard = virtualCard;
     }
 
     public String getPhoneNumber() {

@@ -1,7 +1,8 @@
 package com.example.demo.services;
 
+import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.registration.RegistrationDTO;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User createUser(UserRegistrationDTO userRegistrationDTO);
+    User createUser(RegistrationDTO registrationDTO);
 
     User getByUsername(String username);
 
@@ -17,14 +18,14 @@ public interface UserService {
 
     User getByEmail(String email);
 
+    User updateUser(User user, ProfileUpdateDTO profileUpdateDTO);
+
     void setStatusUser(String username, int status);
 
-    User updateUser(User user);
+    boolean isUsernameExist(String username);
 
-    boolean usernameExist(String username);
+    boolean isEmailExist(String email);
 
-    boolean emailExist(String email);
-
-    boolean phoneNumberExist(String phoneNumber);
+    boolean isPhoneNumberExist(String phoneNumber);
 
 }

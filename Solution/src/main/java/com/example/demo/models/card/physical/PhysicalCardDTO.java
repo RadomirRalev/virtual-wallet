@@ -1,8 +1,8 @@
-package com.example.demo.models.card.debitcard;
+package com.example.demo.models.card.physical;
 
 import javax.validation.constraints.Pattern;
 
-public class DebitCardDTO {
+public class PhysicalCardDTO {
 
     //TODO
 //@Pattern(regexp = "\\b4[0-9]{3}[-][0-9]{4}[-][0-9]{4}[-][0-9](?:[0-9]{3})?", message = "Visa regex")
@@ -13,7 +13,10 @@ public class DebitCardDTO {
     private int securityCode;
     private int status;
 
-    public DebitCardDTO(String number, String expirationDate, int securityCode, int status) {
+    public PhysicalCardDTO() {
+    }
+
+    public PhysicalCardDTO(String number, String expirationDate, int securityCode, int status) {
         this.number = number;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;

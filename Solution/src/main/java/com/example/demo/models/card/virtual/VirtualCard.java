@@ -1,10 +1,10 @@
-package com.example.demo.models.card.creditcard;
+package com.example.demo.models.card.virtual;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "debit_card")
-public class CreditCard {
+@Table(name = "virtual_card")
+public class VirtualCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -15,10 +15,13 @@ public class CreditCard {
     private String expirationDate;
     @Column(name = "security_code")
     private int securityCode;
+    @Column(name = "type")
+    //TODO logic for check is card debit or credit !
+    private String type;
     @Column(name = "status")
     private int status;
 
-    public CreditCard() {
+    public VirtualCard() {
     }
 
     public int getId() {
@@ -43,6 +46,14 @@ public class CreditCard {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getExpirationDate() {
