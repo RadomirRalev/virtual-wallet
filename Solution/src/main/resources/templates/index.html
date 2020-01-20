@@ -40,7 +40,7 @@
             <div class="topbar">
                 <div class="container">
                     <ul class="tp-lnks float-left">
-                        <li><a class="theme-clr" href="#" title="" itemprop="url">LOGIN</a> OR <a class="theme-clr" href="#" title="" itemprop="url">SIGNUP</a></li>
+                        <li><a class="theme-clr" href="#" title="" itemprop="url" th:href="@{/login}">LOGIN</a> OR <a class="theme-clr" href="#" title="" itemprop="url" th:href="@{/registration}">SIGNUP</a></li>
                     </ul>
                     <ul class="slc-lst float-right">
                         <li>
@@ -98,7 +98,7 @@
                     <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Blog</a><i class="fas fa-caret-down"></i>
                         <ul>
                             <li><a href="blog.html" title="" itemprop="url">Our Blog</a></li>
-                            <li><a href="blog-detail.html" title="" itemprop="url">Blog Detail</a></li>
+                            <li><a href="reg.html" title="" itemprop="url">Blog Detail</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Pages</a><i class="fas fa-caret-down"></i>
@@ -181,26 +181,26 @@
                                 </div>
 
                                 <!-- LAYER NR. 3 -->
-                                <div class="tp-caption rev-btn theme-btn theme-bg brd-rd30" 
-                                    id="slide-layer-3" 
-                                    data-x="['left','left','center','center']" data-hoffset="['370','30','0','0']" 
-                                    data-y="['middle','middle','middle','middle']" data-voffset="['180','180','140','135']" 
-                                    data-fontsize="['13','13','13','13']" 
-                                    data-width="none" 
-                                    data-height="none" 
-                                    data-whitespace="nowrap"                     
-                                    data-type="button" 
-                                    data-actions='[{"event":"click","action":"simplelink","slide":"next","delay":"","target": "_self", "url": "#"}]' 
-                                    data-responsive_offset="on" 
-                                    data-responsive="on" 
-                                    data-frames='[{"from":"x:-[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;","mask":"x:0px;y:0;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":2000,"ease":"Power4.easeInOut"},{"delay":"wait","speed":1000,"to":"y:[100%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power2.easeInOut"}]' 
-                                    data-textAlign="['center','center','center','center']" 
-                                    data-paddingtop="[13,13,13,11]" 
-                                    data-paddingright="[55,45,45,40]" 
-                                    data-paddingbottom="[13,14,14,11]" 
-                                    data-paddingleft="[55,45,45,40]" 
+                                <div class="tp-caption rev-btn theme-btn theme-bg brd-rd30"
+                                    id="slide-layer-3"
+                                    data-x="['left','left','center','center']" data-hoffset="['370','30','0','0']"
+                                    data-y="['middle','middle','middle','middle']" data-voffset="['180','180','140','135']"
+                                    data-fontsize="['13','13','13','13']"
+                                    data-width="none"
+                                    data-height="none"
+                                    data-whitespace="nowrap"
+                                    data-type="button"
+                                    data-actions='[{"event":"click","action":"simplelink","slide":"next","delay":"","target": "_self", "url": "#"}]'
+                                    data-responsive_offset="on"
+                                    data-responsive="on"
+                                    data-frames='[{"from":"x:-[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;","mask":"x:0px;y:0;s:inherit;e:inherit;","speed":1500,"to":"o:1;","delay":2000,"ease":"Power4.easeInOut"},{"delay":"wait","speed":1000,"to":"y:[100%];","mask":"x:inherit;y:inherit;s:inherit;e:inherit;","ease":"Power2.easeInOut"}]'
+                                    data-textAlign="['center','center','center','center']"
+                                    data-paddingtop="[13,13,13,11]"
+                                    data-paddingright="[55,45,45,40]"
+                                    data-paddingbottom="[13,14,14,11]"
+                                    data-paddingleft="[55,45,45,40]"
                                     style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">GET STARTED
-                                </div>                            
+                                </div>
                             </li>
                             <li data-index="rs-2" data-transition="random" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-title="Slide Title" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut" data-masterspeed="2000"  data-rotate="0"  data-fstransition="random" data-fsmasterspeed="1500" data-fsslotamount="7" data-saveperformance="off" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
                                 <!-- MAIN IMAGE -->
@@ -297,7 +297,7 @@
                             </ul>
                         </div>
                         <div class="ico-rasd theme-bg">
-                            <a class="brd-rd30 tcn-rgstr-btn" href="#" title="" itemprop="url">REGISTER TO BUY TOKENS</a>
+                            <a class="brd-rd30 tcn-rgstr-btn" href="#" title="" itemprop="url"  th:href="@{/registration}">REGISTER TO BUY TOKENS</a>
                             <span>67.421 <small>ETH</small></span>
                             <i>Worth of STMX tokens</i>
 <!--                            <div class="progress-wrp">-->
@@ -578,33 +578,33 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </section>-->
-<!--        <section id="token-sales" class="pg-scn">-->
-<!--            <div class="spacing remove-bottom">-->
-<!--                <div class="container">-->
-<!--                    <div class="title-sec text-center">-->
-<!--                        <div class="title-sec-inr">-->
-<!--                            <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">-->
-<!--                            <h2 itemprop="headline">TOKEN SALE STATS</h2>-->
-<!--                            <p itemprop="description">With a team of top technology and finance professionals, the nonprofit Lymcoin expands access to low-cost financial services to fight poverty and maximize.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="ico-stat-tabl brd-rd5 overlap-305">-->
-<!--                        <table>-->
-<!--                            <thead><tr><th>NAME</th><th>MARKET CAP</th><th>PRICE</th><th>VOLUMN (24H)</th><th>CIRCULATING SUPPLY</th><th>CHANGE(24H)</th></tr></thead>-->
-<!--                            <tbody>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn1.png" th:src="@{/images/resources/tl-icn1.png}" alt="bit-icn1.png" itemprop="image">Bitcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$8,420,920,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">6.28%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn2.png" th:src="@{/images/resources/tl-icn2.png}" alt="bit-icn2.png" itemprop="image">Ethereum</strong></td><td>$27,318,473,255</td><td>$1,613.20</td><td>$264,130,000</td><td>97,239,934 ETH</td><td><span class="blue-clr">-92.8%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn3.png" th:src="@{/images/resources/tl-icn3.png}" alt="bit-icn3.png" itemprop="image">Ripple</strong></td><td>$104,682,678,413</td><td>$0.613236</td><td>$535,843,000</td><td>38,739,142,811 XRP</td><td><span class="blue-clr">0.28%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn4.png" th:src="@{/images/resources/tl-icn4.png}" alt="bit-icn4.png" itemprop="image">Zcash</strong></td><td>$190,540,485,450</td><td>$178.91</td><td>$1,081,910,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">5.28%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn5.png" th:src="@{/images/resources/tl-icn5.png}" alt="bit-icn5.png" itemprop="image">Aidcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$264,130,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">-6.28%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn6.png" th:src="@{/images/resources/tl-icn6.png}" alt="bit-icn6.png" itemprop="image">Stellar</strong></td><td>$9,829,908,532</td><td>$0.613236</td><td>$535,843,000</td><td>17,868,051,183 XLM*</td><td><span class="blue-clr">2.28%</span></td></tr>-->
-<!--                                <tr><td><strong><img src="..static/images/resources/bit-icn7.png" th:src="@{/images/resources/tl-icn7.png}" alt="bit-icn7.png" itemprop="image">Litecoin</strong></td><td>$190,540,485,450</td><td>$1,613.20</td><td>$8,420,920,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">6.28%</span></td></tr>-->
-<!--                            </tbody>-->
-<!--                        </table>-->
-<!--                    </div>&lt;!&ndash; ICO Stats Table &ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </section>-->
+        <section id="token-sales" class="pg-scn">
+            <div class="spacing remove-bottom">
+                <div class="container">
+                    <div class="title-sec text-center">
+                        <div class="title-sec-inr">
+                            <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">
+                            <h2 itemprop="headline">OUR OFFER</h2>
+                            <p itemprop="description">This is our offer for the purchase and sale of tokens</p>
+                        </div>
+                    </div>
+                    <div class="ico-stat-tabl brd-rd5 overlap-305">
+                        <table>
+                            <thead><tr><th>NAME</th><th>MARKET CAP</th><th>BUY PRICE</th><th>SELL PRICE</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn1.png" th:src="@{/images/resources/bit-icn1.png}" alt="bit-icn1.png" itemprop="image">Bitcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$11,322.00</td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn2.png" th:src="@{/images/resources/bit-icn2.png}" alt="bit-icn2.png" itemprop="image">Ethereum</strong></td><td>$27,318,473,255</td><td>$1,613.20</td><td>$1,613.20</td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn3.png" th:src="@{/images/resources/bit-icn3.png}" alt="bit-icn3.png" itemprop="image">Ripple</strong></td><td>$104,682,678,413</td><td>$0.613236</td><td>$0.613236</td></td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn4.png" th:src="@{/images/resources/bit-icn4.png}" alt="bit-icn4.png" itemprop="image">Zcash</strong></td><td>$190,540,485,450</td><td>$178.91</td><td>$178.91</td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn5.png" th:src="@{/images/resources/bit-icn5.png}" alt="bit-icn5.png" itemprop="image">Aidcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$11,322.00</td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn6.png" th:src="@{/images/resources/bit-icn6.png}" alt="bit-icn6.png" itemprop="image">Stellar</strong></td><td>$9,829,908,532</td><td>$0.613236</td><td>$0.613236</td></tr>
+                                <tr><td><strong><img src="..static/images/resources/bit-icn7.png" th:src="@{/images/resources/bit-icn7.png}" alt="bit-icn7.png" itemprop="image">Litecoin</strong></td><td>$190,540,485,450</td><td>$1,613.20</td><td>$1,613.20</td></tr>
+                            </tbody>
+                        </table>
+                    </div><!-- ICO Stats Table -->
+                </div>
+            </div>
+        </section>
         <section  id="contact">
             <div class="spacing blue-bg-layer opc95 top-spac360">
                 <div id="particles-js2" class="particles-js"></div>
@@ -647,7 +647,7 @@
                             <div class="col-md-5 col-sm-12 col-lg-5 fadeInLeft wow" data-wow-duration="1s" data-wow-delay=".2s">
                                 <div class="ico-abt">
                                     <h2 itemprop="headline">What is <span class="theme-clr">VIRTUAL WALLET?</span></h2>
-                                    <span>We offer you the chance to exchange money without additional fees and taxes, and to buy and sell cryptocurrencies without additional registrations.</span>
+                                    <span>We offer you the chance to exchange money without additional fees and taxes, and to buy and sell cryptocurrencies without additional registrations. allowing us to buy at much closer to live interbank prices, thus allowing us to pass on the benefits of a better exchange rate to all of our clients.</span>
                                     <p itemprop="description">Wallet For Buying, Storing and Using Cryptos.<br>
                                                               Online Trading Platform for currency exchange.<br>
                                                               Reliable service for support in anything you may need.<br></p>
@@ -656,13 +656,14 @@
 <!--                                    </div>-->
                                 </div>
                             </div>
-                            <div class="col-md-7 col-sm-12 col-lg-7 fadeInRight wow" data-wow-duration="1s" data-wow-delay=".2s">
-                                <div class="crypt-prc">
-                                    <div class="crypt-prc-chrt" id="crypt-prc-chrt"></div>
+                            <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s" data-wow-delay=".2s">
+                                <div class="ico-abt">
+                                    <h2 itemprop="headline">Why choose <span class="theme-clr">US?</span></h2>
+                                    <span>Due to the large volume of transactions, we have access to much better exchange rates. Whether you want advice or information, you can be sure that our website is totally independent and unbiased; the same is true of our advisers. Not only does our website gibe you truly independent information on a range of financial matters, our team of advisers are on-hand to answer your questions and give you advice. You can also take advantage of our free services to help you plan your financial affairs.</span>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- FAQ's & Cryptocurrency Price -->
+                    </div>
                 </div>
             </div>
         </section>
@@ -680,10 +681,10 @@
 <!--                        <div class="row">-->
 <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".2s">-->
 <!--                                <div class="post-box">-->
-<!--                                    <div class="post-thumb brd-rd5"><a href="blog-detail.html" title="" itemprop="url"><img src="..static/images/resources/post-img1.jpg" th:src="@{/images/resources/post-img1.png}" alt="post-img1.jpg" itemprop="image"></a></div>-->
+<!--                                    <div class="post-thumb brd-rd5"><a href="reg.html" title="" itemprop="url"><img src="..static/images/resources/post-img1.jpg" th:src="@{/images/resources/post-img1.png}" alt="post-img1.jpg" itemprop="image"></a></div>-->
 <!--                                    <div class="post-inf">-->
 <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-<!--                                        <h5 itemprop="headline"><a href="blog-detail.html" title="" itemprop="url">Great Experience to Work</a></h5>-->
+<!--                                        <h5 itemprop="headline"><a href="reg.html" title="" itemprop="url">Great Experience to Work</a></h5>-->
 <!--                                        <ul class="post-meta">-->
 <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
 <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
@@ -693,10 +694,10 @@
 <!--                            </div>-->
 <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".3s">-->
 <!--                                <div class="post-box">-->
-<!--                                    <div class="post-thumb brd-rd5"><a href="blog-detail.html" title="" itemprop="url"><img src="..static/images/resources/post-img2.jpg" th:src="@{/images/resources/post-img2.png}" alt="post-img2.jpg" itemprop="image"></a></div>-->
+<!--                                    <div class="post-thumb brd-rd5"><a href="reg.html" title="" itemprop="url"><img src="..static/images/resources/post-img2.jpg" th:src="@{/images/resources/post-img2.png}" alt="post-img2.jpg" itemprop="image"></a></div>-->
 <!--                                    <div class="post-inf">-->
 <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-<!--                                        <h5 itemprop="headline"><a href="blog-detail.html" title="" itemprop="url">We'll Ovbiously keypto-chain</a></h5>-->
+<!--                                        <h5 itemprop="headline"><a href="reg.html" title="" itemprop="url">We'll Ovbiously keypto-chain</a></h5>-->
 <!--                                        <ul class="post-meta">-->
 <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
 <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
@@ -706,10 +707,10 @@
 <!--                            </div>-->
 <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".4s">-->
 <!--                                <div class="post-box">-->
-<!--                                    <div class="post-thumb brd-rd5"><a href="blog-detail.html" title="" itemprop="url"><img src="..static/images/resources/post-img3.jpg" th:src="@{/images/resources/post-img3.png}" alt="post-img3.jpg" itemprop="image"></a></div>-->
+<!--                                    <div class="post-thumb brd-rd5"><a href="reg.html" title="" itemprop="url"><img src="..static/images/resources/post-img3.jpg" th:src="@{/images/resources/post-img3.png}" alt="post-img3.jpg" itemprop="image"></a></div>-->
 <!--                                    <div class="post-inf">-->
 <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-<!--                                        <h5 itemprop="headline"><a href="blog-detail.html" title="" itemprop="url">Keypto-chain is Money Exchanger</a></h5>-->
+<!--                                        <h5 itemprop="headline"><a href="reg.html" title="" itemprop="url">Keypto-chain is Money Exchanger</a></h5>-->
 <!--                                        <ul class="post-meta">-->
 <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
 <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
@@ -774,7 +775,7 @@
 <!--        </section>-->
         <footer>
             <div class="spacing black-layer opc5">
-                <div class="fixed-bg" style="background-image: url(..static/images/parallax1.jpg);"></div>
+                <div class="fixed-bg" style="background-image: url(/images/parallax1.jpg);"></div>
                 <div class="container">
                     <div class="remove-ext6 footer-widgets">
                         <div class="row">
