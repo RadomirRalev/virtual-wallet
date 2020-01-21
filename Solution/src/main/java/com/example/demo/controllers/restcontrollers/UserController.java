@@ -39,7 +39,8 @@ public class UserController {
     @PostMapping
     public User create(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO) {
         try {
-            return userService.createUser(userRegistrationDTO, cardDTO);
+//            return userService.createUser(userRegistrationDTO, cardDTO);
+            return userService.createUser(userRegistrationDTO);
         } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

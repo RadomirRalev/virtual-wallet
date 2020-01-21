@@ -26,12 +26,15 @@ public class UserRegistrationDTO {
     //TODO regex !!!
     private String phoneNumber;
     private byte[] picture;
+    private String firstName;
+    private String lastName;
 
     public UserRegistrationDTO() {
     }
 
     public UserRegistrationDTO(String username, int enabled, String email, String password,
-                               String passwordConfirmation, String phoneNumber, byte[] picture) {
+                               String passwordConfirmation, String phoneNumber, byte[] picture,
+                               String firstName, String lastName) {
         this.username = username;
         this.enabled = enabled;
         this.email = email;
@@ -39,6 +42,8 @@ public class UserRegistrationDTO {
         this.passwordConfirmation = passwordConfirmation;
         this.phoneNumber = phoneNumber;
         this.picture = picture;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -95,6 +100,22 @@ public class UserRegistrationDTO {
 
     public void setPicture(byte[] picture) {
         this.picture = picture;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

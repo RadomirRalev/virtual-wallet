@@ -12,7 +12,9 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO);
+//    User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO);
+
+    User createUser(UserRegistrationDTO userRegistrationDTO);
 
     User getByUsername(String username);
 

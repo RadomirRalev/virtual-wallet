@@ -4,6 +4,7 @@ import com.example.demo.models.card.virtual.VirtualCard;
 import com.example.demo.models.card.physical.PhysicalCard;
 
 import javax.persistence.*;
+import java.util.Base64;
 import java.util.Set;
 
 @Entity
@@ -30,15 +31,17 @@ public class User {
     @Column(name = "phone_number")
     private String phoneNumber;
     @Lob
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "BLOB")
     private byte[] picture;
-
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
 
     public User() {
     }
@@ -107,8 +110,8 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public String getPicture() {
+        return Base64.getEncoder().encodeToString(picture);
     }
 
     public void setPicture(byte[] picture) {
@@ -121,5 +124,21 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO) {
+    public User createUser(UserRegistrationDTO userRegistrationDTO) {
 
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())){
             throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
@@ -60,19 +60,44 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
         }
 
-        if (!areCardFieldEmpty(cardDTO) && !areCardFieldNotEmpty(cardDTO)) {
-            throw new InvalidOptionalFieldParameter(FILL_ALL_FIELDS);
-        }
-
         User user = userMapper.createUser(userRegistrationDTO);
         Role role = userMapper.mapRole(userRegistrationDTO);
 //TODO
-        if (areCardFieldNotEmpty(cardDTO)) {
-            PhysicalCard physicalCard = physicalCardService.createPhysicalCard(cardDTO);
-            user.setPhysicalCard(physicalCard);
-        }
         return userRepository.createUser(user, role);
     }
+
+//    @Override
+//    public User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO) {
+//
+//        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())){
+//            throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
+//        }
+//
+//        if (isUsernameExist(userRegistrationDTO.getUsername())) {
+//            throw new DuplicateEntityException(USER_USERNAME_EXISTS, userRegistrationDTO.getUsername());
+//        }
+//
+//        if (isEmailExist(userRegistrationDTO.getEmail())) {
+//            throw new DuplicateEntityException(USER_EMAIL_EXISTS, userRegistrationDTO.getEmail());
+//        }
+//
+//        if (isPhoneNumberExist(userRegistrationDTO.getPhoneNumber())) {
+//            throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
+//        }
+//
+//        if (!areCardFieldEmpty(cardDTO) && !areCardFieldNotEmpty(cardDTO)) {
+//            throw new InvalidOptionalFieldParameter(FILL_ALL_FIELDS);
+//        }
+//
+//        User user = userMapper.createUser(userRegistrationDTO);
+//        Role role = userMapper.mapRole(userRegistrationDTO);
+////TODO
+//        if (areCardFieldNotEmpty(cardDTO)) {
+//            PhysicalCard physicalCard = physicalCardService.createPhysicalCard(cardDTO);
+//            user.setPhysicalCard(physicalCard);
+//        }
+//        return userRepository.createUser(user, role);
+//    }
 
     @Override
     public User getByUsername(String username) {
