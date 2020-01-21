@@ -48,7 +48,7 @@ public class VirtualCardRepositoryImpl implements VirtualCardRepository {
             query.setParameter("number", number);
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
-                throw new EntityNotFoundException(CREDIT_CARD_NOT_EXISTS, number);
+                throw new EntityNotFoundException(CARD_WITH_NUMBER_NOT_EXISTS, number);
             }
             return query.list().get(0);
         }

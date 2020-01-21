@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 
@@ -20,6 +21,8 @@ public interface UserRepository {
     void setStatusUser(String username, int status);
 
     User updateUser(User user);
+
+    User changePassword (User user);
 
     boolean isUsernameExist(String username);
 

@@ -1,18 +1,17 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidOptionalFieldParameter;
+import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.models.card.CardDTO;
 import com.example.demo.models.card.physical.PhysicalCard;
-import com.example.demo.models.user.ProfileUpdateDTO;
-import com.example.demo.models.user.Role;
-import com.example.demo.models.user.User;
-import com.example.demo.models.registration.RegistrationMapper;
-import com.example.demo.models.registration.RegistrationDTO;
+import com.example.demo.models.user.*;
 import com.example.demo.models.user.UserMapper;
+import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.helpers.RegistrationChecker.*;
@@ -23,19 +22,17 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private PhysicalCartService physicalCartService;
+    private PhysicalCardService physicalCardService;
     private VirtualCardService virtualCardService;
-    private RegistrationMapper registrationMapper;
     private UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PhysicalCartService physicalCartService,
-                           VirtualCardService virtualCardService, RegistrationMapper registrationMapper,
+    public UserServiceImpl(UserRepository userRepository, PhysicalCardService physicalCardService,
+                           VirtualCardService virtualCardService,
                            UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.physicalCartService = physicalCartService;
+        this.physicalCardService = physicalCardService;
         this.virtualCardService = virtualCardService;
-        this.registrationMapper = registrationMapper;
         this.userMapper = userMapper;
     }
 
@@ -45,29 +42,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(RegistrationDTO registrationDTO) {
+    public User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO) {
 
-        if (isUsernameExist(registrationDTO.getUsername())) {
-            throw new DuplicateEntityException(USER_USERNAME_EXISTS, registrationDTO.getUsername());
+        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())){
+            throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
         }
 
-        if (isEmailExist(registrationDTO.getEmail())) {
-            throw new DuplicateEntityException(USER_EMAIL_EXISTS, registrationDTO.getEmail());
+        if (isUsernameExist(userRegistrationDTO.getUsername())) {
+            throw new DuplicateEntityException(USER_USERNAME_EXISTS, userRegistrationDTO.getUsername());
         }
 
-        if (isPhoneNumberExist(registrationDTO.getPhoneNumber())) {
-            throw new DuplicateEntityException(USER_PHONE_EXISTS, registrationDTO.getPhoneNumber());
+        if (isEmailExist(userRegistrationDTO.getEmail())) {
+            throw new DuplicateEntityException(USER_EMAIL_EXISTS, userRegistrationDTO.getEmail());
         }
 
-        if (!areCardFieldEmpty(registrationDTO) && !areCardFieldNotEmpty(registrationDTO)) {
+        if (isPhoneNumberExist(userRegistrationDTO.getPhoneNumber())) {
+            throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
+        }
+
+        if (!areCardFieldEmpty(cardDTO) && !areCardFieldNotEmpty(cardDTO)) {
             throw new InvalidOptionalFieldParameter(FILL_ALL_FIELDS);
         }
 
-        User user = registrationMapper.mapUser(registrationDTO);
-        Role role = registrationMapper.mapRole(registrationDTO);
-
-        if (areCardFieldNotEmpty(registrationDTO)) {
-            PhysicalCard physicalCard = physicalCartService.createPhysicalCard(registrationDTO);
+        User user = userMapper.createUser(userRegistrationDTO);
+        Role role = userMapper.mapRole(userRegistrationDTO);
+//TODO
+        if (areCardFieldNotEmpty(cardDTO)) {
+            PhysicalCard physicalCard = physicalCardService.createPhysicalCard(cardDTO);
             user.setPhysicalCard(physicalCard);
         }
         return userRepository.createUser(user, role);
@@ -89,11 +90,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setStatusUser(String username, int status) {
-        userRepository.setStatusUser(username, status);
-    }
-
-    @Override
     public User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) {
         if (!user.getEmail().equals(profileUpdateDTO.getEmail())
                 && isEmailExist(profileUpdateDTO.getEmail())) {
@@ -107,6 +103,26 @@ public class UserServiceImpl implements UserService {
         }
         User userToUpdate = userMapper.updateProfile(user, profileUpdateDTO);
         return userRepository.updateUser(userToUpdate);
+    }
+
+    @Override
+    public User changePassword(User user, PasswordUpdateDTO passwordUpdateDTO) {
+        if (!user.getPassword().equals(passwordUpdateDTO.getOldPassword())) {
+            throw new InvalidPasswordException(INVALID_OLD_PASSWORD);
+        }
+        if (!passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getNewPasswordConfirmation())) {
+            throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
+        }
+        user.setPassword(passwordUpdateDTO.getNewPassword());
+        return userRepository.changePassword(user);
+    }
+
+    @Override
+    public void setStatusUser(String username, int status) {
+        if(!isUsernameExist(username)){
+            throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND,username);
+        }
+        userRepository.setStatusUser(username, status);
     }
 
     @Override

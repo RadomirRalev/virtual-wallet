@@ -2,7 +2,7 @@ package com.example.demo.models.user;
 
 public class PasswordUpdateDTO {
 
-    private String currentPassword;
+    private String oldPassword;
     //    @Length(min = 8, max = 16)
 //    @Pattern(regexp = "^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)+[!-~]+$",
 //            message = "Password may contain little letters, big letters and numbers")
@@ -15,18 +15,18 @@ public class PasswordUpdateDTO {
     public PasswordUpdateDTO() {
     }
 
-    public PasswordUpdateDTO(String currentPassword, String newPassword, String newPasswordConfirmation) {
-        this.currentPassword = currentPassword;
+    public PasswordUpdateDTO(String oldPassword, String newPassword, String newPasswordConfirmation) {
+        this.oldPassword = oldPassword;
         this.newPassword = newPassword;
         this.newPasswordConfirmation = newPasswordConfirmation;
     }
 
-    public String getCurrentPassword() {
-        return currentPassword;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public String getNewPassword() {

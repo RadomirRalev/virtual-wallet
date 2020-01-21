@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
+import com.example.demo.models.card.CardDTO;
+import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.models.registration.RegistrationDTO;
+import com.example.demo.models.user.UserRegistrationDTO;
 
 import java.util.List;
 
@@ -10,7 +12,7 @@ public interface UserService {
 
     List<User> getUsers();
 
-    User createUser(RegistrationDTO registrationDTO);
+    User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO);
 
     User getByUsername(String username);
 
@@ -19,6 +21,8 @@ public interface UserService {
     User getByEmail(String email);
 
     User updateUser(User user, ProfileUpdateDTO profileUpdateDTO);
+
+    User changePassword (User user, PasswordUpdateDTO passwordUpdateDTO);
 
     void setStatusUser(String username, int status);
 

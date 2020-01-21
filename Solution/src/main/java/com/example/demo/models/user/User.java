@@ -22,10 +22,10 @@ public class User {
     @Column(name = "password")
     private String password;
     @OneToOne
-    @JoinColumn(name = "debit_card")
+    @JoinColumn(name = "physical_card")
     private PhysicalCard physicalCard;
     @OneToOne
-    @JoinColumn(name = "credit_card")
+    @JoinColumn(name = "virtual_card")
     private VirtualCard virtualCard;
     @Column(name = "phone_number")
     private String phoneNumber;

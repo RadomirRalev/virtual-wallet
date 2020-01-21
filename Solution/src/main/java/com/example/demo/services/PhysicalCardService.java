@@ -1,15 +1,17 @@
 package com.example.demo.services;
 
+import com.example.demo.models.card.CardDTO;
 import com.example.demo.models.card.physical.PhysicalCard;
-import com.example.demo.models.registration.RegistrationDTO;
 
-public interface PhysicalCartService {
+public interface PhysicalCardService {
 
-    PhysicalCard createPhysicalCard(RegistrationDTO registrationDTO);
-
-    PhysicalCard updatePhysicalCard(PhysicalCard physicalCard);
+    PhysicalCard getById(int id);
 
     PhysicalCard getByNumber(String number);
+
+    PhysicalCard createPhysicalCard(CardDTO cardDTO);
+
+    PhysicalCard updatePhysicalCard(CardDTO cardDTO);
 
     void setStatusPhysicalCard(String number, int status);
 

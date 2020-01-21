@@ -22,6 +22,33 @@ public class PhysicalCardRepositoryImpl implements PhysicalCardRepository {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
+    public PhysicalCard getById(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<PhysicalCard> query = session.createQuery("from PhysicalCard " +
+                    " where id = :id and status = :status ", PhysicalCard.class);
+            query.setParameter("id", id);
+            query.setParameter("status", ENABLE);
+            if (query.list().size() != 1) {
+                throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
+            }
+            return query.list().get(0);
+        }
+    }
+
+    @Override
+    public PhysicalCard getByNumber(String number) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<PhysicalCard> query = session.createQuery("from PhysicalCard " +
+                    " where number = :number and status = :status ", PhysicalCard.class);
+            query.setParameter("number", number);
+            query.setParameter("status", ENABLE);
+            if (query.list().size() != 1) {
+                throw new EntityNotFoundException(CARD_WITH_NUMBER_NOT_EXISTS, number);
+            }
+            return query.list().get(0);
+        }
+    }
 
     @Override
     public PhysicalCard createPhysicalCard(PhysicalCard physicalCard) {
@@ -42,20 +69,6 @@ public class PhysicalCardRepositoryImpl implements PhysicalCardRepository {
     }
 
     @Override
-    public PhysicalCard getByNumber(String number) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<PhysicalCard> query = session.createQuery("from PhysicalCard " +
-                    " where number = :number and status = :status ", PhysicalCard.class);
-            query.setParameter("number", number);
-            query.setParameter("status", ENABLE);
-            if (query.list().size() != 1) {
-                throw new EntityNotFoundException(DEBIT_CARD_NOT_EXISTS, number);
-            }
-            return query.list().get(0);
-        }
-    }
-
-    @Override
     public void setStatusPhysicalCard(String number, int status) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -73,7 +86,7 @@ public class PhysicalCardRepositoryImpl implements PhysicalCardRepository {
     public boolean isPhysicalCardExist(String number) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from PhysicalCard " +
-                    "where number = :number", PhysicalCardRepository.class)
+                    " where number = :number ", PhysicalCard.class)
                     .setParameter("number", number)
                     .list().isEmpty();
         }
