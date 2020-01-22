@@ -17,4 +17,8 @@ public class ExceptionConstants {
     public static final String EMAIL_ALREADY_REGISTERED = "Email %s already registered.";
     public static final String PHONE_NUMBER_ALREADY_REGISTERED = "Phone number %s already registered.";
     public static final String INVALID_OLD_PASSWORD = "The old password you have entered is incorrect.";
+    public static final String FIRST_NAME_LENGTH_EXCEPTION = "first name length should be minimum 3 symbols.";
+    public static final String FIRST_NAME_REGEX_EXCEPTION = "first name field may contain only letters.";
+    public static final String LAST_NAME_LENGTH_EXCEPTION = "last name length should be minimum 3 symbols.";
+    public static final String LAST_NAME_REGEX_EXCEPTION = "last name field may contain only letters.";
 }

@@ -9,7 +9,7 @@ public interface PhysicalCardService {
 
     PhysicalCard getByNumber(String number);
 
-    PhysicalCard createPhysicalCard(CardDTO cardDTO);
+    PhysicalCard createPhysicalCard(CardDTO cardDTO, int userId);
 
     PhysicalCard updatePhysicalCard(CardDTO cardDTO);
 

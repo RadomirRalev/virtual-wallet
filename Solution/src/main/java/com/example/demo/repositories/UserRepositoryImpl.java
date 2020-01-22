@@ -39,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
             session.beginTransaction();
             session.save(user);
             session.save(role);
-            String sql = String.format(ADD_USER_ROLE, user.getId(), role.getId());
+            String sql = String.format(ADD_USER_ROLE, user.getUsername(), role.getRole());
             session.createSQLQuery(sql).executeUpdate();
             session.getTransaction().commit();
         }

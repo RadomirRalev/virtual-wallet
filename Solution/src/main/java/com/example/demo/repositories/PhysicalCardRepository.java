@@ -8,7 +8,7 @@ public interface PhysicalCardRepository {
 
     PhysicalCard getByNumber(String number);
 
-    PhysicalCard createPhysicalCard(PhysicalCard physicalCard);
+    PhysicalCard createPhysicalCard(PhysicalCard physicalCard, int userId);
 
     PhysicalCard updatePhysicalCard(PhysicalCard physicalCard);
 

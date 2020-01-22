@@ -1,10 +1,8 @@
 package com.example.demo.controllers.mvccontrollers.user;
 
-
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidOptionalFieldParameter;
-import com.example.demo.models.card.CardDTO;
-import com.example.demo.models.user.User;
+import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
-import static com.example.demo.constants.ExceptionConstants.PASSWORD_DO_NOT_MATCH;
 
 @Controller
 public class RegistrationController {
@@ -47,36 +44,20 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
+// тази логика я има в service-а .
 
-        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
-            model.addAttribute("error", PASSWORD_DO_NOT_MATCH);
-            return "registration";
-        }
+//        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
+//            model.addAttribute("error", PASSWORD_DO_NOT_MATCH);
+//            return "registration";
+//        }
 
         try {
             userService.createUser(userRegistrationDTO);
-        } catch (InvalidOptionalFieldParameter | DuplicateEntityException e) {
+        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException e) {
             model.addAttribute("error", e.getMessage());
             return "registration";
         }
         return "redirect:/login";
     }
-
-
-//    @GetMapping("/test")
-//    public String test(Model model) {
-//        model.addAttribute("UserRegistrationDTO", new UserRegistrationDTO());
-//        model.addAttribute("CardDTO", new CardDTO());
-//        return "test-registration";
-//    }
-//
-//    @PostMapping("/test")
-//    public String test(@Valid @ModelAttribute("UserRegistration") UserRegistrationDTO userRegistrationDTO,
-//                       @Valid @ModelAttribute("CardDTO") CardDTO cardDTO) {
-//
-//        userService.createUser(userRegistrationDTO, cardDTO);
-//
-//        return "test-registration";
-//    }
 
 }

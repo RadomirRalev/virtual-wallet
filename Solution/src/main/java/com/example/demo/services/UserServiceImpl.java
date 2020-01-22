@@ -2,10 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidOptionalFieldParameter;
 import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.models.card.CardDTO;
-import com.example.demo.models.card.physical.PhysicalCard;
 import com.example.demo.models.user.*;
 import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
@@ -14,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.constants.ExceptionConstants.*;
-import static com.example.demo.helpers.RegistrationChecker.*;
 
 import java.util.List;
 
@@ -22,17 +18,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private PhysicalCardService physicalCardService;
-    private VirtualCardService virtualCardService;
     private UserMapper userMapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PhysicalCardService physicalCardService,
-                           VirtualCardService virtualCardService,
-                           UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.physicalCardService = physicalCardService;
-        this.virtualCardService = virtualCardService;
         this.userMapper = userMapper;
     }
 
@@ -61,43 +51,10 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = userMapper.createUser(userRegistrationDTO);
-        Role role = userMapper.mapRole(userRegistrationDTO);
-//TODO
+        Role role = userMapper.createRole(userRegistrationDTO);
+
         return userRepository.createUser(user, role);
     }
-
-//    @Override
-//    public User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO) {
-//
-//        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())){
-//            throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
-//        }
-//
-//        if (isUsernameExist(userRegistrationDTO.getUsername())) {
-//            throw new DuplicateEntityException(USER_USERNAME_EXISTS, userRegistrationDTO.getUsername());
-//        }
-//
-//        if (isEmailExist(userRegistrationDTO.getEmail())) {
-//            throw new DuplicateEntityException(USER_EMAIL_EXISTS, userRegistrationDTO.getEmail());
-//        }
-//
-//        if (isPhoneNumberExist(userRegistrationDTO.getPhoneNumber())) {
-//            throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
-//        }
-//
-//        if (!areCardFieldEmpty(cardDTO) && !areCardFieldNotEmpty(cardDTO)) {
-//            throw new InvalidOptionalFieldParameter(FILL_ALL_FIELDS);
-//        }
-//
-//        User user = userMapper.createUser(userRegistrationDTO);
-//        Role role = userMapper.mapRole(userRegistrationDTO);
-////TODO
-//        if (areCardFieldNotEmpty(cardDTO)) {
-//            PhysicalCard physicalCard = physicalCardService.createPhysicalCard(cardDTO);
-//            user.setPhysicalCard(physicalCard);
-//        }
-//        return userRepository.createUser(user, role);
-//    }
 
     @Override
     public User getByUsername(String username) {

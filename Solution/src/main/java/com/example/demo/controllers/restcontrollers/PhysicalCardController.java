@@ -1,12 +1,16 @@
 package com.example.demo.controllers.restcontrollers;
 
+import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.card.CardDTO;
 import com.example.demo.models.card.physical.PhysicalCard;
 import com.example.demo.services.PhysicalCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.Valid;
 
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 
@@ -39,6 +43,15 @@ public class PhysicalCardController {
         }
         catch (EntityNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("/{userId}")
+    public PhysicalCard create(@RequestBody @Valid CardDTO cardDTO, @PathVariable int userId) {
+        try {
+            return physicalCardService.createPhysicalCard(cardDTO,userId);
+        } catch (DuplicateEntityException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 

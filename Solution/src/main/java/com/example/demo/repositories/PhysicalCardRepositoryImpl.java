@@ -51,9 +51,13 @@ public class PhysicalCardRepositoryImpl implements PhysicalCardRepository {
     }
 
     @Override
-    public PhysicalCard createPhysicalCard(PhysicalCard physicalCard) {
+    public PhysicalCard createPhysicalCard(PhysicalCard physicalCard, int userId) {
         try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
             session.save(physicalCard);
+            String sql = String.format(ADD_USER_PHYSICAL_CARD, userId, physicalCard.getId());
+            session.createSQLQuery(sql).executeUpdate();
+            session.getTransaction().commit();
         }
         return physicalCard;
     }

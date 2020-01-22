@@ -1,10 +1,12 @@
 package com.example.demo.models.user;
 
-import com.example.demo.models.card.virtual.VirtualCard;
 import com.example.demo.models.card.physical.PhysicalCard;
+import com.example.demo.models.card.virtual.VirtualCard;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Base64;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -22,9 +24,7 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @OneToOne
-    @JoinColumn(name = "physical_card")
-    private PhysicalCard physicalCard;
+    //TODO
     @OneToOne
     @JoinColumn(name = "virtual_card")
     private VirtualCard virtualCard;
@@ -32,6 +32,7 @@ public class User {
     private String phoneNumber;
     @Lob
     @Column(name = "picture", columnDefinition = "BLOB")
+    @JsonIgnore
     private byte[] picture;
     @Column(name = "first_name")
     private String firstName;
@@ -42,6 +43,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_physical_cards",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "physical_card_id"))
+    private List<PhysicalCard> physicalCards;
 
     public User() {
     }
@@ -86,14 +92,15 @@ public class User {
         this.password = password;
     }
 
-    public PhysicalCard getPhysicalCard() {
-        return physicalCard;
+    public List<PhysicalCard> getPhysicalCards() {
+        return physicalCards;
     }
 
-    public void setPhysicalCard(PhysicalCard physicalCard) {
-        this.physicalCard = physicalCard;
+    public void setPhysicalCards(List<PhysicalCard> physicalCards) {
+        this.physicalCards = physicalCards;
     }
 
+    //TODO
     public VirtualCard getVirtualCard() {
         return virtualCard;
     }

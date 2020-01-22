@@ -37,14 +37,15 @@ public class PhysicalCardServiceImpl implements PhysicalCardService {
     }
 
     @Override
-    public PhysicalCard createPhysicalCard(CardDTO cardDTO) {
+    public PhysicalCard createPhysicalCard(CardDTO cardDTO, int userId) {
         if (isPhysicalCardExist(cardDTO.getNumber())){
             throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardDTO.getNumber());
         }
         PhysicalCard physicalCard = cardMapper.mapPhysicalCard(cardDTO);
-        return physicalCardRepository.createPhysicalCard(physicalCard);
-    }
 
+        return physicalCardRepository.createPhysicalCard(physicalCard, userId);
+    }
+//TODO
     @Override
     public PhysicalCard updatePhysicalCard(CardDTO cardDTO) {
         throw new NotImplementedException();
