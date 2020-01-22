@@ -1,27 +1,29 @@
-package com.example.demo.models.card.physical;
+package com.example.demo.models.card;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "physical_card")
-public class PhysicalCard {
+@Table(name = "cards")
+public class CardDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "card_id")
     private int id;
     @Column(name = "number")
-    private String number;
+    private String cardNumber;
     @Column(name = "expiration_date")
     private String expirationDate;
     @Column(name = "security_code")
-    private int securityCode;
+    private String securityCode;
     @Column(name = "type")
-    //TODO logic for check is card debit or credit !
+    //TODO random logic ... :D
     private String type;
+    @Column(name = "cardholder_name")
+    private String cardholderName;
     @Column(name = "status")
     private int status;
 
-    public PhysicalCard() {
+    public CardDetails() {
     }
 
     public int getId() {
@@ -32,12 +34,12 @@ public class PhysicalCard {
         this.id = id;
     }
 
-    public String getNumber() {
-        return number;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setCardNumber(String number) {
+        this.cardNumber = number;
     }
 
     public String getType() {
@@ -64,11 +66,19 @@ public class PhysicalCard {
         this.expirationDate = expirationDate;
     }
 
-    public int getSecurityCode() {
+    public String getCardholderName() {
+        return cardholderName;
+    }
+
+    public void setCardholderName(String cardholderName) {
+        this.cardholderName = cardholderName;
+    }
+
+    public String getSecurityCode() {
         return securityCode;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
     }
 }

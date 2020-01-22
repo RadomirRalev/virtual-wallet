@@ -3,7 +3,7 @@ package com.example.demo.constants;
 public class SQLQueryConstants {
     public static final String ADD_USER_ROLE = "insert into user_role " +
             "value ('%d','%d');";
-    public static final String ADD_USER_PHYSICAL_CARD = "insert into user_physical_cards " +
+    public static final String ADD_USER_CARD = "insert into user_cards " +
             "value ('%d','%d');";
 
     //Status

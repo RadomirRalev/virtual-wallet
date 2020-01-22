@@ -1,6 +1,6 @@
 package com.example.demo.models.user;
 
-import com.example.demo.models.card.physical.PhysicalCard;
+import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.virtual.VirtualCard;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,10 +44,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_physical_cards",
+    @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "physical_card_id"))
-    private List<PhysicalCard> physicalCards;
+            inverseJoinColumns = @JoinColumn(name = "card_id"))
+    private List<CardDetails> cardDetails;
 
     public User() {
     }
@@ -92,12 +92,12 @@ public class User {
         this.password = password;
     }
 
-    public List<PhysicalCard> getPhysicalCards() {
-        return physicalCards;
+    public List<CardDetails> getCardDetails() {
+        return cardDetails;
     }
 
-    public void setPhysicalCards(List<PhysicalCard> physicalCards) {
-        this.physicalCards = physicalCards;
+    public void setCardDetails(List<CardDetails> cardDetails) {
+        this.cardDetails = cardDetails;
     }
 
     //TODO

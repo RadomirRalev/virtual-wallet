@@ -1,20 +1,22 @@
 package com.example.demo.models.card;
 
-import com.example.demo.models.card.physical.PhysicalCard;
 import org.springframework.stereotype.Component;
 
 import static com.example.demo.constants.SQLQueryConstants.ENABLE;
-@Component
+import static com.example.demo.helpers.CardHelper.cardType;
 
+@Component
 public class CardMapper {
 
-    //TODO regex logic + debit/credit card !
-    public PhysicalCard mapPhysicalCard(CardDTO cardDTO){
-        PhysicalCard physicalCard = new PhysicalCard();
-        physicalCard.setNumber(cardDTO.getNumber());
-        physicalCard.setExpirationDate(cardDTO.getExpirationDate());
-        physicalCard.setSecurityCode(cardDTO.getSecurityCode());
-        physicalCard.setStatus(ENABLE);
-        return physicalCard;
+    public CardDetails mapCard(CardDTO cardDTO) {
+        CardDetails cardDetails = new CardDetails();
+        cardDetails.setCardNumber(cardDTO.getCardNumber());
+        cardDetails.setExpirationDate(cardDTO.getExpirationDate());
+        cardDetails.setSecurityCode(cardDTO.getSecurityCode());
+        cardDetails.setType(cardType());
+        cardDetails.setStatus(ENABLE);
+        cardDetails.setCardholderName(cardDTO.getCardholderName());
+
+        return cardDetails;
     }
 }

@@ -1,26 +1,36 @@
 package com.example.demo.models.card;
 
-public class CardDTO {
+import org.hibernate.validator.constraints.Length;
 
-    private String number;
+import javax.validation.constraints.Pattern;
+
+public class CardDTO {
+    @Pattern(regexp = "[0-9]{4}[-][0-9]{4}[-][0-9]{4}[-][0-9]{4}$", message = "Invalid card number.")
+    private String cardNumber;
+    @Pattern(regexp = "^\\d{2}\\/\\d{2}$", message = "Invalid expiration date.")
     private String expirationDate;
-    private int securityCode;
+    @Pattern(regexp = "^[0-9]{3}$", message = "Invalid security code.")
+    private String securityCode;
+    @Length(min = 2, max = 40)
+    @Pattern(regexp = "^[A-Z a-z]+ [A-Z a-z]+$",
+            message = "The accepted characters are upper and lower letters and spaces.")
+    private String cardholderName;
 
     public CardDTO() {
     }
 
-    public CardDTO(String number, String expirationDate, int securityCode) {
-        this.number = number;
+    public CardDTO(String cardNumber, String expirationDate, String securityCode) {
+        this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
         this.securityCode = securityCode;
     }
 
-    public String getNumber() {
-        return number;
+    public String getCardNumber() {
+        return cardNumber;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber;
     }
 
     public String getExpirationDate() {
@@ -31,11 +41,19 @@ public class CardDTO {
         this.expirationDate = expirationDate;
     }
 
-    public int getSecurityCode() {
+    public String getSecurityCode() {
         return securityCode;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
+    }
+
+    public String getCardholderName() {
+        return cardholderName;
+    }
+
+    public void setCardholderName(String cardholderName) {
+        this.cardholderName = cardholderName;
     }
 }
