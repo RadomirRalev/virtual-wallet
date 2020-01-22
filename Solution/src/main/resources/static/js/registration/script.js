@@ -1,14 +1,15 @@
 
 $(function() {
 
-    var owner = $('#owner');
-    var cardNumber = $('#cardNumber');
+    var owner = $('#txt_card_owner');
+    var cardNumber = $('#txt_card_number');
     var cardNumberField = $('#card-number-field');
-    var CVV = $("#cvv");
+    var CVV = $("#txt_cvc");
     var mastercard = $("#mastercard");
     var confirmButton = $('#confirm-purchase');
     var visa = $("#visa");
     var amex = $("#amex");
+    var text;
 
     // Use the payform library to format and validate
     // the payment fields.
@@ -31,8 +32,8 @@ $(function() {
         }
 
         if ($.payform.parseCardType(cardNumber.val()) === 'visa') {
-            mastercard.addClass('transparent');
-            amex.addClass('transparent');
+            text = "visa";
+            document.getElementById("demo").innerHTML = text;
         } else if ($.payform.parseCardType(cardNumber.val()) === 'amex') {
             mastercard.addClass('transparent');
             visa.addClass('transparent');

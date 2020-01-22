@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Virtual Wallet</title>
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <style>
+        .fixed-bg {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+
+        .fixed-bg2 {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+    </style>
+    <!-- Styles -->
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+    <main>
+        <!-- Header -->
+        <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+        <!-- Header -->
+        <!-- Secondary Header -->
+        <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+        <!-- Secondary Header -->
+        <!-- Secondary Header Text -->
+        <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Transaction History', currentpage = 'Transactions')"></section>
+        <!-- Secondary Header Text -->
+        <section>
+            <div class="spacing">
+                <div class="container">
+                    <div class="ico-stat-tabl brd-rd5">
+                        <table>
+                            <thead><tr><th>NAME</th><th>MARKET CAP</th><th>PRICE</th><th>VOLUMN (24H)</th><th>CIRCULATING SUPPLY</th><th>CHANGE(24H)</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn1.png" alt="bit-icn1.png" itemprop="image">Bitcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$8,420,920,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">6.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn2.png" alt="bit-icn2.png" itemprop="image">Ethereum</strong></td><td>$27,318,473,255</td><td>$1,613.20</td><td>$264,130,000</td><td>97,239,934 ETH</td><td><span class="blue-clr">-92.8%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn3.png" alt="bit-icn3.png" itemprop="image">Ripple</strong></td><td>$104,682,678,413</td><td>$0.613236</td><td>$535,843,000</td><td>38,739,142,811 XRP</td><td><span class="blue-clr">0.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn4.png" alt="bit-icn4.png" itemprop="image">Zcash</strong></td><td>$190,540,485,450</td><td>$178.91</td><td>$1,081,910,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">5.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn5.png" alt="bit-icn5.png" itemprop="image">Aidcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$264,130,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">-6.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn6.png" alt="bit-icn6.png" itemprop="image">Stellar</strong></td><td>$9,829,908,532</td><td>$0.613236</td><td>$535,843,000</td><td>17,868,051,183 XLM*</td><td><span class="blue-clr">2.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn7.png" alt="bit-icn7.png" itemprop="image">Litecoin</strong></td><td>$190,540,485,450</td><td>$1,613.20</td><td>$8,420,920,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">6.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn2.png" alt="bit-icn2.png" itemprop="image">Ethereum</strong></td><td>$27,318,473,255</td><td>$1,613.20</td><td>$264,130,000</td><td>97,239,934 ETH</td><td><span class="blue-clr">-92.8%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn3.png" alt="bit-icn3.png" itemprop="image">Ripple</strong></td><td>$104,682,678,413</td><td>$0.613236</td><td>$535,843,000</td><td>38,739,142,811 XRP</td><td><span class="blue-clr">0.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn4.png" alt="bit-icn4.png" itemprop="image">Zcash</strong></td><td>$190,540,485,450</td><td>$178.91</td><td>$1,081,910,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">5.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn5.png" alt="bit-icn5.png" itemprop="image">Aidcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$264,130,000</td><td>16,829,237 BTC</td><td><span class="blue-clr">-6.28%</span></td></tr>
+                                <tr><td><strong><img src="assets/images/resources/bit-icn6.png" alt="bit-icn6.png" itemprop="image">Stellar</strong></td><td>$9,829,908,532</td><td>$0.613236</td><td>$535,843,000</td><td>17,868,051,183 XLM*</td><td><span class="blue-clr">2.28%</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div><!-- ICO Stats Table -->
+                    <div class="pagination-wrap text-center">
+                        <div class="pagination">
+                            <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a></div>
+                            <div class="page-item brd-rd30">
+                                <a class="page-link" href="#" title="" itemprop="url">01</a>
+                                <span>02</span>
+                                <a class="page-link" href="#" title="" itemprop="url">03</a>
+                                <i>...............</i>
+                                <a class="page-link" href="#" title="" itemprop="url">08</a>
+                            </div>
+                            <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
+                        </div>
+                    </div><!-- Pagination Wrap -->
+                </div>
+            </div>
+        </section>
+<!--        footer-->
+        <footer th:insert="fragments/footerfragment :: footer"></footer>
+<!--        footer-->
+<!--        copyright-->
+        <div th:insert="fragments/footerfragment :: copyright"></div>
+<!--        copyright-->
+    </main><!-- Project Main Wrapper -->
+<!--scripts-->
+    <div th:insert="fragments/scriptsfragments :: scripts"></div>
+<!--scripts-->
+</body>
+</html>

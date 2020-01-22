@@ -44,12 +44,6 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-// тази логика я има в service-а .
-
-//        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
-//            model.addAttribute("error", PASSWORD_DO_NOT_MATCH);
-//            return "registration";
-//        }
 
         try {
             userService.createUser(userRegistrationDTO);
