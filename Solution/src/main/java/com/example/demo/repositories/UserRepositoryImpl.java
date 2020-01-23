@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.helpers.PaginationResult;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
 import org.hibernate.Session;
@@ -8,9 +9,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.SQLQueryConstants.*;
@@ -30,6 +35,18 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
             return query.list();
+        }
+    }
+
+    @Override
+    public List<Integer> getPages() {
+        int page = 1;
+        int maxResult = 1;
+        int maxNavigationResult = 10;
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User", User.class);
+            PaginationResult<User> result = new PaginationResult<User>(query, page, maxResult, maxNavigationResult);
+            return result.getNavigationPages();
         }
     }
 

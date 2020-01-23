@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -30,4 +31,5 @@ public interface UserRepository {
 
     boolean isPhoneNumberExist(String phoneNumber);
 
+    List<Integer> getPages();
 }

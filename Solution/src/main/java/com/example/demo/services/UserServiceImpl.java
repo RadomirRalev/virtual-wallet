@@ -31,6 +31,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUsers();
     }
 
+    public List<Integer> getPages() {
+        return userRepository.getPages();
+    }
+
     @Override
     public User createUser(UserRegistrationDTO userRegistrationDTO) {
 
