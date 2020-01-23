@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Virtual Wallet</title>
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <style>
+        .fixed-bg {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+
+        .fixed-bg2 {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+    </style>
+    <!-- Styles -->
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+<main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <!-- Header -->
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <!-- Secondary Header Text -->
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Users List', currentpage = 'Users List')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+        <div class="spacing">
+            <div class="container">
+                <div class="ico-stat-tabl brd-rd5">
+                    <table>
+                        <thead><tr><th>ID</th><th>USERNAME</th><th>E-MAIL</th><th>PHONE NUMBER</th><th>PICTURE</th><th>FIRST NAME</th><th>LAST NAME</th></tr></thead>
+                        <tbody th:each="user : ${users}">
+                        <tr>
+<!--                            User ID-->
+                            <td><div th:text="${user.getId()}"></div></td>
+<!--                            Username-->
+                            <td><div th:text="${user.getUsername()}"></div></td>
+<!--                            Email-->
+                            <td><div th:text="${user.getEmail()}"></div></td>
+<!--                            Phone number-->
+                            <td><div th:text="${user.getPhoneNumber()}"></div></td>
+<!--                            Picture-->
+                            <td><img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" width="50" height="50" alt="" src="">
+                                <img th:if="${user.picture.isEmpty()}"
+                                     src="https://www.lcbo.com/content/dam/lcbo/products/110320.jpg/jcr:content/renditions/cq5dam.web.1280.1280.jpeg"  width="50" height="50" alt="">
+                            </td>
+<!--                        First name-->
+                            <td><div th:text="${user.getFirstName()}"></div></td>
+<!--                        Last name-->
+                            <td><div th:text="${user.getLastName()}"></div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- ICO Stats Table -->
+                <div class="pagination-wrap text-center">
+                    <div class="pagination">
+                        <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a></div>
+                        <div class="page-item brd-rd30">
+                            <a class="page-link" href="#" title="" itemprop="url">01</a>
+                            <span>02</span>
+                            <a class="page-link" href="#" title="" itemprop="url">03</a>
+                            <i>...............</i>
+                            <a class="page-link" href="#" title="" itemprop="url">08</a>
+                        </div>
+                        <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
+                    </div>
+                </div><!-- Pagination Wrap -->
+            </div>
+        </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
+<!--scripts-->
+<div th:insert="fragments/scriptsfragments :: scripts"></div>
+<!--scripts-->
+</body>
+</html>

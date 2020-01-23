@@ -118,7 +118,12 @@ public class User {
     }
 
     public String getPicture() {
-        return Base64.getEncoder().encodeToString(picture);
+        String pic = "";
+        if (picture != null) {
+            return Base64.getEncoder().encodeToString(picture);
+        } else {
+            return pic;
+        }
     }
 
     public void setPicture(byte[] picture) {

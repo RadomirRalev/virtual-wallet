@@ -3,6 +3,7 @@ package com.example.demo.controllers.mvccontrollers.user;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidOptionalFieldParameter;
 import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 
 @Controller
@@ -51,7 +53,13 @@ public class RegistrationController {
             model.addAttribute("error", e.getMessage());
             return "registration";
         }
-        return "redirect:/login";
+        return "successregistration";
     }
 
+    @GetMapping("/userslist")
+    public String getUsersList(Model model) {
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
+        return "userslist";
+    }
 }
