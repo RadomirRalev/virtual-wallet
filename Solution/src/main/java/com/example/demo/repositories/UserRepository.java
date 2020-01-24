@@ -13,6 +13,8 @@ public interface UserRepository {
 
     User createUser(User user, Role role);
 
+    User getById(int id);
+
     User getByUsername(String username);
 
     User getByPhoneNumber(String phoneNumber);

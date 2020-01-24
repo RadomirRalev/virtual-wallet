@@ -45,6 +45,15 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{id}")
+    public User getById(@PathVariable int id) {
+        try {
+            return userService.getById(id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @GetMapping("/username/{username}")
     public User getByUsername(@PathVariable String username) {
         try {

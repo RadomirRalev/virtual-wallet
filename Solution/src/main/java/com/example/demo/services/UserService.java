@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import com.example.demo.models.card.CardDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
@@ -12,9 +11,9 @@ public interface UserService {
 
     List<User> getUsers();
 
-//    User createUser(UserRegistrationDTO userRegistrationDTO, CardDTO cardDTO);
-
     User createUser(UserRegistrationDTO userRegistrationDTO);
+
+    User getById(int id);
 
     User getByUsername(String username);
 
