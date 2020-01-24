@@ -34,4 +34,6 @@ public interface UserRepository {
     boolean isPhoneNumberExist(String phoneNumber);
 
     List<Integer> getPages();
+
+    List<User> getUsersPaginatedHibernate(Integer page);
 }
