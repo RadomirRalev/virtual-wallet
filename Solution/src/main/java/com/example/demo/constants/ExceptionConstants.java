@@ -2,6 +2,7 @@ package com.example.demo.constants;
 
 public class ExceptionConstants {
     public static final String USER_USERNAME_NOT_FOUND = "User with username %s not found in the database.";
+    public static final String USER_ID_NOT_FOUND = "User with username %d not found in the database.";
     public static final String USER_PHONE_NUMBER_NOT_FOUND = "User with phone number %s not found in the database.";
     public static final String USER_EMAIL_NOT_FOUND = "User with email %s not found in the database.";
     public static final String USER_USERNAME_EXISTS = "User with username %s already exists.";
