@@ -7,6 +7,9 @@ import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,8 +60,9 @@ public class RegistrationController {
     }
 
     @GetMapping("/userslist")
-    public String getUsersList(Model model) {
-        List<User> users = userService.getUsers();
+    public String getUsersList(@RequestParam(required = false, defaultValue = "1") Integer page,
+                               Model model) {
+        List<User> users = userService.getUsersPaginatedHibernate(page);
         List<Integer> pages = userService.getPages();
         model.addAttribute("users", users);
         model.addAttribute("pages", pages);

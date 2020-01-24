@@ -4,6 +4,9 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.helpers.PaginationResult;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
+import com.google.common.collect.Lists;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -40,13 +43,31 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public List<Integer> getPages() {
-        int page = 1;
-        int maxResult = 1;
-        int maxNavigationResult = 10;
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
-            PaginationResult<User> result = new PaginationResult<User>(query, page, maxResult, maxNavigationResult);
+            PaginationResult<User> result = new PaginationResult<User>(query, PAGES_TO_SHOW, RESULTS_PER_PAGE, MAX_NAVIGATION_RESULT);
             return result.getNavigationPages();
+        }
+    }
+
+
+
+    @Override
+    public List<User> getUsersPaginatedHibernate(Integer page) {
+        int positions = (page - 1)*RESULTS_PER_PAGE;
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User", User.class);
+            ScrollableResults resultScroll = query.scroll(ScrollMode.FORWARD_ONLY);
+            resultScroll.first();
+            resultScroll.scroll(positions);
+            List<User> usersList = Lists.newArrayList();
+            int i = 0;
+            while (RESULTS_PER_PAGE > i++) {
+                usersList.add((User) resultScroll.get(0));
+                if (!resultScroll.next())
+                    break;
+            }
+            return usersList;
         }
     }
 

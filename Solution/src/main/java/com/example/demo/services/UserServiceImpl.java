@@ -8,10 +8,15 @@ import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,8 +36,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUsers();
     }
 
+    @Override
     public List<Integer> getPages() {
         return userRepository.getPages();
+    }
+
+    @Override
+    public List<User> getUsersPaginatedHibernate(Integer page) {
+        return userRepository.getUsersPaginatedHibernate(page);
     }
 
     @Override
@@ -125,4 +136,5 @@ public class UserServiceImpl implements UserService {
     public boolean isPhoneNumberExist(String phoneNumber) {
         return userRepository.isPhoneNumberExist(phoneNumber);
     }
+
 }
