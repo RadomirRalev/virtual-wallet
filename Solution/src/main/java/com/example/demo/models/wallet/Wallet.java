@@ -1,7 +1,5 @@
 package com.example.demo.models.wallet;
 
-import com.example.demo.models.user.User;
-
 import javax.persistence.*;
 
 @Entity
@@ -13,17 +11,13 @@ public class Wallet {
     private int id;
     @Column(name = "amount")
     private double amount;
-    @OneToOne
-    @JoinColumn(name = "owner_user_id")
-    private User owner;
 
     public Wallet() {
     }
 
-    public Wallet(int id, double amount, User owner) {
+    public Wallet(int id, double amount) {
         this.id = id;
         this.amount = amount;
-        this.owner = owner;
     }
 
     public int getId() {
@@ -42,11 +36,4 @@ public class Wallet {
         this.amount = amount;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
 }

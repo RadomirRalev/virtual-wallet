@@ -25,6 +25,7 @@ public class UserRegistrationDTO {
     private String passwordConfirmation;
     //TODO regex !!!
     private String phoneNumber;
+    private int walletId;
     private byte[] picture;
     private String firstName;
     private String lastName;
@@ -92,6 +93,14 @@ public class UserRegistrationDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public int getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(int walletId) {
+        this.walletId = walletId;
     }
 
     public byte[] getPicture() {

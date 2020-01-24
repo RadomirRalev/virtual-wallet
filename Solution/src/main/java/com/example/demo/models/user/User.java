@@ -1,7 +1,7 @@
 package com.example.demo.models.user;
 
 import com.example.demo.models.card.CardDetails;
-import com.example.demo.models.card.virtual.VirtualCard;
+import com.example.demo.models.wallet.Wallet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -24,10 +24,9 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    //TODO
     @OneToOne
-    @JoinColumn(name = "virtual_card")
-    private VirtualCard virtualCard;
+    @JoinColumn(name = "wallet_id")
+    private Wallet wallet;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Lob
@@ -100,13 +99,12 @@ public class User {
         this.cardDetails = cardDetails;
     }
 
-    //TODO
-    public VirtualCard getVirtualCard() {
-        return virtualCard;
+    public Wallet getWallet() {
+        return wallet;
     }
 
-    public void setVirtualCard(VirtualCard virtualCard) {
-        this.virtualCard = virtualCard;
+    public void setWallet(Wallet wallet) {
+        this.wallet = wallet;
     }
 
     public String getPhoneNumber() {

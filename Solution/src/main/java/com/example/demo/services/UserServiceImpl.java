@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(UserRegistrationDTO userRegistrationDTO) {
 
-        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())){
+        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
             throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
         }
 
@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.createUser(userRegistrationDTO);
         Role role = userMapper.createRole(userRegistrationDTO);
-
         return userRepository.createUser(user, role);
     }
 
@@ -110,8 +109,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setStatusUser(String username, int status) {
-        if(!isUsernameExist(username)){
-            throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND,username);
+        if (!isUsernameExist(username)) {
+            throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
         }
         userRepository.setStatusUser(username, status);
     }

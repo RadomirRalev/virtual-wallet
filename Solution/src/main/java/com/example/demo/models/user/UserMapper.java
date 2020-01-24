@@ -1,5 +1,7 @@
 package com.example.demo.models.user;
 
+import com.example.demo.services.WalletService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import static com.example.demo.constants.SQLQueryConstants.*;
@@ -7,6 +9,13 @@ import static com.example.demo.helpers.UserHelper.setOptionalFields;
 
 @Component
 public class UserMapper {
+
+    private WalletService walletService;
+
+    @Autowired
+    public UserMapper(WalletService walletService) {
+        this.walletService = walletService;
+    }
 
     public User createUser(UserRegistrationDTO userRegistrationDTO) {
         User user = new User();
@@ -19,6 +28,7 @@ public class UserMapper {
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());
         setOptionalFields(user);
+        user.setWallet(walletService.createWallet());
         return user;
     }
 
