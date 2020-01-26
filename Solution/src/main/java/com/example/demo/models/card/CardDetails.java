@@ -15,9 +15,6 @@ public class CardDetails {
     private String expirationDate;
     @Column(name = "security_code")
     private String securityCode;
-    @Column(name = "type")
-    //TODO random logic ... :D
-    private String type;
     @Column(name = "cardholder_name")
     private String cardholderName;
     @Column(name = "status")
@@ -40,14 +37,6 @@ public class CardDetails {
 
     public void setCardNumber(String number) {
         this.cardNumber = number;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getStatus() {

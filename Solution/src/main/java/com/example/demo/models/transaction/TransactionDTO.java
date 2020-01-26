@@ -1,25 +1,30 @@
 package com.example.demo.models.transaction;
 
-
 public class TransactionDTO {
 
-    private double amount;
+    private int amount;
     private int senderId;
     private int receiverId;
-    private int type;
+    private String type;
+    private String description;
+    private String idempotencyKey;
+    private String currency;
 
-    public TransactionDTO(double amount, int senderId, int receiverId, int type) {
+    public TransactionDTO(int amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency) {
         this.amount = amount;
         this.senderId = senderId;
-        this.receiverId = receiverId;
         this.type = type;
+        this.description = description;
+        this.idempotencyKey = idempotencyKey;
+        this.receiverId = receiverId;
+        this.currency = currency;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -31,6 +36,30 @@ public class TransactionDTO {
         this.senderId = senderId;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getIdempotencyKey() {
+        return idempotencyKey;
+    }
+
+    public void setIdempotencyKey(String idempotencyKey) {
+        this.idempotencyKey = idempotencyKey;
+    }
+
     public int getReceiverId() {
         return receiverId;
     }
@@ -39,11 +68,11 @@ public class TransactionDTO {
         this.receiverId = receiverId;
     }
 
-    public int getType() {
-        return type;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

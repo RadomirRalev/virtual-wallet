@@ -1,30 +1,41 @@
 package com.example.demo.models.transaction;
 
-import com.example.demo.models.user.User;
-
 import javax.persistence.*;
 
-@Entity
-@Table(name = "transaction")
+@MappedSuperclass
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
     private int id;
-    @Column(name = "amount")
-    private double amount;
-    @Column(name = "date")
-    private String date;
-    @OneToOne
-    @JoinColumn(name = "sender_user_id")
-    private User sender;
-    @OneToOne
-    @JoinColumn(name = "receiver_user_id")
-    private User receiver;
-    @JoinColumn(name = "type")
-    private int type;
+    private int amount;
+    private String description;
+    private String currency;
+    private String idempotencyKey;
 
     public Transaction() {
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getIdempotencyKey() {
+        return idempotencyKey;
+    }
+
+    public void setIdempotencyKey(String idempotencyKey) {
+        this.idempotencyKey = idempotencyKey;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getId() {
@@ -35,43 +46,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public double getAmount() {
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 }

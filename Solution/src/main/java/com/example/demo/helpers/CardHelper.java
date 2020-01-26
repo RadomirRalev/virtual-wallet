@@ -33,11 +33,4 @@ public class CardHelper {
         return (expirationYear >= currentYear);
     }
 
-    public static String cardType() {
-        if (Math.random() > MAGIC) {
-            return DEBIT;
-        } else {
-            return CREDIT;
-        }
-    }
 }

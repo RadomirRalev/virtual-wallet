@@ -60,6 +60,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getUsersPaginatedHibernate(Integer page) {
+        return userRepository.getUsersPaginatedHibernate(page);
+    }
+
+    @Override
     public User getById(int id) {
         return userRepository.getById(id);
     }

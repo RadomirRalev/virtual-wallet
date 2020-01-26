@@ -1,6 +1,9 @@
 package com.example.demo.models.transaction;
 
+import com.example.demo.models.wallet.Wallet;
+import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
+import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,23 +14,35 @@ import java.util.Date;
 public class TransactionMapper {
 
     private UserService userService;
+    private CardDetailsService cardDetailsService;
+    private WalletService walletService;
+
 
     @Autowired
-    public TransactionMapper(UserService userService) {
+    public TransactionMapper(UserService userService, CardDetailsService cardDetailsService, WalletService walletService) {
         this.userService = userService;
+        this.cardDetailsService = cardDetailsService;
+        this.walletService = walletService;
     }
 
-    public Transaction createTransaction(TransactionDTO transactionDTO) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        String currentDate = formatter.format(date);
+    public Transaction createDeposit(TransactionDTO transactionDTO) {
+        Deposit deposit = new Deposit();
+        deposit.setAmount(transactionDTO.getAmount());
+        deposit.setDescription(transactionDTO.getDescription());
+        deposit.setIdempotencyKey(transactionDTO.getIdempotencyKey());
+        deposit.setCurrency(transactionDTO.getCurrency());
+        deposit.setCardSender(cardDetailsService.getById(transactionDTO.getSenderId()));
+        return deposit;
+    }
 
-        Transaction transaction = new Transaction();
-        transaction.setDate(currentDate);
-        transaction.setAmount(transactionDTO.getAmount());
-        transaction.setReceiver(userService.getById(transactionDTO.getReceiverId()));
-        transaction.setSender(userService.getById(transactionDTO.getSenderId()));
-        transaction.setType(transactionDTO.getType());
-        return transaction;
+    public Transaction createInternalTransaction(TransactionDTO transactionDTO) {
+        Internal internal = new Internal();
+        internal.setAmount(transactionDTO.getAmount());
+        internal.setDescription(transactionDTO.getDescription());
+        internal.setDescription(transactionDTO.getIdempotencyKey());
+        internal.setCurrency(transactionDTO.getCurrency());
+        internal.setSender(walletService.getById(transactionDTO.getSenderId()));
+        internal.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
+        return internal;
     }
 }
