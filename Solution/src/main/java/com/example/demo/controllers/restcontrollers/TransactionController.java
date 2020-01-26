@@ -1,9 +1,14 @@
 package com.example.demo.controllers.restcontrollers;
 
+import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.InvalidOptionalFieldParameter;
+import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.card.CardDetails;
+import com.example.demo.models.transaction.Internal;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.TransactionDTO;
+import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +48,14 @@ public class TransactionController {
     @GetMapping("/{id}")
     public List<Transaction> getTransactionsByWalletId(@PathVariable int id) {
         return transactionService.getTransactionsbyWalletId(id);
+    }
+
+    @PostMapping
+    public Internal createInternal(@RequestBody @Valid TransactionDTO transactionDTO) {
+        try {
+            return transactionService.createInternal(transactionDTO);
+        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 }

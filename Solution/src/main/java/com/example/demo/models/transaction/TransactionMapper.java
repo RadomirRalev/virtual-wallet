@@ -35,7 +35,7 @@ public class TransactionMapper {
         return deposit;
     }
 
-    public Transaction createInternalTransaction(TransactionDTO transactionDTO) {
+    public Internal createInternalTransaction(TransactionDTO transactionDTO) {
         Internal internal = new Internal();
         internal.setAmount(transactionDTO.getAmount());
         internal.setDescription(transactionDTO.getDescription());
@@ -44,5 +44,16 @@ public class TransactionMapper {
         internal.setSender(walletService.getById(transactionDTO.getSenderId()));
         internal.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
         return internal;
+    }
+
+    public Transaction createWithdrawal(TransactionDTO transactionDTO) {
+        Withdrawal withdrawal = new Withdrawal();
+        withdrawal.setAmount(transactionDTO.getAmount());
+        withdrawal.setDescription(transactionDTO.getDescription());
+        withdrawal.setDescription(transactionDTO.getIdempotencyKey());
+        withdrawal.setCurrency(transactionDTO.getCurrency());
+        withdrawal.setSender(walletService.getById(transactionDTO.getSenderId()));
+        withdrawal.setReceiver(cardDetailsService.getById(transactionDTO.getReceiverId()));
+        return withdrawal;
     }
 }

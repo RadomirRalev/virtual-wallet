@@ -9,15 +9,15 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wallet_id")
     private int id;
-    @Column(name = "amount")
-    private double amount;
+    @Column(name = "balance")
+    private int balance;
 
     public Wallet() {
     }
 
-    public Wallet(int id, double amount) {
+    public Wallet(int id, int balance) {
         this.id = id;
-        this.amount = amount;
+        this.balance = balance;
     }
 
     public int getId() {
@@ -28,12 +28,12 @@ public class Wallet {
         this.id = id;
     }
 
-    public double getAmount() {
-        return amount;
+    public int getBalance() {
+        return balance;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
 }
