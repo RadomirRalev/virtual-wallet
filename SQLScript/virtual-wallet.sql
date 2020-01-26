@@ -103,10 +103,10 @@ INSERT INTO `deposit` (`id`, `amount`, `currency`, `idempotencykey`, `sender_car
 -- Dumping structure for table virtual_wallet.internal
 CREATE TABLE IF NOT EXISTS `internal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `amount` int(11) DEFAULT NULL,
+  `amount` int(11) NOT NULL,
   `description` varchar(500) DEFAULT NULL,
   `currency` varchar(3) DEFAULT NULL,
-  `idempotencykey` varchar(19) DEFAULT NULL,
+  `idempotencykey` varchar(19) NOT NULL,
   `sender_id` int(11) NOT NULL,
   `receiver_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `internal` (
   CONSTRAINT `fk_sender` FOREIGN KEY (`sender_id`) REFERENCES `wallet` (`wallet_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table virtual_wallet.internal: ~0 rows (approximately)
+-- Dumping data for table virtual_wallet.internal: ~1 rows (approximately)
 /*!40000 ALTER TABLE `internal` DISABLE KEYS */;
 INSERT INTO `internal` (`id`, `amount`, `description`, `currency`, `idempotencykey`, `sender_id`, `receiver_id`) VALUES
 	(1, 200000, 'jhbjkhbkjhbkjhb', 'bgn', '1234567891234567890', 4, 7);
@@ -233,18 +233,38 @@ INSERT INTO `user_role` (`user_id`, `role_id`) VALUES
 -- Dumping structure for table virtual_wallet.wallet
 CREATE TABLE IF NOT EXISTS `wallet` (
   `wallet_id` int(11) NOT NULL AUTO_INCREMENT,
-  `amount` double NOT NULL,
+  `balance` int(11) NOT NULL,
   PRIMARY KEY (`wallet_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table virtual_wallet.wallet: ~4 rows (approximately)
 /*!40000 ALTER TABLE `wallet` DISABLE KEYS */;
-INSERT INTO `wallet` (`wallet_id`, `amount`) VALUES
+INSERT INTO `wallet` (`wallet_id`, `balance`) VALUES
 	(4, 0),
 	(5, 0),
 	(6, 0),
 	(7, 0);
 /*!40000 ALTER TABLE `wallet` ENABLE KEYS */;
+
+-- Dumping structure for table virtual_wallet.withdrawal
+CREATE TABLE IF NOT EXISTS `withdrawal` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` int(11) NOT NULL,
+  `currency` varchar(3) DEFAULT NULL,
+  `idempotencykey` varchar(19) NOT NULL,
+  `sender_wallet_id` int(11) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  `receiver_card_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sender_id` (`sender_wallet_id`),
+  KEY `receiver___fk` (`receiver_card_id`),
+  CONSTRAINT `receiver___fk` FOREIGN KEY (`receiver_card_id`) REFERENCES `card` (`card_id`),
+  CONSTRAINT `sender_id` FOREIGN KEY (`sender_wallet_id`) REFERENCES `wallet` (`wallet_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table virtual_wallet.withdrawal: ~0 rows (approximately)
+/*!40000 ALTER TABLE `withdrawal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `withdrawal` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
