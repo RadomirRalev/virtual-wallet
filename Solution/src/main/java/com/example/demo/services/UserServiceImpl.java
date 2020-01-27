@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserRegistrationDTO userRegistrationDTO) {
+    public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
 
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
             throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
@@ -113,7 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setStatusUser(String username, int status) {
+    public void setStatusUser(String username, boolean status) {
         if (!isUsernameExist(username)) {
             throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
         }

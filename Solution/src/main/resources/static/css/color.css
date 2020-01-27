@@ -181,3 +181,9 @@ ul.dropdown-menu > li span.fa,
 {
 	border-color: #00002A;
 }
+
+.error-field
+{
+	text-align: left;
+	color: red;
+}

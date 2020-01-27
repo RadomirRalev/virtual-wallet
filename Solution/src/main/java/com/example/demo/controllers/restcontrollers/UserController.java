@@ -4,7 +4,6 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidOptionalFieldParameter;
 import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.models.card.CardDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
@@ -40,7 +40,7 @@ public class UserController {
     public User create(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         try {
             return userService.createUser(userRegistrationDTO);
-        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException | IOException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }

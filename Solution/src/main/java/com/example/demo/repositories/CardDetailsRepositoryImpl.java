@@ -27,7 +27,7 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     public CardDetails getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             Query<CardDetails> query = session.createQuery("from CardDetails " +
-                    " where id = :id and status = :status ", CardDetails.class);
+                    " where id = :id and enabled = :status ", CardDetails.class);
             query.setParameter("id", id);
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
@@ -41,7 +41,7 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     public CardDetails getByNumber(String number) {
         try (Session session = sessionFactory.openSession()) {
             Query<CardDetails> query = session.createQuery("from CardDetails " +
-                    " where number = :number and status = :status ", CardDetails.class);
+                    " where number = :number and enabled = :status ", CardDetails.class);
             query.setParameter("number", number);
             query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
@@ -52,13 +52,9 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     }
 
     @Override
-    public CardDetails createCard(CardDetails cardDetails, User user) {
+    public CardDetails createCard(CardDetails cardDetails) {
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
             session.save(cardDetails);
-            String sql = String.format(ADD_USER_CARD, user.getId(), cardDetails.getId());
-            session.createSQLQuery(sql).executeUpdate();
-            session.getTransaction().commit();
         }
         return cardDetails;
     }
@@ -74,11 +70,11 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     }
 
     @Override
-    public void setCardStatus(String number, int status) {
+    public void setCardStatus(String number, boolean status) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.createQuery("update CardDetails " +
-                    "set status = :status where number = :number ")
+                    "set enabled = :status where number = :number ")
                     .setParameter("number", number)
                     .setParameter("status", status)
                     .executeUpdate();

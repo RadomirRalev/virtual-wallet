@@ -9,6 +9,8 @@ public class CardDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "card_id")
     private int id;
+    @Column(name = "user_id")
+    private int user_id;
     @Column(name = "number")
     private String cardNumber;
     @Column(name = "expiration_date")
@@ -17,8 +19,8 @@ public class CardDetails {
     private String securityCode;
     @Column(name = "cardholder_name")
     private String cardholderName;
-    @Column(name = "status")
-    private int status;
+    @Column(name = "enabled")
+    private boolean enabled;
 
     public CardDetails() {
     }
@@ -31,6 +33,18 @@ public class CardDetails {
         this.id = id;
     }
 
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public String getCardNumber() {
         return cardNumber;
     }
@@ -39,12 +53,8 @@ public class CardDetails {
         this.cardNumber = number;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getExpirationDate() {

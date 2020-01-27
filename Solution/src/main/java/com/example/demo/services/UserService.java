@@ -5,13 +5,14 @@ import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
 
     List<User> getUsers();
 
-    User createUser(UserRegistrationDTO userRegistrationDTO);
+    User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException;
 
     User getById(int id);
 
@@ -25,7 +26,7 @@ public interface UserService {
 
     User changePassword (User user, PasswordUpdateDTO passwordUpdateDTO);
 
-    void setStatusUser(String username, int status);
+    void setStatusUser(String username, boolean status);
 
     boolean isUsernameExist(String username);
 

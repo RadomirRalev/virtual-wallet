@@ -46,20 +46,27 @@
                                         <form class="reply-form" th:action="@{/registration}" th:object="${UserRegistrationDTO}" method="post" name="form1"
                                               enctype="multipart/form-data">
                                             <div class="row" style="text-align: center">
+                                                <p>
+                                                    <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
+                                                </p>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" name="txt_username" id="txt_username" class="form-control" placeholder="Username (Obligatory)" th:field="*{username}" minlength=2 maxlength=32 required>
+                                                    <p class="error-field" th:errors="*{username}"></p>
+                                                    <input type="text" name="txt_username" id="txt_username" class="form-control" placeholder="Username (Obligatory)" th:field="*{username}" minlength=3 maxlength=30 required>
                                                 </div>
                                                 <span id="availability"></span>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Password (Obligatory)" th:field="*{password}" minlength=2 maxlength=32 required>
+                                                    <p class="error-field" th:errors="*{password}"></p>
+                                                    <input type="password" placeholder="Password (Obligatory)" th:field="*{password}" minlength=6 maxlength=16 required>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Retype password (Obligatory)" th:field="*{passwordConfirmation}" minlength=2 maxlength=32 required>
+                                                    <input type="password" placeholder="Retype password (Obligatory)" th:field="*{passwordConfirmation}" minlength=6 maxlength=16 required>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Phone number (Obligatory)" th:field="*{phoneNumber}" required>
+                                                    <p class="error-field" th:errors="*{phoneNumber}"></p>
+                                                    <input type="text" placeholder="08XXXXXXXX (Obligatory)" th:field="*{phoneNumber}" required>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <p class="error-field" th:errors="*{email}"></p>
                                                     <input type="email" name='text1' placeholder="Email Address (Obligatory)" th:field="*{email}" required>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
@@ -70,8 +77,9 @@
                                                 </div>
                                                 <p>Add pic (Optional)</p>
                                                 <input type="file" name="file" class="form-control-file"
-                                                       id="userDetails"/>
+                                                       id="userDetails" th:field="*{file}"/>
                                                 <input type="hidden" name="MAX_FILE_SIZE" value="2000000"/>
+                                                <p class="error-field" th:errors="*{file}"></p>
                                                 <label class="error"></label>
                                             </div>
                                             <div class="col-md-12 col-sm-12 col-lg-12">

@@ -4,6 +4,8 @@ import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 import static com.example.demo.constants.SQLQueryConstants.*;
 import static com.example.demo.helpers.UserHelper.setOptionalFields;
 
@@ -17,18 +19,19 @@ public class UserMapper {
         this.walletService = walletService;
     }
 
-    public User createUser(UserRegistrationDTO userRegistrationDTO) {
+    public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
         User user = new User();
         user.setUsername(userRegistrationDTO.getUsername());
         user.setEmail(userRegistrationDTO.getEmail());
-        user.setEnabled(ENABLE);
+        user.setEnabled(true);
         user.setPassword(userRegistrationDTO.getPassword());
         user.setPhoneNumber(userRegistrationDTO.getPhoneNumber());
-        user.setPicture(userRegistrationDTO.getPicture());
+        user.setPicture(userRegistrationDTO.getFile().getBytes());
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());
         setOptionalFields(user);
         user.setWallet(walletService.createWallet());
+        user.setBlocked(false);
         return user;
     }
 

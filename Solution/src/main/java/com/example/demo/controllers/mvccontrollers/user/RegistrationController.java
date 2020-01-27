@@ -37,19 +37,17 @@ public class RegistrationController {
         return "registration";
     }
 
-    @PostMapping("registration")
-    public String createBeer(@RequestParam("file") MultipartFile file,
-                             @Valid @ModelAttribute("UserRegistrationDTO") UserRegistrationDTO userRegistrationDTO,
-                             Model model, BindingResult bindingResult) throws IOException {
-        model.addAttribute("file", file);
-        userRegistrationDTO.setPicture(file.getBytes());
+    @PostMapping("/registration")
+    public String createBeer(@Valid @ModelAttribute("UserRegistrationDTO") UserRegistrationDTO userRegistrationDTO,
+                              BindingResult bindingResult, Model model) {
+
         if (bindingResult.hasErrors()) {
             return "registration";
         }
 
         try {
             userService.createUser(userRegistrationDTO);
-        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException e) {
+        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException | IOException e) {
             model.addAttribute("error", e.getMessage());
             return "registration";
         }

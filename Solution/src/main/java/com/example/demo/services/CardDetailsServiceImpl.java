@@ -4,7 +4,7 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidCardException;
 import com.example.demo.models.card.CardMapper;
-import com.example.demo.models.card.CardDTO;
+import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.user.User;
 import com.example.demo.repositories.CardDetailsRepository;
@@ -41,33 +41,34 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     }
 
     @Override
-    public CardDetails createCard(CardDTO cardDTO, String username) {
+    public CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, String username) {
         User user = userService.getByUsername(username);
 
-        if (isCardExist(cardDTO.getCardNumber())) {
-            throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardDTO.getCardNumber());
+        if (isCardExist(cardRegistrationDTO.getCardNumber())) {
+            throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardRegistrationDTO.getCardNumber());
         }
 
-        if(!isValidExpirationDate(cardDTO.getExpirationDate())){
+        if(!isValidExpirationDate(cardRegistrationDTO.getExpirationDate())){
             throw new InvalidCardException(EXPIRATION_DATE_IS_INVALID);
         }
 
-        if (!cardDTO.getCardholderName().equalsIgnoreCase(user.getFirstName() + " " + user.getLastName())){
+        if (!cardRegistrationDTO.getCardholderName().equalsIgnoreCase(user.getFirstName() + " " + user.getLastName())){
             throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
         }
-        CardDetails cardDetails = cardMapper.mapCard(cardDTO);
+        CardDetails cardDetails = cardMapper.mapCard(cardRegistrationDTO);
+        cardDetails.setUser_id(user.getId());
 
-        return cardDetailsRepository.createCard(cardDetails, user);
+        return cardDetailsRepository.createCard(cardDetails);
     }
 
     //TODO
     @Override
-    public CardDetails updateCard(CardDTO cardDTO) {
+    public CardDetails updateCard(CardRegistrationDTO cardRegistrationDTO) {
         throw new NotImplementedException();
     }
 
     @Override
-    public void setCardStatus(String number, int status) {
+    public void setCardStatus(String number, boolean status) {
         if (!isCardExist(number)) {
             throw new EntityNotFoundException(CARD_WITH_NUMBER_NOT_EXISTS, number);
         }

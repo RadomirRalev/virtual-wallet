@@ -19,7 +19,7 @@ public class User {
     @Column(name = "username")
     private String username;
     @Column(name = "enabled")
-    private int enabled;
+    private boolean enabled;
     @Column(name = "email")
     private String email;
     @Column(name = "password")
@@ -37,13 +37,15 @@ public class User {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "blocked")
+    private boolean blocked;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_cards",
+    @JoinTable(name = "card",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "card_id"))
     private List<CardDetails> cardDetails;
@@ -67,11 +69,11 @@ public class User {
         this.username = username;
     }
 
-    public int getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -116,12 +118,7 @@ public class User {
     }
 
     public String getPicture() {
-        String pic = "";
-        if (picture != null) {
-            return Base64.getEncoder().encodeToString(picture);
-        } else {
-            return pic;
-        }
+        return Base64.getEncoder().encodeToString(picture);
     }
 
     public void setPicture(byte[] picture) {
@@ -150,5 +147,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

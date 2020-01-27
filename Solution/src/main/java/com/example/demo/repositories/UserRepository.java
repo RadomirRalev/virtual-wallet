@@ -21,7 +21,7 @@ public interface UserRepository {
 
     User getByEmail(String email);
 
-    void setStatusUser(String username, int status);
+    void setStatusUser(String username, boolean status);
 
     User updateUser(User user);
 

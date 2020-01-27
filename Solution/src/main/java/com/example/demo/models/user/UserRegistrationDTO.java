@@ -1,6 +1,7 @@
 package com.example.demo.models.user;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
@@ -8,10 +9,8 @@ import javax.validation.constraints.Pattern;
 public class UserRegistrationDTO {
     @Length(min = 4, max = 30)
     @Pattern(regexp = "^[\\w-]+$",
-            message = "Username may only contain alpha-numeric characters, underscores, and dashes.")
+            message = "Username may only contain alpha-numeric characters, underscores and dashes.")
     private String username;
-
-    private int enabled;
     @Email(regexp = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)"
             , message = "Please provide a valid email address.")
     private String email;
@@ -23,26 +22,24 @@ public class UserRegistrationDTO {
 //    @Pattern(regexp = "^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)+[!-~]+$",
 //            message = "Password may contain little letters, big letters and numbers")
     private String passwordConfirmation;
-    //TODO regex !!!
+    @Pattern(regexp = "^[0][8][0-9]{8}+$", message = "Please provide a valid phone number.")
     private String phoneNumber;
     private int walletId;
-    private byte[] picture;
+    private MultipartFile file;
     private String firstName;
     private String lastName;
 
     public UserRegistrationDTO() {
     }
 
-    public UserRegistrationDTO(String username, int enabled, String email, String password,
-                               String passwordConfirmation, String phoneNumber, byte[] picture,
+    public UserRegistrationDTO(String username, String email, String password,
+                               String passwordConfirmation, String phoneNumber,
                                String firstName, String lastName) {
         this.username = username;
-        this.enabled = enabled;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.phoneNumber = phoneNumber;
-        this.picture = picture;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -53,14 +50,6 @@ public class UserRegistrationDTO {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public int getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
     }
 
     public String getEmail() {
@@ -103,12 +92,12 @@ public class UserRegistrationDTO {
         this.walletId = walletId;
     }
 
-    public byte[] getPicture() {
-        return picture;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setPicture(byte[] picture) {
-        this.picture = picture;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public String getFirstName() {

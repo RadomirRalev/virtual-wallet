@@ -9,16 +9,11 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.SQLQueryConstants.*;
@@ -141,7 +136,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setStatusUser(String username, int status) {
+    public void setStatusUser(String username, boolean status) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.createQuery("update User " +

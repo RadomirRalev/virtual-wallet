@@ -7,13 +7,13 @@ import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 @Component
 public class CardMapper {
 
-    public CardDetails mapCard(CardDTO cardDTO) {
+    public CardDetails mapCard(CardRegistrationDTO cardRegistrationDTO) {
         CardDetails cardDetails = new CardDetails();
-        cardDetails.setCardNumber(cardDTO.getCardNumber());
-        cardDetails.setExpirationDate(cardDTO.getExpirationDate());
-        cardDetails.setSecurityCode(cardDTO.getSecurityCode());
-        cardDetails.setStatus(ENABLE);
-        cardDetails.setCardholderName(cardDTO.getCardholderName());
+        cardDetails.setCardNumber(cardRegistrationDTO.getCardNumber());
+        cardDetails.setExpirationDate(cardRegistrationDTO.getExpirationDate());
+        cardDetails.setSecurityCode(cardRegistrationDTO.getSecurityCode());
+        cardDetails.setEnabled(ENABLE);
+        cardDetails.setCardholderName(cardRegistrationDTO.getCardholderName());
         return cardDetails;
     }
 }

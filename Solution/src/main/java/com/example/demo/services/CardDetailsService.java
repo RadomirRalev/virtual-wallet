@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.card.CardDTO;
+import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
 
 public interface CardDetailsService {
@@ -9,11 +9,11 @@ public interface CardDetailsService {
 
     CardDetails getByNumber(String number);
 
-    CardDetails createCard(CardDTO cardDTO, String username);
+    CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, String username);
 
-    CardDetails updateCard(CardDTO cardDTO);
+    CardDetails updateCard(CardRegistrationDTO cardRegistrationDTO);
 
-    void setCardStatus(String number, int status);
+    void setCardStatus(String number, boolean status);
 
     boolean isCardExist(String number);
 }

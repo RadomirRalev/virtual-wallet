@@ -9,11 +9,11 @@ public interface CardDetailsRepository {
 
     CardDetails getByNumber(String number);
 
-    CardDetails createCard(CardDetails cardDetails, User user);
+    CardDetails createCard(CardDetails cardDetails);
 
     CardDetails updateCard(CardDetails cardDetails);
 
-    void setCardStatus(String number, int status);
+    void setCardStatus(String number, boolean status);
 
     boolean isCardExist(String number);
 

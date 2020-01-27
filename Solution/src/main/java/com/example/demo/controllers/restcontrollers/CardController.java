@@ -3,7 +3,7 @@ package com.example.demo.controllers.restcontrollers;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidCardException;
-import com.example.demo.models.card.CardDTO;
+import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.services.CardDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +46,9 @@ public class CardController {
     }
 
     @PostMapping("/{username}")
-    public CardDetails create(@RequestBody @Valid CardDTO cardDTO, @PathVariable String username) {
+    public CardDetails create(@RequestBody @Valid CardRegistrationDTO cardRegistrationDTO, @PathVariable String username) {
         try {
-            return cardDetailsService.createCard(cardDTO, username);
+            return cardDetailsService.createCard(cardRegistrationDTO, username);
         } catch (DuplicateEntityException | InvalidCardException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (EntityNotFoundException e) {
