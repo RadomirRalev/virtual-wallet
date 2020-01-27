@@ -8,6 +8,7 @@ import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.Internal;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.TransactionDTO;
+import com.example.demo.models.transaction.Withdrawal;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.TransactionService;
@@ -50,10 +51,19 @@ public class TransactionController {
         return transactionService.getTransactionsbyWalletId(id);
     }
 
-    @PostMapping
+    @PostMapping("/internal")
     public Internal createInternal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createInternal(transactionDTO);
+        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PostMapping("/withdrawal")
+    public Withdrawal createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
+        try {
+            return transactionService.createWithdrawal(transactionDTO);
         } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

@@ -11,6 +11,7 @@ public class ExceptionConstants {
     public static final String CARD_WITH_NUMBER_EXISTS = "Card with number %s already registered.";
     public static final String CARD_WITH_NUMBER_NOT_EXISTS = "Card with number %s not exist.";
     public static final String CARD_WITH_ID_NOT_EXISTS = "Card with id %d not exist.";
+    public static final String WALLET_WITH_ID_NOT_EXISTS = "Wallet with id %d not exist.";
     public static final String USER_CAN_NOT_MODIFY = "User with username %s can not modify beer with name %s.";
     public static final String PASSWORD_DO_NOT_MATCH = "Password doesn't match!";
     public static final String EMAIL_ALREADY_REGISTERED = "Email %s already registered.";

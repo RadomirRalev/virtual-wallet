@@ -46,7 +46,7 @@ public class TransactionMapper {
         return internal;
     }
 
-    public Transaction createWithdrawal(TransactionDTO transactionDTO) {
+    public Withdrawal createWithdrawal(TransactionDTO transactionDTO) {
         Withdrawal withdrawal = new Withdrawal();
         withdrawal.setAmount(transactionDTO.getAmount());
         withdrawal.setDescription(transactionDTO.getDescription());
