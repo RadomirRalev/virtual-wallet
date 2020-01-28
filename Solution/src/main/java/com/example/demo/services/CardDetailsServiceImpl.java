@@ -48,15 +48,16 @@ public class CardDetailsServiceImpl implements CardDetailsService {
             throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardRegistrationDTO.getCardNumber());
         }
 
-        if(!isValidExpirationDate(cardRegistrationDTO.getExpirationDate())){
+        if (!isValidExpirationDate(cardRegistrationDTO.getExpirationDate())) {
             throw new InvalidCardException(EXPIRATION_DATE_IS_INVALID);
         }
 
-        if (!cardRegistrationDTO.getCardholderName().equalsIgnoreCase(user.getFirstName() + " " + user.getLastName())){
+        if (!cardRegistrationDTO.getCardholderName().
+                equalsIgnoreCase(user.getFirstName() + " " + user.getLastName())) {
             throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
         }
         CardDetails cardDetails = cardMapper.mapCard(cardRegistrationDTO);
-        cardDetails.setUser_id(user.getId());
+        cardDetails.setUser(user);
 
         return cardDetailsRepository.createCard(cardDetails);
     }

@@ -1,13 +1,14 @@
 package com.example.demo.models.user;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
 public class ProfileUpdateDTO {
 
     @Email(regexp = "(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$)"
             , message = "Please provide a valid email address.")
     private String email;
-    //TODO regex !!!
+    @Pattern(regexp = "^[0][8][0-9]{8}+$", message = "Please provide a valid phone number.")
     private String phoneNumber;
     private byte[] picture;
 

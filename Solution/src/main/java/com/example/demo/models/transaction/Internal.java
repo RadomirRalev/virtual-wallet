@@ -1,6 +1,5 @@
 package com.example.demo.models.transaction;
 
-import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;

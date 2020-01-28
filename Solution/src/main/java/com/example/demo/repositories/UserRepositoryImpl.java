@@ -4,6 +4,7 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.helpers.PaginationResult;
 import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
+import com.example.demo.models.wallet.Wallet;
 import com.google.common.collect.Lists;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -46,10 +47,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
 
-
     @Override
     public List<User> getUsersPaginatedHibernate(Integer page) {
-        int positions = (page - 1)*RESULTS_PER_PAGE;
+        int positions = (page - 1) * RESULTS_PER_PAGE;
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
             ScrollableResults resultScroll = query.scroll(ScrollMode.FORWARD_ONLY);
@@ -67,13 +67,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User createUser(User user, Role role) {
+    public User createUser(User user, Role role, Wallet wallet) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.save(user);
+            role.setUserId(user.getId());
             session.save(role);
-            String sql = String.format(ADD_USER_ROLE, user.getId(), role.getId());
-            session.createSQLQuery(sql).executeUpdate();
+            wallet.setUserId(user.getId());
+            session.save(wallet);
             session.getTransaction().commit();
         }
         return user;

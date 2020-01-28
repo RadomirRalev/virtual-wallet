@@ -6,6 +6,7 @@ import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.user.*;
 import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,10 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.createUser(userRegistrationDTO);
         Role role = userMapper.createRole(userRegistrationDTO);
-        return userRepository.createUser(user, role);
+        Wallet wallet = userMapper.registerWallet();
+
+        userRepository.createUser(user, role, wallet);
+        return user;
     }
 
     @Override

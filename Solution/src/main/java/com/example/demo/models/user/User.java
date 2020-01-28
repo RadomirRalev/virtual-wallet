@@ -3,11 +3,12 @@ package com.example.demo.models.user;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.wallet.Wallet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Base64;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -24,9 +25,6 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @OneToOne
-    @JoinColumn(name = "wallet_id")
-    private Wallet wallet;
     @Column(name = "phone_number")
     private String phoneNumber;
     @Lob
@@ -39,16 +37,18 @@ public class User {
     private String lastName;
     @Column(name = "blocked")
     private boolean blocked;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "card",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "card_id"))
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy="user")
+    private List<Role> roles;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy="user")
     private List<CardDetails> cardDetails;
+
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy="user")
+    private List<Wallet> wallets;
 
     public User() {
     }
@@ -101,14 +101,6 @@ public class User {
         this.cardDetails = cardDetails;
     }
 
-    public Wallet getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(Wallet wallet) {
-        this.wallet = wallet;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -125,11 +117,11 @@ public class User {
         this.picture = picture;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -155,5 +147,13 @@ public class User {
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    public List<Wallet> getWallets() {
+        return wallets;
+    }
+
+    public void setWallets(List<Wallet> wallets) {
+        this.wallets = wallets;
     }
 }

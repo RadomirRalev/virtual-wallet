@@ -1,5 +1,7 @@
 package com.example.demo.models.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,12 @@ public class Role {
     private String username;
     @Column(name = "authority")
     private String role;
+    @Column(name = "user_id")
+    private int userId;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id" , updatable = false, insertable = false)
+    private User user;
 
     public Role() {
     }
@@ -41,4 +49,19 @@ public class Role {
         this.role = role;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }

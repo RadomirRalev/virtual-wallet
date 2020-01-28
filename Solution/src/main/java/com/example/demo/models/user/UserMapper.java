@@ -1,7 +1,6 @@
 package com.example.demo.models.user;
 
-import com.example.demo.services.WalletService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.models.wallet.Wallet;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -11,13 +10,6 @@ import static com.example.demo.helpers.UserHelper.setOptionalFields;
 
 @Component
 public class UserMapper {
-
-    private WalletService walletService;
-
-    @Autowired
-    public UserMapper(WalletService walletService) {
-        this.walletService = walletService;
-    }
 
     public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
         User user = new User();
@@ -30,7 +22,6 @@ public class UserMapper {
         user.setFirstName(userRegistrationDTO.getFirstName());
         user.setLastName(userRegistrationDTO.getLastName());
         setOptionalFields(user);
-        user.setWallet(walletService.createWallet());
         user.setBlocked(false);
         return user;
     }
@@ -40,6 +31,12 @@ public class UserMapper {
         role.setUsername(userRegistrationDTO.getUsername());
         role.setRole(ROLE_USER);
         return role;
+    }
+
+    public Wallet registerWallet (){
+        Wallet wallet = new Wallet();
+        wallet.setCurrency(USD);
+        return wallet;
     }
 
     public User updateProfile(User user, ProfileUpdateDTO profileUpdateDTO) {

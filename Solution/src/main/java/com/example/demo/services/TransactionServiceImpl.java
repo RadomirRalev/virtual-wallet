@@ -48,6 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (internal.getSender().getBalance() - internal.getAmount() < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
+
         int senderId = internal.getSender().getId();
         checkIfWalletExists(senderId);
         int receiverId = internal.getReceiver().getId();

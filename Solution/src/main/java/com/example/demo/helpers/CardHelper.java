@@ -7,7 +7,6 @@ import static com.example.demo.constants.ExceptionConstants.*;
 import static java.lang.Integer.parseInt;
 
 public class CardHelper {
-    private static final double MAGIC = 0.5;
     private static final int GET_YEAR = 3;
     private static final int BEGIN_INDEX = 0;
     private static final int GET_MONTH = 2;
