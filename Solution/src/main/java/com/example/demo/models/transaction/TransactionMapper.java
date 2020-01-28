@@ -25,12 +25,12 @@ public class TransactionMapper {
         this.walletService = walletService;
     }
 
-    public Transaction createDeposit(TransactionDTO transactionDTO) {
+    public Deposit createDeposit(TransactionDTO transactionDTO) {
         Deposit deposit = new Deposit();
         deposit.setAmount(transactionDTO.getAmount());
+        deposit.setCurrency(transactionDTO.getCurrency());
         deposit.setDescription(transactionDTO.getDescription());
         deposit.setIdempotencyKey(transactionDTO.getIdempotencyKey());
-        deposit.setCurrency(transactionDTO.getCurrency());
         deposit.setCardSender(cardDetailsService.getById(transactionDTO.getSenderId()));
         return deposit;
     }

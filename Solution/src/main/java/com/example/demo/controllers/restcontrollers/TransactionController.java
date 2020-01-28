@@ -1,21 +1,20 @@
 package com.example.demo.controllers.restcontrollers;
 
-import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidOptionalFieldParameter;
-import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.exceptions.*;
 import com.example.demo.models.card.CardDetails;
-import com.example.demo.models.transaction.Internal;
-import com.example.demo.models.transaction.Transaction;
-import com.example.demo.models.transaction.TransactionDTO;
-import com.example.demo.models.transaction.Withdrawal;
+import com.example.demo.models.transaction.*;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.services.TransactionService;
+import org.apache.catalina.filters.ExpiresFilter;
+import org.json.HTTP;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ServerErrorException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,10 +25,13 @@ import java.util.List;
 public class TransactionController {
 
     private TransactionService transactionService;
+    private TransactionMapper transactionMapper;
+
 
     @Autowired
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper) {
         this.transactionService = transactionService;
+        this.transactionMapper = transactionMapper;
     }
 
 //    @PostMapping(path = "localhost:8081/payment")
@@ -55,7 +57,7 @@ public class TransactionController {
     public Internal createInternal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createInternal(transactionDTO);
-        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+        } catch (EntityNotFoundException | InsufficientFundsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -64,8 +66,37 @@ public class TransactionController {
     public Withdrawal createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createWithdrawal(transactionDTO);
-        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+        } catch (EntityNotFoundException | InsufficientFundsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
+    }
+
+    @PostMapping("/deposit")
+    public Deposit createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
+        final String uri = "http://localhost:8081/payment";
+        Deposit deposit = transactionMapper.createDeposit(transactionDTO);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("x-api-key", "apiKey");
+        HttpEntity<Deposit> entityRequest = new HttpEntity<>(deposit, headers);
+        try {
+            ResponseEntity<Integer> response =
+                    restTemplate.exchange(uri, HttpMethod.POST, entityRequest, Integer.class);
+        } catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusText());
+        }
+//        System.out.println(response.getStatusCode().value());
+//        int statusCode = response.getStatusCode().value();
+//        if(statusCode == 200) {
+//            try {
+//                return deposit;
+//            } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException e) {
+//                throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+//            }
+//        } else if (statusCode == 500) {
+//            System.out.println("Yes");
+//        }
+        return deposit;
     }
 }
