@@ -199,4 +199,14 @@ public class UserRepositoryImpl implements UserRepository {
                     .list().isEmpty();
         }
     }
+
+    @Override
+    public boolean doesUserExist(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from User " +
+                    " where id = :id", User.class)
+                    .setParameter("id", id)
+                    .list().isEmpty();
+        }
+    }
 }

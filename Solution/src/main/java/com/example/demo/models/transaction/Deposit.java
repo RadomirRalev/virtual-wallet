@@ -26,4 +26,12 @@ public class Deposit extends Transaction {
     public void setCardSender(CardDetails sender) {
         this.sender = sender;
     }
+
+    public Wallet getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(Wallet receiver) {
+        this.receiver = receiver;
+    }
 }
