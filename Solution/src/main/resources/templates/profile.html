@@ -7,6 +7,7 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <title>Virtual Wallet</title>
+    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/css/picture.css}"/>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
@@ -49,13 +50,15 @@
                                                 <div class="team-detail-inf-itm">
                                                     <h5 itemprop="headline">Contact Details:</h5>
                                                     <ul class="team-inf-lst">
-                                                        <li><i class="fas fa-phone theme-clr"></i>+1628 123 4000</li>
-                                                        <li><i class="far fa-envelope-open theme-clr"></i><a href="#" title="" itemprop="url">smith@crypterio.wp</a></li>
-                                                        <li><i class="fas fa-user theme-clr"></i>Parvizjon Umarbaev</li>
+                                                        <li><i class="fas fa-phone theme-clr"></i><span th:text="${user.getPhoneNumber()}"></span> </li>
+                                                        <li><i class="far fa-envelope-open theme-clr"></i><span th:text="${user.getEmail()}"></span></li>
+                                                        <li><i class="fas fa-user theme-clr"></i>
+                                                            <span th:text="${user.getFirstName()}"></span>
+                                                            <span th:text="${user.getLastName()}"></span></li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <img class="alignright" src="..static/images/resources/team-img1.jpg" th:src="@{/images/resources/team-img1.jpg}" width="200" height="40" alt="blog-detail-img2.jpg" itemprop="image">
+                                            <img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" alt="" src="">
                                         </div>
                                     </div><!-- Post Author -->
                                     <!-- Comment Reply -->

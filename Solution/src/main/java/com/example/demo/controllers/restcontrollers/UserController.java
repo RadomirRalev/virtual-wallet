@@ -86,7 +86,7 @@ public class UserController {
         User userToUpdate = getByUsername(username);
         try {
             return userService.updateUser(userToUpdate, profileUpdateDTO);
-        } catch (DuplicateEntityException e) {
+        } catch (DuplicateEntityException | IOException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }

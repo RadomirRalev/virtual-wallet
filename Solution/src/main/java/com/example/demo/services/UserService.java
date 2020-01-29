@@ -22,7 +22,7 @@ public interface UserService {
 
     User getByEmail(String email);
 
-    User updateUser(User user, ProfileUpdateDTO profileUpdateDTO);
+    User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) throws IOException;
 
     User changePassword (User user, PasswordUpdateDTO passwordUpdateDTO);
 

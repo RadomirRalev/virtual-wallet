@@ -22,7 +22,7 @@ public class UserRegistrationDTO {
 //    @Pattern(regexp = "^(?=.*[0-9]+.*)(?=.*[a-z]+.*)(?=.*[A-Z]+.*)+[!-~]+$",
 //            message = "Password may contain little letters, big letters and numbers")
     private String passwordConfirmation;
-    @Pattern(regexp = "^[0][8][0-9]{8}+$", message = "Please provide a valid phone number.")
+    @Pattern(regexp = "^[0][8][0-9]{8}+$", message = "Please provide a valid phone number. Format 08XXXXXXXX")
     private String phoneNumber;
     private int walletId;
     private MultipartFile file;

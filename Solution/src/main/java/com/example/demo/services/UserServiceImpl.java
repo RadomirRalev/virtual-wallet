@@ -9,6 +9,7 @@ import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.constants.ExceptionConstants.*;
@@ -21,11 +22,13 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private UserMapper userMapper;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -101,7 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) {
+    public User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) throws IOException {
         if (!user.getEmail().equals(profileUpdateDTO.getEmail())
                 && isEmailExist(profileUpdateDTO.getEmail())) {
             throw new DuplicateEntityException(
@@ -118,13 +121,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User changePassword(User user, PasswordUpdateDTO passwordUpdateDTO) {
-        if (!user.getPassword().equals(passwordUpdateDTO.getOldPassword())) {
-            throw new InvalidPasswordException(INVALID_OLD_PASSWORD);
-        }
+
         if (!passwordUpdateDTO.getNewPassword().equals(passwordUpdateDTO.getNewPasswordConfirmation())) {
             throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
         }
-        user.setPassword(passwordUpdateDTO.getNewPassword());
+
+        if(!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(),user.getPassword())) {
+            throw new InvalidPasswordException(INVALID_CURRENT_PASSWORD);
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordUpdateDTO.getNewPassword()));
         return userRepository.changePassword(user);
     }
 

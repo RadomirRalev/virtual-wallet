@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="..static/css/style.css" th:href="@{/css/style.css}"/><!-- Style -->
     <link rel="stylesheet" href="..static/css/responsive.css" th:href="@{/css/responsive.css}"/><!-- Responsive -->
     <link rel="stylesheet" href="..static/css/color.css" th:href="@{/css/color.css}"/><!-- Default Color Scheme -->
+
+
+
 </head>
 <body>
 
@@ -27,7 +30,7 @@
                                 <li><a href="about.html" title="" itemprop="url">Buy Tokens</a></li>
                                 <li><a href="about.html" title="" itemprop="url">Add Card</a></li>
                                 <li><a href="about.html" title="" itemprop="url">Transaction History</a></li>
-                                <li><a href="about.html" title="" itemprop="url">Edit Profile</a></li>
+                                <li><a th:href="@{/profile/edit}">Edit Profile</a></li>
                             </ul>
                         </div>
                     </nav>

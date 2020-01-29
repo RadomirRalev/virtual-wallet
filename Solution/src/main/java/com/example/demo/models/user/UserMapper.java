@@ -45,10 +45,10 @@ public class UserMapper {
         return wallet;
     }
 
-    public User updateProfile(User user, ProfileUpdateDTO profileUpdateDTO) {
+    public User updateProfile(User user, ProfileUpdateDTO profileUpdateDTO) throws IOException {
         user.setPhoneNumber(profileUpdateDTO.getPhoneNumber());
         user.setEmail(profileUpdateDTO.getEmail());
-        user.setPicture(profileUpdateDTO.getPicture());
+        user.setPicture(profileUpdateDTO.getFile().getBytes());
         return user;
     }
 }
