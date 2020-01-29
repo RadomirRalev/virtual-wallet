@@ -2,8 +2,6 @@ package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
-import com.example.demo.exceptions.InvalidCardException;
-import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.*;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;

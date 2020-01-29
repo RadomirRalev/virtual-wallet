@@ -1,6 +1,7 @@
 package com.example.demo.models.user;
 
 import com.example.demo.models.wallet.Wallet;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -10,13 +11,18 @@ import static com.example.demo.helpers.UserHelper.setOptionalFields;
 
 @Component
 public class UserMapper {
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public UserMapper(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
         User user = new User();
         user.setUsername(userRegistrationDTO.getUsername());
         user.setEmail(userRegistrationDTO.getEmail());
         user.setEnabled(true);
-        user.setPassword(userRegistrationDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setPhoneNumber(userRegistrationDTO.getPhoneNumber());
         user.setPicture(userRegistrationDTO.getFile().getBytes());
         user.setFirstName(userRegistrationDTO.getFirstName());

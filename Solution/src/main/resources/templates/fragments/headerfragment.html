@@ -48,10 +48,10 @@
     <div class="res-menu">
         <span class="res-menu-close brd-rd5"><i class="fas fa-times"></i></span>
         <ul>
-            <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Home</a><i class="fas fa-caret-down"></i>
+            <li class="menu-item-has-children"><a th:href="@{/}" title="" itemprop="url">Home</a><i class="fas fa-caret-down"></i>
                 <ul>
-                    <li><a href="index.html" title="" itemprop="url">Homepage 1</a></li>
-                    <li><a href="index2.html" title="" itemprop="url">Homepage 2</a></li>
+                    <li><a th:href="@{/}" title="" itemprop="url">Homepage 1</a></li>
+                    <li><a th:href="@{/}" title="" itemprop="url">Homepage 2</a></li>
                 </ul>
             </li>
             <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Blog</a><i class="fas fa-caret-down"></i>
@@ -101,7 +101,7 @@
                     <h2 itemprop="headline" th:text="${headline}">Headline</h2>
                 </div>
                 <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a href="index.html" title="" itemprop="url">Home</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/}" title="" itemprop="url">Home</a></li>
                     <li class="breadcrumb-item active" th:text="${currentpage}">Current page</li>
                 </ol>
             </div><!-- Page Top Wrap -->

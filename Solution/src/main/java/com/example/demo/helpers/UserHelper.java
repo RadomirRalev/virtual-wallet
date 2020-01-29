@@ -2,6 +2,8 @@ package com.example.demo.helpers;
 
 import com.example.demo.exceptions.InvalidOptionalFieldParameter;
 import com.example.demo.models.user.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 
@@ -30,9 +32,8 @@ public class UserHelper {
             }
         }
     }
-//TODO
-//    public static String currentPrincipalName(){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        return authentication.getName();
-//    }
+    public static String currentPrincipalName(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
 }

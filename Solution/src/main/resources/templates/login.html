@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
     <title>Log in</title>
 
     <!-- Styles -->
@@ -25,52 +26,57 @@
 <!-- Pageloader -->
 <div th:insert="fragments/pageloaderfragment :: pageloader"></div>
 <!-- Pageloader -->
-    <main>
-        <!-- Secondary Header -->
-        <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
-        <!-- Secondary Header -->
-        <!-- Secondary Header Text -->
-        <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Virtual Wallet, baby!', currentpage = 'Login')"></section>
-        <!-- Secondary Header Text -->
-        <section>
-            <div class="spacing">
-                <div class="container">
-                    <div class="blog-detail-wrp">
-                        <div class="row">
-                            <div class="col-md-9 col-sm-12 col-lg-9">
-                                <div class="blog-detail">
-
-
-                                    <div class="comment-reply">
-                                        <h5 itemprop="headline">WELCOME BACK!</h5>
-                                        <form class="reply-form">
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Username" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Password" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <button class="theme-btn theme-bg brd-rd30" type="submit">LOG IN</button>
-                                                </div>
+<main>
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <!-- Secondary Header Text -->
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='Virtual Wallet, baby!', currentpage = 'Login')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+        <div class="spacing">
+            <div class="container">
+                <div class="blog-detail-wrp">
+                    <div class="row">
+                        <div class="col-md-9 col-sm-12 col-lg-9">
+                            <div class="blog-detail">
+                                <div class="comment-reply">
+                                    <h5 itemprop="headline">WELCOME BACK!</h5>
+                                    <p>
+                                        <i th:if="${param.error}" class="error-field">Wrong username or password.</i>
+                                    </p>
+                                    <form th:action="@{/authenticate}" class="reply-form" method="post">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <input type="text" id="username" name="username" placeholder="Username"
+                                                       required>
                                             </div>
-                                        </form>
-                                    </div><!-- Comment Reply -->
-                                </div>
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <input type="password" id="password" name="password"
+                                                       placeholder="Password" required>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <button class="theme-btn theme-bg brd-rd30" type="submit">LOG IN
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div><!-- Comment Reply -->
                             </div>
                         </div>
-                    </div><!-- Blog Detail Wrap -->
-                </div>
+                    </div>
+                </div><!-- Blog Detail Wrap -->
             </div>
-        </section>
-        <!--        footer-->
-        <footer th:insert="fragments/footerfragment :: footer"></footer>
-        <!--        footer-->
-        <!--        copyright-->
-        <div th:insert="fragments/footerfragment :: copyright"></div>
-        <!--        copyright-->
-    </main><!-- Project Main Wrapper -->
+        </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
 <!--scripts-->
 <div th:insert="fragments/scriptsfragments :: scripts"></div>
 <!--scripts-->

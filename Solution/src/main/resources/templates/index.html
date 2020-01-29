@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
     <title>Virtual Wallet - by Rado & Vasko</title>
 
     <!-- Styles -->
@@ -40,26 +41,18 @@
         <div class="topbar">
             <div class="container">
                 <ul class="tp-lnks float-left">
-                    <li><a class="theme-clr" href="#" title="" itemprop="url" th:href="@{/login}">LOGIN</a> OR <a class="theme-clr" href="#" title="" itemprop="url" th:href="@{/registration}">SIGNUP</a></li>
-                </ul>
-                <ul class="slc-lst float-right">
-                    <li>
-                        <div class="slc-wrp">
-                            <select>
-                                <option data-thumbnail="..static/images/lang1.jpg">English</option>
-                                <option data-thumbnail="..static/images/lang2.jpg">English</option>
-                                <option data-thumbnail="..static/images/lang3.jpg">English</option>
-                            </select>
-                        </div>
-                    </li>
-                    <li>
-                        <!--                            <div class="slc-wrp">-->
-                        <!--                                <select>-->
-                        <!--                                    <option data-icon="fab fa-btc">BTC</option>-->
-                        <!--                                    <option data-icon="fa fa-bold">ETM</option>-->
-                        <!--                                    <option data-icon="fa fa-dollar-sign">STLR</option>-->
-                        <!--                                </select>-->
-                        <!--                            </div>-->
+                    <li sec:authorize="!isAuthenticated()"><a  class="theme-clr" th:href="@{/login}">LOGIN</a>
+                        OR <a class="theme-clr" th:href="@{/registration}">SIGNUP</a></li>
+                    <li sec:authorize="isAuthenticated()"> <a class="theme-clr" th:href="@{/logout}">LOG OUT</a></li>
+
+                    <!--                    <li>-->
+                    <!--                                                    <div class="slc-wrp">-->
+                    <!--                                                        <select>-->
+                    <!--                                                            <option data-icon="fab fa-btc">BTC</option>-->
+                    <!--                                                            <option data-icon="fa fa-bold">ETM</option>-->
+                    <!--                                                            <option data-icon="fa fa-dollar-sign">STLR</option>-->
+                    <!--                                                        </select>-->
+                    <!--                                                    </div>-->
                     </li>
                 </ul>
             </div>
@@ -67,7 +60,10 @@
         <div class="menu-sec">
             <div class="container">
                 <div class="menu-sec-inner">
-                    <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png" th:src="@{/images/logo1.png}" alt="logo1.png" itemprop="image"></a></div>
+                    <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png"
+                                                                                        th:src="@{/images/logo1.png}"
+                                                                                        alt="logo1.png"
+                                                                                        itemprop="image"></a></div>
                     <nav class="one-page-scrol">
                         <div>
                             <ul>
@@ -83,27 +79,34 @@
     </header><!-- Header -->
     <div class="res-header">
         <div class="res-logo-sec">
-            <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png" th:src="@{/images/logo1.png}" alt="logo1.png" itemprop="image"></a></div>
+            <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png"
+                                                                                th:src="@{/images/logo1.png}"
+                                                                                alt="logo1.png" itemprop="image"></a>
+            </div>
             <span class="res-menu-btn blue-bg brd-rd5"><i class="fas fa-align-center"></i></span>
         </div>
         <div class="res-menu">
             <span class="res-menu-close brd-rd5"><i class="fas fa-times"></i></span>
             <ul>
-                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Home</a><i class="fas fa-caret-down"></i>
+                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Home</a><i
+                        class="fas fa-caret-down"></i>
                     <ul>
                         <li><a href="index.html" title="" itemprop="url">Homepage 1</a></li>
                         <li><a href="index2.html" title="" itemprop="url">Homepage 2</a></li>
                     </ul>
                 </li>
-                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Blog</a><i class="fas fa-caret-down"></i>
+                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Blog</a><i
+                        class="fas fa-caret-down"></i>
                     <ul>
                         <li><a href="blog.html" title="" itemprop="url">Our Blog</a></li>
                         <li><a href="registration.html" title="" itemprop="url">Blog Detail</a></li>
                     </ul>
                 </li>
-                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Pages</a><i class="fas fa-caret-down"></i>
+                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Pages</a><i
+                        class="fas fa-caret-down"></i>
                     <ul>
-                        <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Our Team</a><i class="fas fa-caret-down"></i>
+                        <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Our Team</a><i
+                                class="fas fa-caret-down"></i>
                             <ul>
                                 <li><a href="team.html" title="" itemprop="url">Our Team</a></li>
                                 <li><a href="team-detail.html" title="" itemprop="url">Team Detail</a></li>
@@ -117,7 +120,8 @@
                         <li><a href="faq.html" title="" itemprop="url">Frequently Asked Questions</a></li>
                     </ul>
                 </li>
-                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Events</a><i class="fas fa-caret-down"></i>
+                <li class="menu-item-has-children"><a href="#" title="" itemprop="url">Events</a><i
+                        class="fas fa-caret-down"></i>
                     <ul>
                         <li><a href="our-events.html" title="" itemprop="url">Our Events</a></li>
                         <li><a href="event-detail.html" title="" itemprop="url">Event Detail</a></li>
@@ -130,12 +134,21 @@
     </div><!-- Responsive Header -->
     <section class="overlap161 feat-shb">
         <div class="spacing no-spacing">
-            <div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullscreen-container" data-alias="notgeneric125" data-source="gallery" style="background-color:transparent;padding:0px;">
+            <div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullscreen-container" data-alias="notgeneric125"
+                 data-source="gallery" style="background-color:transparent;padding:0px;">
                 <div id="rev_slider_4_1" class="rev_slider fullscreenbanner" style="display:none;" data-version="5.4.1">
                     <ul>
-                        <li data-index="rs-1" data-transition="random" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-title="Slide Title" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut" data-masterspeed="2000"  data-rotate="0"  data-fstransition="random" data-fsmasterspeed="1500" data-fsslotamount="7" data-saveperformance="off" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                        <li data-index="rs-1" data-transition="random" data-slotamount="default" data-hideafterloop="0"
+                            data-hideslideonmobile="off" data-title="Slide Title" data-easein="Power4.easeInOut"
+                            data-easeout="Power4.easeInOut" data-masterspeed="2000" data-rotate="0"
+                            data-fstransition="random" data-fsmasterspeed="1500" data-fsslotamount="7"
+                            data-saveperformance="off" data-param1="" data-param2="" data-param3="" data-param4=""
+                            data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10=""
+                            data-description="">
                             <!-- MAIN IMAGE -->
-                            <img src="..static/images/Trade-graph-photo.jpg" th:src="@{/images/Trade-graph-photo.jpg}" alt="pixabay-1920x996.jpg" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="10" class="rev-slidebg" data-no-retina>
+                            <img src="..static/images/Trade-graph-photo.jpg" th:src="@{/images/Trade-graph-photo.jpg}"
+                                 alt="pixabay-1920x996.jpg" data-bgposition="center center" data-bgfit="cover"
+                                 data-bgrepeat="no-repeat" data-bgparallax="10" class="rev-slidebg" data-no-retina>
 
                             <!-- LAYER NR. 1 -->
                             <div class="tp-caption tp-resizeme"
@@ -155,7 +168,9 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
-                                 style="color: #fff;font-weight:700;font-family: 'exo 2';letter-spacing: .2px;">Send & request money<br> <span class="theme-clr" style="font-weight: 300;">No fees, no taxes</span>
+                                 style="color: #fff;font-weight:700;font-family: 'exo 2';letter-spacing: .2px;">Send &
+                                request money<br> <span class="theme-clr"
+                                                        style="font-weight: 300;">No fees, no taxes</span>
                             </div>
 
                             <!-- LAYER NR. 2 -->
@@ -176,8 +191,10 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
-                                 style="color: #fff;font-weight: 400;font-family: lato;letter-spacing: .2px;">Banks will charge you when you transfer money abroad. We're not about that!<br>
-                                Instantly send and request money from your friends in Europe, U.S. and Australia at the touch of a button.
+                                 style="color: #fff;font-weight: 400;font-family: lato;letter-spacing: .2px;">Banks will
+                                charge you when you transfer money abroad. We're not about that!<br>
+                                Instantly send and request money from your friends in Europe, U.S. and Australia at the
+                                touch of a button.
                             </div>
 
                             <!-- LAYER NR. 3 -->
@@ -199,12 +216,22 @@
                                  data-paddingright="[55,45,45,40]"
                                  data-paddingbottom="[13,14,14,11]"
                                  data-paddingleft="[55,45,45,40]"
-                                 style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">GET STARTED
+                                 style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">
+                                GET STARTED
                             </div>
                         </li>
-                        <li data-index="rs-2" data-transition="random" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-title="Slide Title" data-easein="Power4.easeInOut" data-easeout="Power4.easeInOut" data-masterspeed="2000"  data-rotate="0"  data-fstransition="random" data-fsmasterspeed="1500" data-fsslotamount="7" data-saveperformance="off" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
+                        <li data-index="rs-2" data-transition="random" data-slotamount="default" data-hideafterloop="0"
+                            data-hideslideonmobile="off" data-title="Slide Title" data-easein="Power4.easeInOut"
+                            data-easeout="Power4.easeInOut" data-masterspeed="2000" data-rotate="0"
+                            data-fstransition="random" data-fsmasterspeed="1500" data-fsslotamount="7"
+                            data-saveperformance="off" data-param1="" data-param2="" data-param3="" data-param4=""
+                            data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10=""
+                            data-description="">
                             <!-- MAIN IMAGE -->
-                            <img src="..static/images/pixabay-1920x996.jpg" alt="pixabay-1920x996.jpg" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" data-bgparallax="10" class="rev-slidebg" data-no-retina th:src="@{/images/pixabay-1920x996.jpg}">
+                            <img src="..static/images/pixabay-1920x996.jpg" alt="pixabay-1920x996.jpg"
+                                 data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat"
+                                 data-bgparallax="10" class="rev-slidebg" data-no-retina
+                                 th:src="@{/images/pixabay-1920x996.jpg}">
 
                             <!-- LAYER NR. 1 -->
                             <div class="tp-caption tp-resizeme"
@@ -224,7 +251,8 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
-                                 style="color: #fff;font-weight:700;font-family: 'exo 2';letter-spacing: .2px;">Buy & Sell Crypto <br> <span class="theme-clr" style="font-weight: 300;">Profit with us</span>
+                                 style="color: #fff;font-weight:700;font-family: 'exo 2';letter-spacing: .2px;">Buy &
+                                Sell Crypto <br> <span class="theme-clr" style="font-weight: 300;">Profit with us</span>
                             </div>
 
                             <!-- LAYER NR. 2 -->
@@ -245,7 +273,10 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
-                                 style="color: #fff;font-weight: 400;font-family: lato;letter-spacing: .2px;">Our crypto guides will help get you up to speed. <br> While the concept is simple, we know that aspects of cryptocurrency can seem a bit complex. <br> Our service will help you buy and sell crypto with ease.
+                                 style="color: #fff;font-weight: 400;font-family: lato;letter-spacing: .2px;">Our crypto
+                                guides will help get you up to speed. <br> While the concept is simple, we know that
+                                aspects of cryptocurrency can seem a bit complex. <br> Our service will help you buy and
+                                sell crypto with ease.
                             </div>
 
                             <!-- LAYER NR. 3 -->
@@ -267,7 +298,8 @@
                                  data-paddingright="[55,45,45,40]"
                                  data-paddingbottom="[13,14,14,11]"
                                  data-paddingleft="[55,45,45,40]"
-                                 style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">GET STARTED
+                                 style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">
+                                GET STARTED
                             </div>
                         </li>
                     </ul>
@@ -297,7 +329,8 @@
                         </ul>
                     </div>
                     <div class="ico-rasd theme-bg">
-                        <a class="brd-rd30 tcn-rgstr-btn" href="#" title="" itemprop="url"  th:href="@{/registration}">REGISTER TO BUY TOKENS</a>
+                        <a class="brd-rd30 tcn-rgstr-btn" href="#" title="" itemprop="url" th:href="@{/registration}">REGISTER
+                            TO BUY TOKENS</a>
                         <span>67.421 <small>ETH</small></span>
                         <i>Worth of STMX tokens</i>
                         <!--                            <div class="progress-wrp">-->
@@ -310,9 +343,12 @@
                     </div>
                     <div class="ico-acp">
                         <strong>WE ACCEPT:</strong>
-                        <img src="..static/images/crd1.png" th:src="@{/images/crd1.png}" alt="crd1.png" itemprop="image">
-                        <img src="..static/images/crd2.png" th:src="@{/images/crd2.png}" alt="crd2.png" itemprop="image">
-                        <img src="..static/images/crd3.png" th:src="@{/images/crd3.png}" alt="crd3.png" itemprop="image">
+                        <img src="..static/images/crd1.png" th:src="@{/images/crd1.png}" alt="crd1.png"
+                             itemprop="image">
+                        <img src="..static/images/crd2.png" th:src="@{/images/crd2.png}" alt="crd2.png"
+                             itemprop="image">
+                        <img src="..static/images/crd3.png" th:src="@{/images/crd3.png}" alt="crd3.png"
+                             itemprop="image">
                     </div>
                 </div>
             </div>
@@ -325,24 +361,31 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="srv-bx">
-                                <i><img src="..static/images/resources/srv-icn1.png" th:src="@{/images/resources/srv-icn1.png}" alt="srv-icn1.png" itemprop="image"></i>
+                                <i><img src="..static/images/resources/srv-icn1.png"
+                                        th:src="@{/images/resources/srv-icn1.png}" alt="srv-icn1.png" itemprop="image"></i>
                                 <h5 itemprop="headline"><a href="#" title="" itemprop="url">Exchange money</a></h5>
-                                <p itemprop="description">With so many options to send and receive money, through bank accounts, mobile wallets and thousands of locations, <br>
+                                <p itemprop="description">With so many options to send and receive money, through bank
+                                    accounts, mobile wallets and thousands of locations, <br>
                                     Virtual Wallet lets you discover your way.</p>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="srv-bx">
-                                <i><img src="..static/images/resources/srv-icn2.png" th:src="@{/images/resources/srv-icn2.png}" alt="srv-icn2.png" itemprop="image"></i>
-                                <h5 itemprop="headline"><a href="#" title="" itemprop="url">Manage your money better</a></h5>
-                                <p itemprop="description">Virtual Wallet makes it faster and easier to send and receive cash. Join us now! .</p>
+                                <i><img src="..static/images/resources/srv-icn2.png"
+                                        th:src="@{/images/resources/srv-icn2.png}" alt="srv-icn2.png" itemprop="image"></i>
+                                <h5 itemprop="headline"><a href="#" title="" itemprop="url">Manage your money better</a>
+                                </h5>
+                                <p itemprop="description">Virtual Wallet makes it faster and easier to send and receive
+                                    cash. Join us now! .</p>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="srv-bx">
-                                <i><img src="..static/images/resources/srv-icn3.png" th:src="@{/images/resources/srv-icn3.png}" alt="srv-icn3.png" itemprop="image"></i>
+                                <i><img src="..static/images/resources/srv-icn3.png"
+                                        th:src="@{/images/resources/srv-icn3.png}" alt="srv-icn3.png" itemprop="image"></i>
                                 <h5 itemprop="headline"><a href="#" title="" itemprop="url">Buy & Sell Crypto!</a></h5>
-                                <p itemprop="description">Buy crypto and deposit it directly to your Binance wallet: start trading on the world's leading crypto exchange in an instant!</p>
+                                <p itemprop="description">Buy crypto and deposit it directly to your Binance wallet:
+                                    start trading on the world's leading crypto exchange in an instant!</p>
                             </div>
                         </div>
                     </div>
@@ -355,10 +398,17 @@
             <div class="container">
                 <div class="ico-abt-wrp">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12 col-sm-6 fadeInLeft wow" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="col-md-6 col-sm-12 col-sm-6 fadeInLeft wow" data-wow-duration="1s"
+                             data-wow-delay=".2s">
                             <div class="ico-abt crypt-bf">
-                                <h2 itemprop="headline">Come trade with <span class="theme-clr">Cryptocurrencies</span> Through <span class="theme-clr">Our Wallet</span></h2>
-                                <p itemprop="description">Trade with confidence. Earning the trust of our clients has always been our highest priority. We earn that trust through the best security in the business — most of our digital assets are held safely in cold wallets so bad actors can't reach it. Our platform provides world class financial stability by maintaining full reserves, healthy banking relationships and the highest standards of legal compliance.</p>
+                                <h2 itemprop="headline">Come trade with <span class="theme-clr">Cryptocurrencies</span>
+                                    Through <span class="theme-clr">Our Wallet</span></h2>
+                                <p itemprop="description">Trade with confidence. Earning the trust of our clients has
+                                    always been our highest priority. We earn that trust through the best security in
+                                    the business — most of our digital assets are held safely in cold wallets so bad
+                                    actors can't reach it. Our platform provides world class financial stability by
+                                    maintaining full reserves, healthy banking relationships and the highest standards
+                                    of legal compliance.</p>
                                 <p itemprop="description">No registrations, no fees. Trade cryptos with us!</p>
                                 <!--                                    <div class="btns">-->
                                 <!--                                        <a class="theme-btn theme-bg brd-rd30" href="about.html" title="" itemprop="url">LEARN MORE</a>-->
@@ -367,9 +417,11 @@
                             </div>
                         </div>
                         <div class="col-md-1 col-sm-12 col-lg-1"></div>
-                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s"
+                             data-wow-delay=".2s">
                             <div class="abt-mckp">
-                                <img src="..static/images/resources/abt-mckp1.jpg" th:src="@{/images/resources/abt-mckp1.jpg}" alt="abt-mckp1.jpg" itemprop="image">
+                                <img src="..static/images/resources/abt-mckp1.jpg"
+                                     th:src="@{/images/resources/abt-mckp1.jpg}" alt="abt-mckp1.jpg" itemprop="image">
                             </div>
                         </div>
                     </div>
@@ -403,9 +455,11 @@
             <div class="container">
                 <div class="title-sec text-center">
                     <div class="title-sec-inr">
-                        <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">
+                        <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}"
+                             alt="tl-icn.png" itemprop="image">
                         <h2 itemprop="headline">TEAM</h2>
-                        <p itemprop="description">With a team of top technology and finance professionals, we guarantee you profit!</p>
+                        <p itemprop="description">With a team of top technology and finance professionals, we guarantee
+                            you profit!</p>
                     </div>
                 </div>
                 <div class="team-sec remove-ext9">
@@ -413,19 +467,27 @@
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="team-bx">
                                 <div class="team-thmb brd-rd5">
-                                    <a href="team-detail.html" title="" itemprop="url"><img src="..static/images/resources/team-img1.jpg" th:src="@{/images/resources/team-img1.jpg}" alt="team-img1.jpg" itemprop="image"></a>
+                                    <a href="team-detail.html" title="" itemprop="url"><img
+                                            src="..static/images/resources/team-img1.jpg"
+                                            th:src="@{/images/resources/team-img1.jpg}" alt="team-img1.jpg"
+                                            itemprop="image"></a>
                                     <div class="scl-bx brd-rd50 blue-bg">
                                         <i class="fa fa-share-alt"></i>
                                         <div class="scl-lnks">
-                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i class="fab fa-twitter"></i></a>
-                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url" target="_blank"><i class="fab fa-google-plus-g"></i></a>
-                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url"
+                                               target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i
+                                                    class="fab fa-twitter"></i></a>
+                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url"
+                                               target="_blank"><i class="fab fa-google-plus-g"></i></a>
+                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url"
+                                               target="_blank"><i class="fab fa-linkedin-in"></i></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="team-inf">
-                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Radomir Ralev</a></h5>
+                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Radomir
+                                        Ralev</a></h5>
                                     <span>Co-Founder</span>
                                 </div>
                             </div>
@@ -433,19 +495,27 @@
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="team-bx">
                                 <div class="team-thmb brd-rd5">
-                                    <a href="team-detail.html" title="" itemprop="url"><img src="..static/images/resources/team-img2.jpg" th:src="@{/images/resources/team-img2.jpg}" alt="team-img2.jpg" itemprop="image"></a>
+                                    <a href="team-detail.html" title="" itemprop="url"><img
+                                            src="..static/images/resources/team-img2.jpg"
+                                            th:src="@{/images/resources/team-img2.jpg}" alt="team-img2.jpg"
+                                            itemprop="image"></a>
                                     <div class="scl-bx brd-rd50 blue-bg">
                                         <i class="fa fa-share-alt"></i>
                                         <div class="scl-lnks">
-                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i class="fab fa-twitter"></i></a>
-                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url" target="_blank"><i class="fab fa-google-plus-g"></i></a>
-                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url"
+                                               target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i
+                                                    class="fab fa-twitter"></i></a>
+                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url"
+                                               target="_blank"><i class="fab fa-google-plus-g"></i></a>
+                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url"
+                                               target="_blank"><i class="fab fa-linkedin-in"></i></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="team-inf">
-                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Vasil Dinchev</a></h5>
+                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Vasil
+                                        Dinchev</a></h5>
                                     <span>Co-Founder & Crypto-Guru</span>
                                 </div>
                             </div>
@@ -453,19 +523,27 @@
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="team-bx">
                                 <div class="team-thmb brd-rd5">
-                                    <a href="team-detail.html" title="" itemprop="url"><img src="..static/images/resources/team-img3.jpg" th:src="@{/images/resources/team-img3.jpg}" alt="team-img3.jpg" itemprop="image"></a>
+                                    <a href="team-detail.html" title="" itemprop="url"><img
+                                            src="..static/images/resources/team-img3.jpg"
+                                            th:src="@{/images/resources/team-img3.jpg}" alt="team-img3.jpg"
+                                            itemprop="image"></a>
                                     <div class="scl-bx brd-rd50 blue-bg">
                                         <i class="fa fa-share-alt"></i>
                                         <div class="scl-lnks">
-                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i class="fab fa-twitter"></i></a>
-                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url" target="_blank"><i class="fab fa-google-plus-g"></i></a>
-                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                            <a class="brd-rd50" href="#" title="Facebook" itemprop="url"
+                                               target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                            <a class="brd-rd50" href="#" title="Twitter" itemprop="url" target="_blank"><i
+                                                    class="fab fa-twitter"></i></a>
+                                            <a class="brd-rd50" href="#" title="Google Plus" itemprop="url"
+                                               target="_blank"><i class="fab fa-google-plus-g"></i></a>
+                                            <a class="brd-rd50" href="#" title="Linkedin" itemprop="url"
+                                               target="_blank"><i class="fab fa-linkedin-in"></i></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="team-inf">
-                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Inspiration & Friendship!</a></h5>
+                                    <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Inspiration
+                                        & Friendship!</a></h5>
                                     <span>Our credo</span>
                                 </div>
                             </div>
@@ -583,29 +661,86 @@
             <div class="container">
                 <div class="title-sec text-center">
                     <div class="title-sec-inr">
-                        <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">
+                        <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}"
+                             alt="tl-icn.png" itemprop="image">
                         <h2 itemprop="headline">OUR OFFER</h2>
                         <p itemprop="description">This is our offer for the purchase and sale of tokens</p>
                     </div>
                 </div>
                 <div class="ico-stat-tabl brd-rd5 overlap-305">
                     <table>
-                        <thead><tr><th>NAME</th><th>MARKET CAP</th><th>BUY PRICE</th><th>SELL PRICE</th></tr></thead>
+                        <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>MARKET CAP</th>
+                            <th>BUY PRICE</th>
+                            <th>SELL PRICE</th>
+                        </tr>
+                        </thead>
                         <tbody>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn1.png" th:src="@{/images/resources/bit-icn1.png}" alt="bit-icn1.png" itemprop="image">Bitcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$11,322.00</td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn2.png" th:src="@{/images/resources/bit-icn2.png}" alt="bit-icn2.png" itemprop="image">Ethereum</strong></td><td>$27,318,473,255</td><td>$1,613.20</td><td>$1,613.20</td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn3.png" th:src="@{/images/resources/bit-icn3.png}" alt="bit-icn3.png" itemprop="image">Ripple</strong></td><td>$104,682,678,413</td><td>$0.613236</td><td>$0.613236</td></td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn4.png" th:src="@{/images/resources/bit-icn4.png}" alt="bit-icn4.png" itemprop="image">Zcash</strong></td><td>$190,540,485,450</td><td>$178.91</td><td>$178.91</td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn5.png" th:src="@{/images/resources/bit-icn5.png}" alt="bit-icn5.png" itemprop="image">Aidcoin</strong></td><td>$190,540,485,450</td><td>$11,322.00</td><td>$11,322.00</td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn6.png" th:src="@{/images/resources/bit-icn6.png}" alt="bit-icn6.png" itemprop="image">Stellar</strong></td><td>$9,829,908,532</td><td>$0.613236</td><td>$0.613236</td></tr>
-                        <tr><td><strong><img src="..static/images/resources/bit-icn7.png" th:src="@{/images/resources/bit-icn7.png}" alt="bit-icn7.png" itemprop="image">Litecoin</strong></td><td>$190,540,485,450</td><td>$1,613.20</td><td>$1,613.20</td></tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn1.png"
+                                             th:src="@{/images/resources/bit-icn1.png}" alt="bit-icn1.png"
+                                             itemprop="image">Bitcoin</strong></td>
+                            <td>$190,540,485,450</td>
+                            <td>$11,322.00</td>
+                            <td>$11,322.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn2.png"
+                                             th:src="@{/images/resources/bit-icn2.png}" alt="bit-icn2.png"
+                                             itemprop="image">Ethereum</strong></td>
+                            <td>$27,318,473,255</td>
+                            <td>$1,613.20</td>
+                            <td>$1,613.20</td>
+                        </tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn3.png"
+                                             th:src="@{/images/resources/bit-icn3.png}" alt="bit-icn3.png"
+                                             itemprop="image">Ripple</strong></td>
+                            <td>$104,682,678,413</td>
+                            <td>$0.613236</td>
+                            <td>$0.613236</td>
+                            </td></tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn4.png"
+                                             th:src="@{/images/resources/bit-icn4.png}" alt="bit-icn4.png"
+                                             itemprop="image">Zcash</strong></td>
+                            <td>$190,540,485,450</td>
+                            <td>$178.91</td>
+                            <td>$178.91</td>
+                        </tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn5.png"
+                                             th:src="@{/images/resources/bit-icn5.png}" alt="bit-icn5.png"
+                                             itemprop="image">Aidcoin</strong></td>
+                            <td>$190,540,485,450</td>
+                            <td>$11,322.00</td>
+                            <td>$11,322.00</td>
+                        </tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn6.png"
+                                             th:src="@{/images/resources/bit-icn6.png}" alt="bit-icn6.png"
+                                             itemprop="image">Stellar</strong></td>
+                            <td>$9,829,908,532</td>
+                            <td>$0.613236</td>
+                            <td>$0.613236</td>
+                        </tr>
+                        <tr>
+                            <td><strong><img src="..static/images/resources/bit-icn7.png"
+                                             th:src="@{/images/resources/bit-icn7.png}" alt="bit-icn7.png"
+                                             itemprop="image">Litecoin</strong></td>
+                            <td>$190,540,485,450</td>
+                            <td>$1,613.20</td>
+                            <td>$1,613.20</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div><!-- ICO Stats Table -->
             </div>
         </div>
     </section>
-    <section  id="contact">
+    <section id="contact">
         <div class="spacing blue-bg-layer opc95 top-spac360">
             <div id="particles-js2" class="particles-js"></div>
             <div class="container">
@@ -644,7 +779,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInLeft wow" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInLeft wow" data-wow-duration="1s"
+                             data-wow-delay=".2s">
                             <div class="ico-abt">
                                 <h2 itemprop="headline">What is <span class="theme-clr">VIRTUAL WALLET?</span></h2>
                                 <span>We offer you the chance to exchange money without additional fees and taxes, and to buy and sell cryptocurrencies without additional registrations. allowing us to buy at much closer to live interbank prices, thus allowing us to pass on the benefits of a better exchange rate to all of our clients.</span>
@@ -656,7 +792,8 @@
                                 <!--                                    </div>-->
                             </div>
                         </div>
-                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s" data-wow-delay=".2s">
+                        <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s"
+                             data-wow-delay=".2s">
                             <div class="ico-abt">
                                 <h2 itemprop="headline">Why choose <span class="theme-clr">US?</span></h2>
                                 <span>Due to the large volume of transactions, we have access to much better exchange rates. Whether you want advice or information, you can be sure that our website is totally independent and unbiased; the same is true of our advisers. Not only does our website gibe you truly independent information on a range of financial matters, our team of advisers are on-hand to answer your questions and give you advice. You can also take advantage of our free services to help you plan your financial affairs.</span>
@@ -781,9 +918,13 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="widget">
-                                <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png" th:src="@{/images/logo1.png}" alt="logo1.png" itemprop="image"></a></div>
-                                <p itemprop="description">Send money from any device at any time. Send money online with peace of mind.</p>
-                                <p itemprop="description">We offer fast and reliable money transfers that your loved one can either collect from agent locations or receive direct to their bank account.</p>
+                                <div class="logo"><a href="index.html" title="" itemprop="url"><img
+                                        src="..static/images/logo1.png" th:src="@{/images/logo1.png}" alt="logo1.png"
+                                        itemprop="image"></a></div>
+                                <p itemprop="description">Send money from any device at any time. Send money online with
+                                    peace of mind.</p>
+                                <p itemprop="description">We offer fast and reliable money transfers that your loved one
+                                    can either collect from agent locations or receive direct to their bank account.</p>
                             </div>
                         </div>
                         <div class="col-md-4 col-sm-6 col-lg-4">
@@ -800,9 +941,12 @@
                             <div class="widget">
                                 <h5 itemprop="headline">Subscribe Newsletter</h5>
                                 <form>
-                                    <span>Sign up for Alerts, Special <a class="theme-clr" href="#" title="" itemprop="url">Offers Updates.</a></span>
+                                    <span>Sign up for Alerts, Special <a class="theme-clr" href="#" title=""
+                                                                         itemprop="url">Offers Updates.</a></span>
                                     <input class="brd-rd30" type="email" placeholder="Enter your Email Address">
-                                    <button class="theme-btn theme-bg brd-rd30" type="submit"><i class="flaticon-mail"></i>SUBSCRIBE</button>
+                                    <button class="theme-btn theme-bg brd-rd30" type="submit"><i
+                                            class="flaticon-mail"></i>SUBSCRIBE
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -838,19 +982,30 @@
 <script src="..static/js/google-map-int.js" th:src="@{/js/google-map-int.js}"></script>
 <script src="..static/js/custom-scripts.js" th:src="@{/js/custom-scripts.js}"></script>
 
-<script src="..static/js/extensions/jquery.themepunch.tools.min.js" th:src="@{/js/extensions/jquery.themepunch.tools.min.js}"></script>
-<script src="..static/js/extensions/jquery.themepunch.revolution.min.js" th:src="@{/js/extensions/jquery.themepunch.revolution.min.js}"></script>
+<script src="..static/js/extensions/jquery.themepunch.tools.min.js"
+        th:src="@{/js/extensions/jquery.themepunch.tools.min.js}"></script>
+<script src="..static/js/extensions/jquery.themepunch.revolution.min.js"
+        th:src="@{/js/extensions/jquery.themepunch.revolution.min.js}"></script>
 
 <!-- SLIDER REVOLUTION 5.0 EXTENSIONS  (Load Extensions only on Local File Systems !  The following part can be removed on Server for On Demand Loading) -->
-<script src="..static/js/extensions/navigation/revolution.extension.actions.min.js" th:src="@{/js/extensions/navigation/revolution.extension.actions.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.carousel.min.js" th:src="@{/js/extensions/navigation/revolution.extension.carousel.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.kenburn.min.js" th:src="@{/js/extensions/navigation/revolution.extension.kenburn.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.layeranimation.min.js" th:src="@{/js/extensions/navigation/revolution.extension.layeranimation.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.migration.min.js" th:src="@{/js/extensions/navigation/revolution.extension.migration.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.navigation.min.js" th:src="@{/js/extensions/navigation/revolution.extension.navigation.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.parallax.min.js" th:src="@{/js/extensions/navigation/revolution.extension.parallax.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.slideanims.min.js" th:src="@{/js/extensions/navigation/revolution.extension.slideanims.min.js}"></script>
-<script src="..static/js/extensions/navigation/revolution.extension.video.min.js" th:src="@{/js/extensions/navigation/revolution.extension.video.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.actions.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.actions.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.carousel.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.carousel.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.kenburn.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.kenburn.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.layeranimation.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.layeranimation.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.migration.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.migration.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.navigation.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.navigation.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.parallax.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.parallax.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.slideanims.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.slideanims.min.js}"></script>
+<script src="..static/js/extensions/navigation/revolution.extension.video.min.js"
+        th:src="@{/js/extensions/navigation/revolution.extension.video.min.js}"></script>
 <script src="..static/js/extensions/revolution-init.js" th:src="@{/js/extensions/revolution-init.js}"></script>
 </body>
 </html>
