@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
 import com.example.demo.repositories.WalletRepositoryImpl;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
+import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -41,16 +43,26 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public Deposit createDeposit(TransactionDTO transactionDTO) {
+        Deposit deposit = transactionMapper.createDeposit(transactionDTO);
+        communicateWithApi(deposit);
+        List<Wallet> receiverList = deposit.getCardSender()
+                .getUser()
+                .getWallets();
+        int receiverId = receiverList.get(0).getId();
+        int balanceReceiver = walletRepository.getById(receiverId).getBalance() + deposit.getAmount();
+        //TODO Simplify lines 51-55
+        return transactionRepository.createDeposit(deposit, balanceReceiver, receiverId);
+    }
+
+    @Override
     public Internal createInternal(TransactionDTO transactionDTO) {
         Internal internal = transactionMapper.createInternalTransaction(transactionDTO);
         if (internal.getSender().getBalance() - internal.getAmount() < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
-
         int senderId = internal.getSender().getId();
-        walletRepository.getById(senderId);
         int receiverId = internal.getReceiver().getId();
-        walletRepository.getById(receiverId);
         int balanceSender = internal.getSender().getBalance() - internal.getAmount();
         int balanceReceiver = internal.getReceiver().getBalance() + internal.getAmount();
         return transactionRepository.createInternal(internal, balanceSender, balanceReceiver, senderId, receiverId);
@@ -63,22 +75,21 @@ public class TransactionServiceImpl implements TransactionService {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
         int senderId = withdrawal.getSender().getId();
-        checkIfWalletExists(senderId);
         int receiverId = withdrawal.getReceiver().getId();
-        checkIfCardExists(receiverId);
+        //TODO Check if receiver card exists
         int balanceSender = withdrawal.getSender().getBalance() - withdrawal.getAmount();
         return transactionRepository.createWithdrawal(withdrawal, balanceSender, senderId);
     }
 
-    private void checkIfCardExists(int id) {
-        if (cardDetailsRepository.getById(id) == null) {
-            throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
-        }
-    }
-
-    private void checkIfWalletExists(int id) {
-        if (walletRepository.getById(id) == null) {
-            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
-        }
-    }
+//    private void checkIfCardExists(int id) {
+//        if (cardDetailsRepository.getById(id) == null) {
+//            throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
+//        }
+//    }
+//
+//    private void checkIfWalletExists(int id) {
+//        if (walletRepository.getById(id) == null) {
+//            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
+//        }
+//    }
 }

@@ -1,22 +1,21 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.transaction.Internal;
-import com.example.demo.models.transaction.Transaction;
-import com.example.demo.models.transaction.TransactionDTO;
-import com.example.demo.models.transaction.Withdrawal;
-import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
-import io.swagger.models.auth.In;
+import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.transaction.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.demo.constants.ExceptionConstants.WALLET_WITH_ID_NOT_EXISTS;
+
 @Repository
+@Transactional
 public class TransactionRepositoryImpl implements TransactionRepository {
 
     private SessionFactory sessionFactory;
@@ -31,8 +30,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.save(internal);
-                setSenderBalance(balanceSender, senderId, session);
-                setReceiverBalance(balanceReceiver, receiverId, session);
+                setBalance(balanceSender, senderId, session);
+                setBalance(balanceReceiver, receiverId, session);
                 return internal;
             } catch (Exception e) {
                 session.getTransaction().rollback();
@@ -47,8 +46,23 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.save(withdrawal);
-                setSenderBalance(balanceSender, senderId, session);
+                setBalance(balanceSender, senderId, session);
                 return withdrawal;
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
+    public Deposit createDeposit(Deposit deposit, int balanceReceiver, int receiverId) {
+        try (Session session = sessionFactory.openSession()) {
+            try {
+                session.save(deposit);
+                setBalance(balanceReceiver, receiverId, session);
+                return deposit;
             } catch (Exception e) {
                 session.getTransaction().rollback();
                 e.printStackTrace();
@@ -87,21 +101,19 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             result.addAll(queryInternalReceiver.list());
             result.addAll(queryDepositReceiver.list());
             result.addAll(queryWithdrawal.list());
+            if (result.isEmpty()) {
+                throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
+            }
             return result;
         }
     }
 
-    private void setReceiverBalance(int balanceReceiver, int receiverId, Session session) {
-        Query queryReceiver = session.createQuery("update Wallet set balance = :balanceReceiver where id = :receiverId");
-        queryReceiver.setParameter("balanceReceiver", balanceReceiver);
-        queryReceiver.setParameter("receiverId", receiverId);
-        queryReceiver.executeUpdate();
-    }
-
-    private void setSenderBalance(int balanceSender, int senderId, Session session) {
-        Query querySender = session.createQuery("update Wallet set balance = :balanceSender where id = :senderId");
-        querySender.setParameter("balanceSender", balanceSender);
-        querySender.setParameter("senderId", senderId);
-        querySender.executeUpdate();
+    private void setBalance(int balance, int id, Session session) {
+        org.hibernate.Transaction txn = session.beginTransaction();
+        Query query = session.createQuery("update Wallet set balance = :balance where id = :id");
+        query.setParameter("balance", balance);
+        query.setParameter("id", id);
+        query.executeUpdate();
+        txn.commit();
     }
 }

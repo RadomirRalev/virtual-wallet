@@ -37,4 +37,6 @@ public interface UserRepository {
     List<Integer> getPages();
 
     List<User> getUsersPaginatedHibernate(Integer page);
+
+    boolean doesUserExist(int id);
 }
