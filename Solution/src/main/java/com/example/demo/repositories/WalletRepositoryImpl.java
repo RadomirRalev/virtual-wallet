@@ -42,4 +42,15 @@ public class WalletRepositoryImpl implements WalletRepository {
             return query.list().get(0);
         }
     }
+
+    @Override
+    public boolean checkIfWalletIdExists(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Wallet> query = session.createQuery("from Wallet " +
+                    " where id = :id", Wallet.class);
+            query.setParameter("id", id);
+            return !query.list().isEmpty();
+        }
+    }
+
 }

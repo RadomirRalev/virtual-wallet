@@ -101,20 +101,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             result.addAll(queryInternalReceiver.list());
             result.addAll(queryDepositReceiver.list());
             result.addAll(queryWithdrawal.list());
-            if (result.isEmpty()) {
-                throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
-            }
             return result;
         }
-    }
-
-    private void setBalance(int balance, int id, Session session) {
-        org.hibernate.Transaction txn = session.beginTransaction();
-        Query query = session.createQuery("update Wallet set balance = :balance where id = :id");
-        query.setParameter("balance", balance);
-        query.setParameter("id", id);
-        query.executeUpdate();
-        txn.commit();
     }
 
     @Override
@@ -135,5 +123,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             result.addAll(queryWithdrawal.list());
             return !result.isEmpty();
         }
+    }
+
+    private void setBalance(int balance, int id, Session session) {
+        org.hibernate.Transaction txn = session.beginTransaction();
+        Query query = session.createQuery("update Wallet set balance = :balance where id = :id");
+        query.setParameter("balance", balance);
+        query.setParameter("id", id);
+        query.executeUpdate();
+        txn.commit();
     }
 }

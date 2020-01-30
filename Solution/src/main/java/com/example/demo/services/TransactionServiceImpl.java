@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
@@ -39,6 +40,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getTransactionsbyWalletId(int id) {
+        if (checkIfWalletIdExists(id)) {
+                throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
+            }
         return transactionRepository.getTransactionsbyWalletId(id);
     }
 
@@ -87,5 +91,10 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
         return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
+    }
+
+    @Override
+    public boolean checkIfWalletIdExists(int id) {
+        return walletRepository.checkIfWalletIdExists(id);
     }
 }

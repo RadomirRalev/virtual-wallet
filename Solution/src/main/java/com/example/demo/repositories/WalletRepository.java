@@ -7,4 +7,6 @@ public interface WalletRepository {
     Wallet createWallet(Wallet wallet);
 
     Wallet getById(int id);
+
+    boolean checkIfWalletIdExists(int id);
 }

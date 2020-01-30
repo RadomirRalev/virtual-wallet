@@ -4,6 +4,7 @@ import com.example.demo.models.transaction.Deposit;
 import com.example.demo.models.transaction.Internal;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.Withdrawal;
+import org.hibernate.Session;
 
 import java.util.List;
 

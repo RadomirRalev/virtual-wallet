@@ -20,4 +20,5 @@ public interface TransactionService {
 
     boolean checkIfIdempotencyKeyExists(String idempotencyKey);
 
+    boolean checkIfWalletIdExists(int id);
 }
