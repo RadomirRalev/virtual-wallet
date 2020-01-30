@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
@@ -57,6 +58,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Internal createInternal(TransactionDTO transactionDTO) {
         Internal internal = transactionMapper.createInternalTransaction(transactionDTO);
+        if (checkIfIdempotencyKeyExists(internal.getIdempotencyKey())) {
+            throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
+        }
         if (internal.getSender().getBalance() - internal.getAmount() < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
@@ -80,15 +84,8 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.createWithdrawal(withdrawal, balanceSender, senderId);
     }
 
-//    private void checkIfCardExists(int id) {
-//        if (cardDetailsRepository.getById(id) == null) {
-//            throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
-//        }
-//    }
-//
-//    private void checkIfWalletExists(int id) {
-//        if (walletRepository.getById(id) == null) {
-//            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
-//        }
-//    }
+    @Override
+    public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
+        return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
+    }
 }

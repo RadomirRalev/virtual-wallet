@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class TransactionMapper {
@@ -30,7 +31,7 @@ public class TransactionMapper {
         deposit.setAmount(transactionDTO.getAmount());
         deposit.setCurrency(transactionDTO.getCurrency());
         deposit.setDescription(transactionDTO.getDescription());
-        deposit.setIdempotencyKey(transactionDTO.getIdempotencyKey());
+        deposit.setIdempotencyKey(UUID.randomUUID().toString());
         deposit.setCardSender(cardDetailsService.getById(transactionDTO.getSenderId()));
         return deposit;
     }
@@ -39,7 +40,7 @@ public class TransactionMapper {
         Internal internal = new Internal();
         internal.setAmount(transactionDTO.getAmount());
         internal.setDescription(transactionDTO.getDescription());
-        internal.setDescription(transactionDTO.getIdempotencyKey());
+        internal.setIdempotencyKey(UUID.randomUUID().toString());
         internal.setCurrency(transactionDTO.getCurrency());
         internal.setSender(walletService.getById(transactionDTO.getSenderId()));
         internal.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
@@ -50,7 +51,7 @@ public class TransactionMapper {
         Withdrawal withdrawal = new Withdrawal();
         withdrawal.setAmount(transactionDTO.getAmount());
         withdrawal.setDescription(transactionDTO.getDescription());
-        withdrawal.setDescription(transactionDTO.getIdempotencyKey());
+        withdrawal.setIdempotencyKey(UUID.randomUUID().toString());
         withdrawal.setCurrency(transactionDTO.getCurrency());
         withdrawal.setSender(walletService.getById(transactionDTO.getSenderId()));
         withdrawal.setReceiver(cardDetailsService.getById(transactionDTO.getReceiverId()));

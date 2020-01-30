@@ -1,6 +1,7 @@
 package com.example.demo.models.transaction;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @MappedSuperclass
 public class Transaction {

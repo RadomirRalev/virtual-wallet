@@ -24,4 +24,6 @@ public class ExceptionConstants {
     public static final String THE_NAMES_DO_NOT_MATCH = "Yours first and last name are not same as card holder field.";
     public static final String EXPIRATION_DATE_IS_INVALID = "Expiration date is invalid.";
     public static final String SENDER_FUNDS_ARE_NOT_SUFFICIENT = "Not sufficient funds.";
+    public static final String YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE = "You cannot make the same transaction twice.";
+
 }

@@ -18,4 +18,6 @@ public interface TransactionService {
 
     Deposit createDeposit(TransactionDTO transactionDTO);
 
+    boolean checkIfIdempotencyKeyExists(String idempotencyKey);
+
 }

@@ -116,4 +116,24 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         query.executeUpdate();
         txn.commit();
     }
+
+    @Override
+    public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Transaction> queryInternal = session.createQuery("from Internal " +
+                    " where idempotencyKey = :idempotencyKey ", Transaction.class);
+            Query<Transaction> queryDeposit = session.createQuery("from Deposit" +
+                    " where idempotencyKey = :idempotencyKey ", Transaction.class);
+            Query<Transaction> queryWithdrawal = session.createQuery("from Withdrawal " +
+                    " where idempotencyKey = :idempotencyKey ", Transaction.class);
+            queryInternal.setParameter("idempotencyKey", idempotencyKey);
+            queryDeposit.setParameter("idempotencyKey", idempotencyKey);
+            queryWithdrawal.setParameter("idempotencyKey", idempotencyKey);
+            List<Transaction> result = new ArrayList<>();
+            result.addAll(queryInternal.list());
+            result.addAll(queryDeposit.list());
+            result.addAll(queryWithdrawal.list());
+            return !result.isEmpty();
+        }
+    }
 }

@@ -4,13 +4,16 @@ import com.example.demo.exceptions.*;
 import com.example.demo.models.transaction.*;
 import com.example.demo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 
@@ -47,7 +50,7 @@ public class TransactionController {
     public Internal createInternal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createInternal(transactionDTO);
-        } catch (EntityNotFoundException | InsufficientFundsException e) {
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -56,7 +59,7 @@ public class TransactionController {
     public Withdrawal createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createWithdrawal(transactionDTO);
-        } catch (EntityNotFoundException | InsufficientFundsException e) {
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -65,8 +68,9 @@ public class TransactionController {
     public Deposit createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createDeposit(transactionDTO);
-        } catch (EntityNotFoundException | HttpClientErrorException e) {
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
 }
+

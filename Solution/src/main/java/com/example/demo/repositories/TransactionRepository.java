@@ -18,4 +18,6 @@ public interface TransactionRepository {
 
     Deposit createDeposit(Deposit deposit, int balanceReceiver, int receiverId);
 
+    boolean checkIfIdempotencyKeyExists(String idempotencyKey);
+
 }
