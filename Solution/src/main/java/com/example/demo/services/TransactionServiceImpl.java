@@ -49,6 +49,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Deposit createDeposit(TransactionDTO transactionDTO) {
         Deposit deposit = transactionMapper.createDeposit(transactionDTO);
+        if (checkIfIdempotencyKeyExists(deposit.getIdempotencyKey())) {
+            throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
+        }
         communicateWithApi(deposit);
         List<Wallet> receiverList = deposit.getCardSender()
                 .getUser()
