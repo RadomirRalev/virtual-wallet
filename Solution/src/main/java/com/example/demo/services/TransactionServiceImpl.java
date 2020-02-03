@@ -48,7 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Deposit createDeposit(TransactionDTO transactionDTO) {
-        Deposit deposit = transactionMapper.createDeposit(transactionDTO);
+        Deposit deposit = getDeposit(transactionDTO);
         if (checkIfIdempotencyKeyExists(deposit.getIdempotencyKey())) {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
         }
@@ -64,13 +64,11 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Internal createInternal(TransactionDTO transactionDTO) {
-        Internal internal = transactionMapper.createInternalTransaction(transactionDTO);
+        Internal internal = getInternal(transactionDTO);
         if (checkIfIdempotencyKeyExists(internal.getIdempotencyKey())) {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
         }
-        if (internal.getSender().getBalance() - internal.getAmount() < 0) {
-            throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
-        }
+        checkIfFundsAreEnough(internal.getSender(), internal.getAmount());
         int senderId = internal.getSender().getId();
         int receiverId = internal.getReceiver().getId();
         int balanceSender = internal.getSender().getBalance() - internal.getAmount();
@@ -80,15 +78,28 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Withdrawal createWithdrawal(TransactionDTO transactionDTO) {
-        Withdrawal withdrawal = transactionMapper.createWithdrawal(transactionDTO);
-        if (withdrawal.getSender().getBalance() - withdrawal.getAmount() < 0) {
-            throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
-        }
+        Withdrawal withdrawal = getWithdrawal(transactionDTO);
+        checkIfFundsAreEnough(withdrawal.getSender(), withdrawal.getAmount());
         int senderId = withdrawal.getSender().getId();
         int receiverId = withdrawal.getReceiver().getId();
         //TODO Check if receiver card exists
         int balanceSender = withdrawal.getSender().getBalance() - withdrawal.getAmount();
         return transactionRepository.createWithdrawal(withdrawal, balanceSender, senderId);
+    }
+
+    @Override
+    public Withdrawal getWithdrawal(TransactionDTO transactionDTO) {
+        return transactionMapper.createWithdrawal(transactionDTO);
+    }
+
+    @Override
+    public Deposit getDeposit(TransactionDTO transactionDTO) {
+        return transactionMapper.createDeposit(transactionDTO);
+    }
+
+    @Override
+    public Internal getInternal(TransactionDTO transactionDTO) {
+        return transactionMapper.createInternalTransaction(transactionDTO);
     }
 
     @Override
@@ -99,5 +110,12 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public boolean checkIfWalletIdExists(int id) {
         return walletRepository.checkIfWalletIdExists(id);
+    }
+
+    @Override
+    public void checkIfFundsAreEnough(Wallet sender, int amount) {
+        if (sender.getBalance() - amount < 0) {
+            throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
+        }
     }
 }

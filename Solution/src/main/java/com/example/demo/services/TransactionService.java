@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.wallet.Wallet;
 
 import java.util.List;
 
@@ -21,4 +22,12 @@ public interface TransactionService {
     boolean checkIfIdempotencyKeyExists(String idempotencyKey);
 
     boolean checkIfWalletIdExists(int id);
+
+    Withdrawal getWithdrawal(TransactionDTO transactionDTO);
+
+    Internal getInternal(TransactionDTO transactionDTO);
+
+    Deposit getDeposit(TransactionDTO transactionDTO);
+
+    void checkIfFundsAreEnough(Wallet sender, int amount);
 }
