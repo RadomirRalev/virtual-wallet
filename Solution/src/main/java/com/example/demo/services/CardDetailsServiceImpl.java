@@ -41,8 +41,8 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     }
 
     @Override
-    public CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, String username) {
-        User user = userService.getByUsername(username);
+    public CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, int userId) {
+        cardRegistrationDTO.setUser_id(userId);
 
         if (isCardExist(cardRegistrationDTO.getCardNumber())) {
             throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardRegistrationDTO.getCardNumber());
@@ -53,12 +53,10 @@ public class CardDetailsServiceImpl implements CardDetailsService {
         }
 
         if (!cardRegistrationDTO.getCardholderName().
-                equalsIgnoreCase(user.getFirstName() + " " + user.getLastName())) {
+                equalsIgnoreCase(userService.getById(userId).getFirstName() + " " + userService.getById(userId).getLastName())) {
             throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
         }
         CardDetails cardDetails = cardMapper.mapCard(cardRegistrationDTO);
-        cardDetails.setUser(user);
-
         return cardDetailsRepository.createCard(cardDetails);
     }
 

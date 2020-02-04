@@ -46,9 +46,9 @@ public class CardController {
     }
 
     @PostMapping("/{username}")
-    public CardDetails create(@RequestBody @Valid CardRegistrationDTO cardRegistrationDTO, @PathVariable String username) {
+    public CardDetails create(@RequestBody @Valid CardRegistrationDTO cardRegistrationDTO, @PathVariable int userId) {
         try {
-            return cardDetailsService.createCard(cardRegistrationDTO, username);
+            return cardDetailsService.createCard(cardRegistrationDTO, userId);
         } catch (DuplicateEntityException | InvalidCardException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         } catch (EntityNotFoundException e) {

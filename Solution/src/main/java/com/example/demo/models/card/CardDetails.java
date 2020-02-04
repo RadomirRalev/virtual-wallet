@@ -20,13 +20,11 @@ public class CardDetails {
     private String securityCode;
     @Column(name = "cardholder_name")
     private String cardholderName;
-    @Column(name = "card_name")
-    private String cardName;
     @Column(name = "enabled")
     private boolean enabled;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public CardDetails() {
@@ -87,11 +85,4 @@ public class CardDetails {
         this.user = user;
     }
 
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
-    }
 }

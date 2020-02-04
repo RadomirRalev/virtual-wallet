@@ -1,6 +1,7 @@
 package com.example.demo.models.card;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.Pattern;
 
@@ -15,8 +16,6 @@ public class CardRegistrationDTO {
     @Pattern(regexp = "^[A-Z a-z]+[A-Z a-z]+$",
             message = "The accepted characters are upper, lower letters and spaces.")
     private String cardholderName;
-    @Length(min = 2, max = 50)
-    private String cardName;
     private int user_id;
 
     public CardRegistrationDTO() {
@@ -60,13 +59,5 @@ public class CardRegistrationDTO {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
     }
 }

@@ -55,10 +55,13 @@
                                                             <span th:text="${user.getLastName()}"></span></li>
                                                         <li><i class="fas fa-phone theme-clr"></i><span th:text="${user.getPhoneNumber()}"></span> </li>
                                                         <li><i class="far fa-envelope-open theme-clr"></i><span th:text="${user.getEmail()}"></span></li>
+                                                            <th:block th:each="card : ${user.getCardDetails()}">
+                                                                <li><i class="far fa-credit-card theme-clr"></i><span th:text="${card.getCardNumber()}"></span></li>
+                                                            </th:block>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" alt="" src="">
+                                            <img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" alt="" src="" style="width: auto">
                                         </div>
                                     </div><!-- Post Author -->
                                     <!-- Comment Reply -->

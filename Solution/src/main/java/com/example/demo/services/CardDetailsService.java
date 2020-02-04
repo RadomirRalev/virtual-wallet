@@ -9,7 +9,7 @@ public interface CardDetailsService {
 
     CardDetails getByNumber(String number);
 
-    CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, String username);
+    CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, int userId);
 
     CardDetails updateCard(CardRegistrationDTO cardRegistrationDTO);
 
