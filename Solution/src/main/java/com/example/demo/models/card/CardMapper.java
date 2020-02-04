@@ -12,6 +12,7 @@ public class CardMapper {
         cardDetails.setCardNumber(cardRegistrationDTO.getCardNumber());
         cardDetails.setExpirationDate(cardRegistrationDTO.getExpirationDate());
         cardDetails.setSecurityCode(cardRegistrationDTO.getSecurityCode());
+        cardDetails.setCardName(cardRegistrationDTO.getCardName());
         cardDetails.setEnabled(ENABLE);
         cardDetails.setCardholderName(cardRegistrationDTO.getCardholderName());
         return cardDetails;

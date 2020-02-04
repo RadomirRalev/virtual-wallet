@@ -20,6 +20,8 @@ public class CardDetails {
     private String securityCode;
     @Column(name = "cardholder_name")
     private String cardholderName;
+    @Column(name = "card_name")
+    private String cardName;
     @Column(name = "enabled")
     private boolean enabled;
     @JsonIgnore
@@ -83,5 +85,13 @@ public class CardDetails {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getCardName() {
+        return cardName;
+    }
+
+    public void setCardName(String cardName) {
+        this.cardName = cardName;
     }
 }

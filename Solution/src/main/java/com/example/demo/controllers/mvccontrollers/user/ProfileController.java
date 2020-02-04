@@ -5,6 +5,7 @@ import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,9 @@ public class ProfileController {
     @GetMapping("/profile")
     public String profile(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        Wallet wallet = user.getWallets().get(0);
         model.addAttribute("user", user);
+        model.addAttribute("wallet", wallet);
         return "profile";
     }
 
