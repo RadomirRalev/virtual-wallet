@@ -3,12 +3,18 @@ package com.example.demo.services;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.models.role.Role;
+import com.example.demo.models.verificationToken.VerificationToken;
+import com.example.demo.models.verificationToken.VerificationTokenMapper;
+import com.example.demo.models.role.RoleMapper;
 import com.example.demo.models.user.*;
 import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.models.wallet.WalletMapper;
 import com.example.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +27,25 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private UserMapper userMapper;
+    private RoleService roleService;
+    private WalletService walletService;
     private BCryptPasswordEncoder passwordEncoder;
+    private VerificationTokenService verificationTokenService;
+    private VerificationTokenMapper verificationTokenMapper;
+    private EmailSenderServiceImpl emailSenderService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
+                           RoleService roleService, WalletService walletService, VerificationTokenService verificationTokenService,
+                           VerificationTokenMapper verificationTokenMapper, EmailSenderServiceImpl emailSenderService ) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
+        this.walletService = walletService;
+        this.verificationTokenService = verificationTokenService;
+        this.verificationTokenMapper = verificationTokenMapper;
+        this.emailSenderService = emailSenderService;
+
     }
 
     @Override
@@ -41,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+
     public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
 
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {
@@ -59,12 +77,23 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
         }
 
-        User user = userMapper.createUser(userRegistrationDTO);
-        Role role = userMapper.createRole(userRegistrationDTO);
-        Wallet wallet = userMapper.registerWallet();
+        //TODO change mapper methods names ?
+        User user = UserMapper.createUser(userRegistrationDTO);
+        Role role = RoleMapper.createRole(userRegistrationDTO);
+        Wallet wallet = WalletMapper.registerWallet();
 
-        return userRepository.createUser(user, role, wallet);
+        User createdUser = userRepository.createUser(user);
+        role.setUserId(createdUser.getId());
+        roleService.createRole(role);
+        wallet.setUserId(createdUser.getId());
+        walletService.createWallet(wallet);
+        VerificationToken verificationToken = verificationTokenMapper.createVerificationToken(createdUser.getId());
+        verificationTokenService.create(verificationToken);
+        SimpleMailMessage emailMessage =
+                verificationTokenMapper.createEmail(user.getEmail(),verificationToken.getToken());
+        emailSenderService.sendEmail(emailMessage);
 
+        return createdUser;
     }
 
     @Override
@@ -80,6 +109,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
+
+        //TODO
+//        int walletId = 0;
+//        if (user.getWallets().stream().map(Wallet::getCurrency).anyMatch(s -> s.equals("USD"))) {
+//            walletId = user.getWallets().stream()
+//                    .findFirst()
+//                    .filter(wallet -> wallet.getCurrency().equals("USD"))
+//                    .get()
+//                    .getId();
+//        }
+//        System.out.println(walletId);
     }
 
     @Override
@@ -104,7 +144,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(
                     String.format(PHONE_NUMBER_ALREADY_REGISTERED, profileUpdateDTO.getPhoneNumber()));
         }
-        User userToUpdate = userMapper.updateProfile(user, profileUpdateDTO);
+        User userToUpdate = UserMapper.updateProfile(user, profileUpdateDTO);
         return userRepository.updateUser(userToUpdate);
     }
 
@@ -115,7 +155,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidPasswordException(PASSWORD_DO_NOT_MATCH);
         }
 
-        if(!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(),user.getPassword())) {
+        if (!passwordEncoder.matches(passwordUpdateDTO.getOldPassword(), user.getPassword())) {
             throw new InvalidPasswordException(INVALID_CURRENT_PASSWORD);
         }
 

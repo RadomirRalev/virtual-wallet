@@ -1,5 +1,6 @@
 package com.example.demo.models.user;
 
+import com.example.demo.models.role.Role;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.wallet.Wallet;
 import com.fasterxml.jackson.annotation.JsonIgnore;

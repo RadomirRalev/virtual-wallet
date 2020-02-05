@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Error!</title>
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <!-- Styles -->
+
+</head>
+
+<body>
+
+    <p>
+        <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
+    </p>
+
+</body>
+
+</html>

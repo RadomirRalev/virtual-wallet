@@ -1,5 +1,6 @@
-package com.example.demo.models.user;
+package com.example.demo.models.role;
 
+import com.example.demo.models.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
