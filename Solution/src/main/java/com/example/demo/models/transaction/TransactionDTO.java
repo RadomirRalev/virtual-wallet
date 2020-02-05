@@ -1,14 +1,24 @@
 package com.example.demo.models.transaction;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+
 public class TransactionDTO {
 
     private int amount;
     private int senderId;
     private int receiverId;
     private String type;
+    @Length(min = 2, max = 200)
     private String description;
     private String idempotencyKey;
+    @Pattern(regexp = "^[A-Z]{3}$", message = "Currency must be valid ISO code.")
     private String currency;
+
+    public TransactionDTO() {
+    }
 
     public TransactionDTO(int amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency) {
         this.amount = amount;

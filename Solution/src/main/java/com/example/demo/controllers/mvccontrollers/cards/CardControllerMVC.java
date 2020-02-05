@@ -35,13 +35,13 @@ public class CardControllerMVC {
     }
 
     @GetMapping("/cardregistration")
-    public String account(Model model) {
+    public String createCard(Model model) {
         model.addAttribute("CardRegistrationDTO", new CardRegistrationDTO());
         return "cardregistration";
     }
 
     @PostMapping("/cardregistration")
-    public String createBeer(@Valid @ModelAttribute("CardRegistrationDTO") CardRegistrationDTO cardRegistrationDTO,
+    public String createNewCard(@Valid @ModelAttribute("CardRegistrationDTO") CardRegistrationDTO cardRegistrationDTO,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {

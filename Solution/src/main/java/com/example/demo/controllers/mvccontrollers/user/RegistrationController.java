@@ -38,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String createBeer(@Valid @ModelAttribute("UserRegistrationDTO") UserRegistrationDTO userRegistrationDTO,
+    public String createUser(@Valid @ModelAttribute("UserRegistrationDTO") UserRegistrationDTO userRegistrationDTO,
                               BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {

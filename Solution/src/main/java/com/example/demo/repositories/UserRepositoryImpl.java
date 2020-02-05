@@ -73,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
             session.save(user);
             role.setUserId(user.getId());
             session.save(role);
-            wallet.setUserId(user.getId());
+            wallet.setUser(user);
             session.save(wallet);
             session.getTransaction().commit();
         }

@@ -1,24 +1,40 @@
 package com.example.demo.services;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.models.wallet.WalletCreationDTO;
+import com.example.demo.models.wallet.WalletMapper;
 import com.example.demo.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.example.demo.constants.ExceptionConstants.WALLET_WITH_ID_NOT_EXISTS;
+import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 
 @Service
 public class WalletServiceImpl implements WalletService {
     private WalletRepository walletRepository;
+    private WalletMapper walletMapper;
+    private UserService userService;
 
     @Autowired
-    public WalletServiceImpl(WalletRepository walletRepository) {
+    public WalletServiceImpl(WalletRepository walletRepository,
+                             WalletMapper walletMapper,
+                             UserService userService) {
         this.walletRepository = walletRepository;
+        this.walletMapper = walletMapper;
+        this.userService = userService;
     }
 
     @Override
-    public Wallet createWallet(Wallet wallet) {
+    public Wallet createWallet(WalletCreationDTO walletCreationDTO, int userId) {
+        walletCreationDTO.setUserId(userId);
+        Wallet wallet = walletMapper.mapWallet(walletCreationDTO);
+        User user = userService.getById(userId);
+        if (user.getWallets().isEmpty()) {
+            wallet.setWalletDefault(ENABLE);
+        }
         return walletRepository.createWallet(wallet);
     }
 

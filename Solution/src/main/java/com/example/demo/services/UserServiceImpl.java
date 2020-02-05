@@ -79,18 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByUsername(String username) {
-        User user = userRepository.getByUsername(username);
-        int walletId = 0;
-        if (user.getWallets().stream().map(Wallet::getCurrency).anyMatch(s -> s.equals("USD"))) {
-            walletId = user.getWallets().stream()
-                    .findFirst()
-                    .filter(wallet -> wallet.getCurrency().equals("USD"))
-                    .get()
-                    .getId();
-        }
-        System.out.println(walletId);
-
-        return user;
+        return userRepository.getByUsername(username);
     }
 
     @Override

@@ -15,21 +15,16 @@ public class Wallet {
     private int id;
     @Column(name = "balance")
     private int balance;
-    @Column(name = "user_id")
-    private int userId;
-    @Column(name = "currency")
-    private String currency;
+    @Column(name = "name")
+    String name;
+    @Column(name = "is_default")
+    private boolean isWalletDefault;
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     public Wallet() {
-    }
-
-    public Wallet(int userId, String currency) {
-        this.userId = userId;
-        this.currency = currency;
     }
 
     public int getId() {
@@ -48,14 +43,6 @@ public class Wallet {
         this.balance = balance;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public User getUser() {
         return user;
     }
@@ -64,11 +51,16 @@ public class Wallet {
         this.user = user;
     }
 
-    public String getCurrency() {
-        return currency;
+    public String getName() {
+        return name;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public void setWalletDefault(boolean isWalletDefault) {
+        this.isWalletDefault = isWalletDefault;
+    }
+
 }

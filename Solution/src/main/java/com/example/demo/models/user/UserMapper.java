@@ -41,7 +41,6 @@ public class UserMapper {
 
     public Wallet registerWallet (){
         Wallet wallet = new Wallet();
-        wallet.setCurrency(USD);
         return wallet;
     }
 

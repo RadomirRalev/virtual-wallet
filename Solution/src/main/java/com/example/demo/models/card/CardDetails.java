@@ -53,6 +53,7 @@ public class CardDetails {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
     public String getExpirationDate() {
         return expirationDate;
     }

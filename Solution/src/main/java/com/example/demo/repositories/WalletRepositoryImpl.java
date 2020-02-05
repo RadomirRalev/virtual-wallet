@@ -49,7 +49,7 @@ public class WalletRepositoryImpl implements WalletRepository {
             Query<Wallet> query = session.createQuery("from Wallet " +
                     " where id = :id", Wallet.class);
             query.setParameter("id", id);
-            return !query.list().isEmpty();
+            return query.list().isEmpty();
         }
     }
 

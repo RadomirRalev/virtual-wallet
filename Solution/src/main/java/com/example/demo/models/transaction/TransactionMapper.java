@@ -33,6 +33,7 @@ public class TransactionMapper {
         deposit.setDescription(transactionDTO.getDescription());
         deposit.setIdempotencyKey(UUID.randomUUID().toString());
         deposit.setCardSender(cardDetailsService.getById(transactionDTO.getSenderId()));
+        deposit.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
         return deposit;
     }
 

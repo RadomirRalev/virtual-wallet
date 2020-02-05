@@ -45,7 +45,7 @@ public class CardController {
         }
     }
 
-    @PostMapping("/{username}")
+    @PostMapping("/{userId}")
     public CardDetails create(@RequestBody @Valid CardRegistrationDTO cardRegistrationDTO, @PathVariable int userId) {
         try {
             return cardDetailsService.createCard(cardRegistrationDTO, userId);

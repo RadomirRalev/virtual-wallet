@@ -49,19 +49,41 @@
                                         <div class="col-md-9 col-sm-12 col-lg-9">
                                             <h6 itemprop="headline">DEPOSIT MONEY</h6>
                                             <div class="team-detail-inf-itm">
-                                                <form>
+                                                <form th:action="@{/deposit}" th:object="${depositDTO}" method="post">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-9">
-                                                            <label for="inputCity">Sum</label>
-                                                            <input type="number" class="form-control" id="inputCity" placeholder="Insert sum">
+                                                            <label for="inputSum">Sum</label>
+                                                            <p class="error-field" th:errors="*{amount}"></p>
+                                                            <input th:field="*{amount}" type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length===4) return false;" class="form-control" id="inputSum" placeholder="Insert sum" required>
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="inputState">Pick card</label>
-                                                            <select id="inputState" class="form-control">
-                                                                <option selected>Choose...</option>
-                                                                <option>...</option>
+                                                            <label for="inputCard">Pick card</label>
+                                                            <select th:field="*{senderId}" id="inputCard" class="form-control">
+                                                                <option th:each="card : ${user.getCardDetails()}"
+                                                                        th:value="${card.id}"
+                                                                        th:text="${card.getCardNumber()}">...</option>
                                                             </select>
                                                         </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="inputCard">Pick wallet</label>
+                                                            <select th:field="*{receiverId}" id="inputWallet" class="form-control">
+                                                                <option th:each="wallet1 : ${user.getWallets()}"
+                                                                        th:value="${wallet1.id}"
+                                                                        th:text="${wallet1.id}">...</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label for="inputCurrency">Pick currency</label>
+                                                            <select th:field="*{currency}" id="inputCurrency" class="form-control">
+                                                                <option th:value="'BGN'" th:text="BGN"></option>
+                                                                <option th:value="'EUR'" th:text="EUR"></option>
+                                                                <option th:value="'USD'" th:text="USD"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="exampleFormControlTextarea1">Add description</label>
+                                                        <textarea th:field="*{description}" class="form-control" id="exampleFormControlTextarea1" rows="3" minlength="2" maxlength="200" required></textarea>
                                                     </div>
                                                     <div class="col-md-12 col-sm-12 col-lg-12">
                                                         <button class="theme-btn theme-bg brd-rd30" type="submit">DEPOSIT
@@ -106,6 +128,14 @@
 </main><!-- Project Main Wrapper -->
 <!--scripts-->
 <div th:insert="fragments/scriptsfragments :: scripts"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+</script>
+<script>
+    $("#inputSum").on("input", function() {
+    if (/^0/.test(this.value)) {
+        this.value = this.value.replace(/^0/, "")
+    }
+})</script>
 <!--scripts-->
 </body>
 </html>
