@@ -9,6 +9,8 @@ import com.example.demo.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.example.demo.constants.ExceptionConstants.WALLET_WITH_ID_NOT_EXISTS;
 import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 
@@ -39,6 +41,11 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public List<Wallet> getWalletsbyUserId(int userId) {
+        return walletRepository.getWalletsbyUserId(userId);
+    }
+
+    @Override
     public Wallet getById(int id) {
         if (checkIfWalletIdExists(id)) {
             throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
@@ -47,5 +54,10 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public boolean checkIfWalletIdExists(int id) { return walletRepository.checkIfWalletIdExists(id); };
+    public boolean checkIfWalletIdExists(int id) { return walletRepository.checkIfWalletIdExists(id); }
+
+    @Override
+    public Wallet updateWallet(Wallet walletToBeUpdated) {
+        return walletRepository.updateWallet(walletToBeUpdated);
+    }
 }

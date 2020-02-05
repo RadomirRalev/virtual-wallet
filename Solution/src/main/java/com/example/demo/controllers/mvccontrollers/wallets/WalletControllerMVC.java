@@ -4,7 +4,12 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidCardException;
 import com.example.demo.exceptions.InvalidWalletException;
 import com.example.demo.models.card.CardRegistrationDTO;
+import com.example.demo.models.user.PasswordUpdateDTO;
+import com.example.demo.models.user.ProfileUpdateDTO;
+import com.example.demo.models.user.User;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
+import com.example.demo.models.wallet.WalletUpdateDTO;
 import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
 import com.example.demo.services.WalletService;
@@ -12,11 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
@@ -51,5 +56,30 @@ public class WalletControllerMVC {
             return "createwallet";
         }
         return "successcardregistration";
+    }
+
+    @GetMapping("/mywallets")
+    public String myWallets(Model model) {
+        int userId = userService.getByUsername(currentPrincipalName()).getId();
+        List<Wallet> walletList = walletService.getWalletsbyUserId(userId);
+        model.addAttribute("walletList", walletList);
+        return "mywallets";
+    }
+
+    @GetMapping("/mywallets/editwallet")
+    public String editWallet(@RequestParam int id, Model model) {
+        Wallet wallet = walletService.getById(id);
+        WalletUpdateDTO walletUpdateDTO = new WalletUpdateDTO();
+        model.addAttribute("wallet", wallet);
+        model.addAttribute("walletUpdateDTO", walletUpdateDTO);
+        return "editwallet";
+    }
+
+    @PostMapping("mywallets/editwallet")
+    public String updateWallet(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
+        Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
+        walletToUpdate.setName(walletUpdateDTO.getName());
+        walletService.updateWallet(walletToUpdate);
+        return "redirect:/mywallets";
     }
 }

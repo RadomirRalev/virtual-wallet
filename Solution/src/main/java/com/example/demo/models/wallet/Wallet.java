@@ -16,7 +16,7 @@ public class Wallet {
     @Column(name = "balance")
     private int balance;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "is_default")
     private boolean isWalletDefault;
     @JsonIgnore
@@ -63,4 +63,7 @@ public class Wallet {
         this.isWalletDefault = isWalletDefault;
     }
 
+    public boolean isWalletDefault() {
+        return isWalletDefault;
+    }
 }
