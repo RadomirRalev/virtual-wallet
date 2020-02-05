@@ -2,9 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.helpers.PaginationResult;
-import com.example.demo.models.user.Role;
 import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
 import com.google.common.collect.Lists;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -67,15 +65,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User createUser(User user, Role role, Wallet wallet) {
+    public User createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
             session.save(user);
-            role.setUserId(user.getId());
-            session.save(role);
-            wallet.setUser(user);
-            session.save(wallet);
-            session.getTransaction().commit();
         }
         return user;
     }
@@ -84,9 +76,8 @@ public class UserRepositoryImpl implements UserRepository {
     public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User " +
-                    " where id = :id and enabled = :status ", User.class);
+                    " where id = :id", User.class);
             query.setParameter("id", id);
-            query.setParameter("status", ENABLE);
             if (query.list().size() != 1) {
                 throw new EntityNotFoundException(USER_ID_NOT_FOUND, id);
             }

@@ -19,7 +19,6 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
     }
 
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
@@ -42,6 +41,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.2.3.RELEASE'
+
 }
 
 test {

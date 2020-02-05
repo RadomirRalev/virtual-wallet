@@ -2,9 +2,11 @@ package com.example.demo.constants;
 
 public class ExceptionConstants {
     public static final String USER_USERNAME_NOT_FOUND = "User with username %s not found in the database.";
-    public static final String USER_ID_NOT_FOUND = "User with username %d not found in the database.";
+    public static final String USER_ID_NOT_FOUND = "User with id %d not found in the database.";
     public static final String USER_PHONE_NUMBER_NOT_FOUND = "User with phone number %s not found in the database.";
     public static final String USER_EMAIL_NOT_FOUND = "User with email %s not found in the database.";
+    public static final String TOKEN_NOT_FOUND = "Token %s not found in the database.";
+    public static final String USER_TOKEN_NOT_FOUND = "User with id %d haven`t token.";
     public static final String USER_USERNAME_EXISTS = "User with username %s already exists.";
     public static final String USER_EMAIL_EXISTS = "User with email %s already exists.";
     public static final String USER_PHONE_EXISTS = "User with phone %s already exists.";
@@ -25,5 +27,5 @@ public class ExceptionConstants {
     public static final String EXPIRATION_DATE_IS_INVALID = "Expiration date is invalid.";
     public static final String SENDER_FUNDS_ARE_NOT_SUFFICIENT = "Not sufficient funds.";
     public static final String YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE = "You cannot make the same transaction twice.";
-
+    public static final String INVALID_TOKEN = "Invalid Token ! Please contact support.";
 }
