@@ -16,4 +16,6 @@ public interface WalletService {
     List<Wallet> getWalletsbyUserId(int userId);
 
     Wallet updateWallet(Wallet walletToBeUpdated);
+
+    Wallet setAsDefault(Wallet walletToBeUpdated);
 }

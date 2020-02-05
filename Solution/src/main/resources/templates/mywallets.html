@@ -149,9 +149,15 @@
                         <td><div th:text="${wallet.name}"></div></td>
                         <td><div th:text="${wallet.balance}"></div></td>
                         <td><div th:text="${wallet.isWalletDefault()}"></div></td>
-                        <td>
+                        <td style="position: relative">
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                            <a th:href="@{/mywallets/editwallet(id=${wallet.id})}" class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <a th:href="@{/mywallets/editwallet(id=${wallet.id})}" class="edit" title="Edit Name" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            <div th:if="${!wallet.isWalletDefault()}">
+                            <a th:href="@{/mywallets/setdefault(id=${wallet.id})}" class="edit" title="Set as default?" data-toggle="tooltip"><i class="material-icons">&#xE86C;</i></a>
+                            </div>
+                            <div th:unless="${!wallet.isWalletDefault()}">
+                                <a class="edit" title="This is your default wallet" data-toggle="tooltip"><i class="material-icons">&#xE000;</i></a>
+                            </div>
                             <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                         </td>
                     </tr>

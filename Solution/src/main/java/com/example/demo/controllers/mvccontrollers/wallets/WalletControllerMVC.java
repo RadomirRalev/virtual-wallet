@@ -82,4 +82,20 @@ public class WalletControllerMVC {
         walletService.updateWallet(walletToUpdate);
         return "redirect:/mywallets";
     }
+
+    @GetMapping("/mywallets/setdefault")
+    public String setDefault(@RequestParam int id, Model model) {
+        Wallet wallet = walletService.getById(id);
+        WalletUpdateDTO walletUpdateDTO = new WalletUpdateDTO();
+        model.addAttribute("wallet", wallet);
+        model.addAttribute("walletUpdateDTO", walletUpdateDTO);
+        return "setdefault";
+    }
+
+    @PostMapping("mywallets/setdefault")
+    public String setAsDefault(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
+        Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
+        walletService.setAsDefault(walletToUpdate);
+        return "redirect:/mywallets";
+    }
 }
