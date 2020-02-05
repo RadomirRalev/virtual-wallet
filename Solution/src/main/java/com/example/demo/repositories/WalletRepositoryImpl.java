@@ -77,10 +77,11 @@ public class WalletRepositoryImpl implements WalletRepository {
     }
 
     @Override
-    public Wallet getDefaultWallet() {
+    public Wallet getDefaultWallet(int userId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Wallet> query = session.createQuery("from Wallet where is_default = :status", Wallet.class);
+            Query<Wallet> query = session.createQuery("from Wallet where is_default = :status and user_id = :userid", Wallet.class);
             query.setParameter("status", ENABLE);
+            query.setParameter("userid", userId);
             return query.list().get(0);
         }
     }

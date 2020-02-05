@@ -16,7 +16,7 @@ public interface WalletRepository {
 
     Wallet updateWallet(Wallet walletToBeUpdated);
 
-    Wallet getDefaultWallet();
+    Wallet getDefaultWallet(int userId);
 
     Wallet disableDefaultWallet(int walletId);
 
