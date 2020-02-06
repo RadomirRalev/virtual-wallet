@@ -4,12 +4,10 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.role.Role;
-import com.example.demo.models.verificationToken.VerificationToken;
-import com.example.demo.models.verificationToken.VerificationTokenMapper;
 import com.example.demo.models.role.RoleMapper;
 import com.example.demo.models.user.*;
-import com.example.demo.models.user.UserMapper;
-import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.verificationToken.VerificationToken;
+import com.example.demo.models.verificationToken.VerificationTokenMapper;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletMapper;
 import com.example.demo.repositories.RoleRepository;
@@ -20,10 +18,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.example.demo.constants.ExceptionConstants.*;
-
 import java.io.IOException;
 import java.util.List;
+
+import static com.example.demo.constants.ExceptionConstants.*;
 
 @Service
 public class UserServiceImpl implements UserService {

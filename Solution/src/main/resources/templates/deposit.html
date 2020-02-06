@@ -61,15 +61,16 @@
                                                             <select th:field="*{senderId}" id="inputCard" class="form-control">
                                                                 <option th:each="card : ${user.getCardDetails()}"
                                                                         th:value="${card.id}"
-                                                                        th:text="${card.getCardNumber()}">...</option>
+                                                                        th:text="${card.cardNumber}">...</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="inputCard">Pick wallet</label>
-                                                            <select th:field="*{receiverId}" id="inputWallet" class="form-control">
+                                                            <label for="inputCard">Pick wallet (Your default wallet is pre-selected)</label>
+                                                            <select id="receiverId" name="receiverId" class="form-control">
                                                                 <option th:each="wallet1 : ${user.getWallets()}"
                                                                         th:value="${wallet1.id}"
-                                                                        th:text="${wallet1.id}">...</option>
+                                                                        th:text="${wallet1.name}"
+                                                                        th:selected="${wallet1.isWalletDefault()}">...</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-4">
@@ -102,7 +103,7 @@
                                 <div class="widget">
                                     <h6 itemprop="headline">MONEY AVAILABLE</h6>
                                     <form class="srch-frm">
-                                        <h5 itemprop="headline" style="text-align: center">$<span th:text="${wallet.getBalance()}"></span></h5>
+                                        <h5 itemprop="headline" style="text-align: center">$<span></span></h5>
                                     </form>
                                 </div>
                                 <div class="widget">

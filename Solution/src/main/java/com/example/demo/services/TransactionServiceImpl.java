@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Wallet> receiverList = deposit.getCardSender()
                 .getUser()
                 .getWallets();
-        int receiverId = receiverList.get(0).getId();
+        int receiverId = deposit.getReceiver().getId();
         int balanceReceiver = walletRepository.getById(receiverId).getBalance() + deposit.getAmount();
         //TODO Simplify lines 51-55
         return transactionRepository.createDeposit(deposit, balanceReceiver, receiverId);
