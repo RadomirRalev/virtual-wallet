@@ -37,4 +37,6 @@ public interface UserService {
     List<Integer> getPages();
 
     List<User> getUsersPaginatedHibernate(Integer page);
+
+    int getAvailableSum(int userId);
 }

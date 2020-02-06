@@ -6,6 +6,7 @@ import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,18 +24,22 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 @Controller
 public class ProfileController {
     private UserService userService;
+    private WalletRepository walletRepository;
 
     @Autowired
-    public ProfileController(UserService userService) {
+    public ProfileController(UserService userService, WalletRepository walletRepository) {
         this.userService = userService;
+        this.walletRepository = walletRepository;
     }
 
     @GetMapping("/profile")
     public String profile(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        int availableSum = userService.getAvailableSum(user.getId());
         Wallet wallet = user.getWallets().get(0);
         model.addAttribute("user", user);
         model.addAttribute("wallet", wallet);
+        model.addAttribute("availableSum", availableSum);
         return "user/profile";
     }
 

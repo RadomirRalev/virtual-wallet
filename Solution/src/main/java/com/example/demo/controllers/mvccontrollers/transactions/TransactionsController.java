@@ -31,7 +31,7 @@ public class TransactionsController {
     }
 
     @GetMapping("/transactions")
-    public String account(Model model) {
+    public String transactions(Model model) {
         return "transactions";
     }
 
@@ -55,6 +55,30 @@ public class TransactionsController {
         } catch (DuplicateEntityException | InvalidTransactionException e) {
             model.addAttribute("error", e.getMessage());
             return "deposit";
+        }
+        return "redirect:mywallets";
+    }
+
+    @GetMapping("/withdrawal")
+    public String makeWithdrawal(Model model) {
+        User user = userService.getByUsername(currentPrincipalName());
+        model.addAttribute("withdrawalDTO", new TransactionDTO());
+        model.addAttribute("user", user);
+        return "withdrawal";
+    }
+
+    @PostMapping("/withdrawal")
+    public String createWithdrawal(@Valid @ModelAttribute("withdrawalDTO") TransactionDTO transactionDTO,
+                                BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "withdrawal";
+        }
+        try {
+            transactionService.createWithdrawal(transactionDTO);
+        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            model.addAttribute("error", e.getMessage());
+            return "withdrawal";
         }
         return "redirect:mywallets";
     }

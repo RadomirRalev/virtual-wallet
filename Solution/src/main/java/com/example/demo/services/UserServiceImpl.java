@@ -172,6 +172,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int getAvailableSum(int userId) {
+        List<Wallet> list = walletRepository.getWalletsbyUserId(userId);
+        return list.stream()
+                .mapToInt(Wallet::getBalance)
+                .sum();
+    }
+
+    @Override
     public boolean isUsernameExist(String username) {
         return userRepository.isUsernameExist(username);
     }
