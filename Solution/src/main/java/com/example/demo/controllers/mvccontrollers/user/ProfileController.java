@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.validation.Valid;
 
@@ -36,43 +35,54 @@ public class ProfileController {
         Wallet wallet = user.getWallets().get(0);
         model.addAttribute("user", user);
         model.addAttribute("wallet", wallet);
-        return "profile";
+        return "user/profile";
     }
 
     @GetMapping("/profile/edit")
     public String editProfile(Model model) {
-        PasswordUpdateDTO passwordUpdateDTO = new PasswordUpdateDTO();
-        ProfileUpdateDTO profileUpdateDTO = new ProfileUpdateDTO();
-        model.addAttribute("passwordUpdateDTO", passwordUpdateDTO);
-        model.addAttribute("profileUpdateDTO", profileUpdateDTO);
-
-        return "profile-edit";
+        return "user/profile-edit";
     }
 
-    @PostMapping("/profile/edit")
-    public String updatePassword(@Valid @ModelAttribute("passwordUpdateDTO") PasswordUpdateDTO passwordUpdateDTO,
+    @GetMapping("/profile/password")
+    public String editProfilePassword(Model model) {
+        PasswordUpdateDTO passwordUpdateDTO = new PasswordUpdateDTO();
+        model.addAttribute("passwordUpdateDTO", passwordUpdateDTO);
+
+        return "user/profile-edit-password";
+    }
+
+    @PostMapping("/profile/password")
+    public String editProfilePassword(@Valid @ModelAttribute("passwordUpdateDTO") PasswordUpdateDTO passwordUpdateDTO,
                                  Model model) {
         try {
             User user = userService.getByUsername(currentPrincipalName());
             userService.changePassword(user, passwordUpdateDTO);
         } catch (InvalidPasswordException | EntityNotFoundException e) {
             model.addAttribute("error", e.getMessage());
-            return "profile-edit";
+            return "user/profile-edit-password";
         }
-        return "profile-edit";
+        return "messages/success-change-password";
     }
 
-//    @PostMapping("/profile/edit")
-//    public String updateProfile(@Valid @ModelAttribute("profileUpdateDTO") ProfileUpdateDTO profileUpdateDTO,
-//                                 Model model) {
-//        try {
-//            User user = userService.getByUsername(currentPrincipalName());
-//            userService.updateUser(user, profileUpdateDTO);
-//        } catch (EntityNotFoundException | IOException e) {
-//            model.addAttribute("error", e.getMessage());
-//            return "profile-edit";
-//        }
-//        return "profile-edit";
-//    }
+    @GetMapping("/profile/information")
+    public String editProfileInformation(Model model) {
+        ProfileUpdateDTO profileUpdateDTO = new ProfileUpdateDTO();
+        model.addAttribute("profileUpdateDTO", profileUpdateDTO);
+
+        return "user/profile-edit-profile";
+    }
+
+    @PostMapping("/profile/information")
+    public String editProfileInformation(@Valid @ModelAttribute("profileUpdateDTO") ProfileUpdateDTO profileUpdateDTO,
+                                Model model) {
+        try {
+            User user = userService.getByUsername(currentPrincipalName());
+            userService.updateUser(user, profileUpdateDTO);
+        } catch (EntityNotFoundException | IOException e) {
+            model.addAttribute("error", e.getMessage());
+            return "user/profile-edit-profile";
+        }
+        return "messages/success-change-information";
+    }
 
 }

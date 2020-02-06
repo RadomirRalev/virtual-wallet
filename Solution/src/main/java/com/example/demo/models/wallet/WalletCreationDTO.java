@@ -4,6 +4,7 @@ public class WalletCreationDTO {
     private int id;
     private int balance;
     private int userId;
+    //TODO validation
     private String name;
 
     public WalletCreationDTO() {

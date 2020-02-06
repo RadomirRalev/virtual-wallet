@@ -1,11 +1,9 @@
 package com.example.demo.models.user;
 
-import com.example.demo.models.wallet.Wallet;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
 
-import static com.example.demo.constants.SQLQueryConstants.*;
 import static com.example.demo.helpers.UserHelper.setOptionalFields;
 
 public class UserMapper {

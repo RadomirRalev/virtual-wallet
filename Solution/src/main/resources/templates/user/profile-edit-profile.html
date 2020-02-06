@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Virtual Wallet</title>
+    <title>Update Password</title>
     <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/css/picture.css}"/>
 
     <!-- Styles -->
@@ -29,7 +29,7 @@
 <!-- Pageloader -->
 <main>
     <!-- Header -->
-    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
     <!-- Header -->
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
@@ -46,24 +46,32 @@
                                     <div class="row">
                                         <div class="col-md-6 col-sm-6 col-lg-6">
                                             <div class="team-detail-inf-itm">
-                                                <h5 itemprop="headline">Change password </h5>
-                                                <form class="reply-form" th:action="@{/profile/edit}" th:object="${passwordUpdateDTO}"
+                                                <h5 itemprop="headline">Edit profile </h5>
+                                                <form class="reply-form" th:action="@{/profile/information}"
+                                                      th:object="${profileUpdateDTO}"
                                                       method="post" name="form1"
                                                       enctype="multipart/form-data">
                                                     <div class="row" style="text-align: center">
                                                         <p>
-                                                            <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
+                                                            <i th:if="${error != null}" th:text="${error}"
+                                                               class="error-field"></i>
                                                         </p>
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
-                                                            <input type="password" placeholder="Current password" th:field="*{oldPassword}" required>
+                                                            <p class="error-field" th:errors="*{phoneNumber}"></p>
+                                                            <input type="text" placeholder="Phone number (Obligatory)"
+                                                                   th:field="*{phoneNumber}" required>
                                                         </div>
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
-                                                            <input type="password" placeholder="New password" th:field="*{newPassword}" required>
+                                                            <p class="error-field" th:errors="*{email}"></p>
+                                                            <input type="email" name='text1'
+                                                                   placeholder="Email Address (Obligatory)"
+                                                                   th:field="*{email}" required>
                                                         </div>
-                                                        <div class="col-md-12 col-sm-12 col-lg-12">
-                                                            <input type="password" placeholder="Retype new password"
-                                                                   th:field="*{newPasswordConfirmation}" required>
-                                                        </div>
+                                                        <p>Choose pic (Optional)</p>
+                                                        <input type="file" name="file" class="form-control-file"
+                                                               id="userDetails" th:field="*{file}"/>
+                                                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000"/>
+                                                        <p class="error-field" th:errors="*{file}"></p>
                                                         <button class="theme-btn theme-bg brd-rd30" type="submit">SUBMIT
                                                         </button>
                                                     </div>
@@ -75,33 +83,6 @@
                                 <!-- Comment Reply -->
                             </div>
                         </div>
-<!--                        <div class="col-md-3 col-sm-6 col-lg-3">-->
-<!--                                <h5 itemprop="headline">Change password </h5>-->
-<!--                                <form class="reply-form" th:action="@{/profile/edit}" th:object="${profileUpdateDTO}"-->
-<!--                                      method="post" name="form2"-->
-<!--                                      enctype="multipart/form-data">-->
-<!--                                    <div class="row" style="text-align: center">-->
-<!--                                        <p>-->
-<!--                                            <i th:if="${error != null}" th:text="${error}" class="error-field"></i>-->
-<!--                                        </p>-->
-<!--                                        <div class="col-md-12 col-sm-12 col-lg-12">-->
-<!--                                            <p class="error-field" th:errors="*{phoneNumber}"></p>-->
-<!--                                            <input type="text" placeholder="Phone number (Obligatory)" th:field="*{phoneNumber}" required>-->
-<!--                                        </div>-->
-<!--                                        <div class="col-md-12 col-sm-12 col-lg-12">-->
-<!--                                            <p class="error-field" th:errors="*{email}"></p>-->
-<!--                                            <input type="email" name='text1' placeholder="Email Address (Obligatory)" th:field="*{email}" required>-->
-<!--                                        </div>-->
-<!--                                        <p>Choose pic (Optional)</p>-->
-<!--                                        <input type="file" name="file" class="form-control-file"-->
-<!--                                               id="userDetails" th:field="*{file}"/>-->
-<!--                                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000"/>-->
-<!--                                        <p class="error-field" th:errors="*{file}"></p>-->
-<!--                                        <button class="theme-btn theme-bg brd-rd30" type="submit">SUBMIT-->
-<!--                                        </button>-->
-<!--                                    </div>-->
-<!--                                </form>-->
-<!--                        </div>-->
                     </div>
                 </div><!-- Blog Detail Wrap -->
             </div>
@@ -119,4 +100,6 @@
 <!--scripts-->
 </body>
 </html>
+
+
 

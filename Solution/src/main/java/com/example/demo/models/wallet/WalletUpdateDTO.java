@@ -2,6 +2,7 @@ package com.example.demo.models.wallet;
 
 public class WalletUpdateDTO {
     private int id;
+    //TODO validation
     private String name;
     private boolean isWalletDefault;
 

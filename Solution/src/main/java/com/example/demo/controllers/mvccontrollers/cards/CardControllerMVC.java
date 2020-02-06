@@ -1,32 +1,26 @@
 package com.example.demo.controllers.mvccontrollers.cards;
 
-        import com.example.demo.exceptions.DuplicateEntityException;
-        import com.example.demo.exceptions.InvalidCardException;
-        import com.example.demo.exceptions.InvalidOptionalFieldParameter;
-        import com.example.demo.exceptions.InvalidPasswordException;
-        import com.example.demo.models.card.CardRegistrationDTO;
-        import com.example.demo.models.user.User;
-        import com.example.demo.models.user.UserRegistrationDTO;
-        import com.example.demo.services.CardDetailsService;
-        import com.example.demo.services.UserService;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.ui.Model;
-        import org.springframework.validation.BindingResult;
-        import org.springframework.web.bind.annotation.GetMapping;
-        import org.springframework.web.bind.annotation.ModelAttribute;
-        import org.springframework.web.bind.annotation.PostMapping;
+import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.InvalidCardException;
+import com.example.demo.models.card.CardRegistrationDTO;
+import com.example.demo.services.CardDetailsService;
+import com.example.demo.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
-        import javax.validation.Valid;
-        import java.io.IOException;
+import javax.validation.Valid;
 
-        import static com.example.demo.helpers.UserHelper.currentPrincipalName;
+import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @Controller
 public class CardControllerMVC {
     private CardDetailsService cardDetailsService;
     private UserService userService;
-
 
     @Autowired
     public CardControllerMVC(CardDetailsService cardDetailsService, UserService userService) {
@@ -42,7 +36,7 @@ public class CardControllerMVC {
 
     @PostMapping("/cardregistration")
     public String createNewCard(@Valid @ModelAttribute("CardRegistrationDTO") CardRegistrationDTO cardRegistrationDTO,
-                             BindingResult bindingResult, Model model) {
+                                BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "cardregistration";
@@ -56,6 +50,6 @@ public class CardControllerMVC {
             model.addAttribute("error", e.getMessage());
             return "cardregistration";
         }
-        return "successcardregistration";
+        return "messages/success-card-registration";
     }
 }

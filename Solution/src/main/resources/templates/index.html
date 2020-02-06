@@ -41,9 +41,9 @@
         <div class="topbar">
             <div class="container">
                 <ul class="tp-lnks float-left">
-                    <li sec:authorize="!isAuthenticated()"><a  class="theme-clr" th:href="@{/login}">LOGIN</a>
+                    <li sec:authorize="!isAuthenticated()"><a class="theme-clr" th:href="@{/login}">LOGIN</a>
                         OR <a class="theme-clr" th:href="@{/registration}">SIGNUP</a></li>
-                    <li sec:authorize="isAuthenticated()"> <a class="theme-clr" th:href="@{/logout}">LOG OUT</a></li>
+                    <li sec:authorize="isAuthenticated()"><a class="theme-clr" th:href="@{/logout}">LOG OUT</a></li>
 
                     <!--                    <li>-->
                     <!--                                                    <div class="slc-wrp">-->
@@ -60,7 +60,7 @@
         <div class="menu-sec">
             <div class="container">
                 <div class="menu-sec-inner">
-                    <div class="logo"><a href="index.html" title="" itemprop="url"><img src="..static/images/logo1.png"
+                    <div class="logo"><a href="#" title="" itemprop="url"><img src="..static/images/logo1.png"
                                                                                         th:src="@{/images/logo1.png}"
                                                                                         alt="logo1.png"
                                                                                         itemprop="image"></a></div>
@@ -70,6 +70,13 @@
                                 <li><a href="#about" title="" itemprop="url">About</a></li>
                                 <li><a href="#team" title="" itemprop="url">Team</a></li>
                                 <li><a href="#contact" title="" itemprop="url">Contact</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <nav>
+                        <div>
+                            <ul>
+                                <li><a sec:authorize="isAuthenticated()" th:href="@{/profile}">My profile</a></li>
                             </ul>
                         </div>
                     </nav>

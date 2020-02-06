@@ -12,7 +12,9 @@ import com.example.demo.models.user.UserMapper;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletMapper;
+import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,8 +29,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private RoleService roleService;
-    private WalletService walletService;
+    private RoleRepository roleRepository;
+    private WalletRepository walletRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private VerificationTokenService verificationTokenService;
     private VerificationTokenMapper verificationTokenMapper;
@@ -36,16 +38,15 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
-                           RoleService roleService, WalletService walletService, VerificationTokenService verificationTokenService,
-                           VerificationTokenMapper verificationTokenMapper, EmailSenderServiceImpl emailSenderService ) {
+                           RoleRepository roleRepository, WalletRepository walletRepository, VerificationTokenService verificationTokenService,
+                           VerificationTokenMapper verificationTokenMapper, EmailSenderServiceImpl emailSenderService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
-        this.walletService = walletService;
+        this.roleRepository = roleRepository;
+        this.walletRepository = walletRepository;
         this.verificationTokenService = verificationTokenService;
         this.verificationTokenMapper = verificationTokenMapper;
         this.emailSenderService = emailSenderService;
-
     }
 
     @Override
@@ -79,14 +80,15 @@ public class UserServiceImpl implements UserService {
 
         //TODO change mapper methods names ?
         User user = UserMapper.createUser(userRegistrationDTO);
-        Role role = RoleMapper.createRole(userRegistrationDTO);
-        Wallet wallet = WalletMapper.registerWallet();
 
         User createdUser = userRepository.createUser(user);
-        role.setUserId(createdUser.getId());
-        roleService.createRole(role);
-        wallet.setUserId(createdUser.getId());
-        walletService.createWallet(wallet);
+
+        Role role = RoleMapper.createRole(createdUser);
+        roleRepository.createRole(role);
+
+        Wallet wallet = WalletMapper.createDefaultWallet(createdUser);
+        walletRepository.createWallet(wallet);
+
         VerificationToken verificationToken = verificationTokenMapper.createVerificationToken(createdUser.getId());
         verificationTokenService.create(verificationToken);
         SimpleMailMessage emailMessage =

@@ -17,22 +17,25 @@ import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 @Service
 public class WalletServiceImpl implements WalletService {
     private WalletRepository walletRepository;
-    private WalletMapper walletMapper;
     private UserService userService;
+    private WalletMapper walletMapper;
 
-    @Autowired
-    public WalletServiceImpl(WalletRepository walletRepository,
-                             WalletMapper walletMapper,
-                             UserService userService) {
+
+    public void setWalletRepository(WalletRepository walletRepository, WalletMapper walletMapper) {
         this.walletRepository = walletRepository;
         this.walletMapper = walletMapper;
+    }
+
+    @Autowired
+    public WalletServiceImpl(WalletRepository walletRepository,UserService userService) {
+        this.walletRepository = walletRepository;
         this.userService = userService;
     }
 
     @Override
     public Wallet createWallet(WalletCreationDTO walletCreationDTO, int userId) {
         walletCreationDTO.setUserId(userId);
-        Wallet wallet = walletMapper.mapWallet(walletCreationDTO);
+        Wallet wallet = walletMapper.createWallet(walletCreationDTO);
         User user = userService.getById(userId);
         if (user.getWallets().isEmpty()) {
             wallet.setWalletDefault(ENABLE);

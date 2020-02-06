@@ -6,7 +6,6 @@ import com.example.demo.exceptions.InvalidCardException;
 import com.example.demo.models.card.CardMapper;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
-import com.example.demo.models.user.User;
 import com.example.demo.repositories.CardDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

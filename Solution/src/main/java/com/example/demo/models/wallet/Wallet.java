@@ -66,4 +66,5 @@ public class Wallet {
     public boolean isWalletDefault() {
         return isWalletDefault;
     }
+
 }

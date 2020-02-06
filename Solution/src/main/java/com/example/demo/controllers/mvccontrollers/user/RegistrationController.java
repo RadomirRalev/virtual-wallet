@@ -55,7 +55,7 @@ public class RegistrationController {
             return "registration";
         }
 
-        return "register-account";
+        return "messages/register-account";
     }
 
     @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
@@ -72,9 +72,8 @@ public class RegistrationController {
             return "error";
         }
 
-        return "confirm-account";
+        return "messages/confirm-account";
     }
-
 
     @GetMapping("/userslist")
     public String getUsersList(@RequestParam(required = false, defaultValue = "1") Integer page,

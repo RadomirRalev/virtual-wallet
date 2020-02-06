@@ -1,8 +1,6 @@
 package com.example.demo.models.card;
 
-import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
-import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +15,6 @@ public class CardMapper {
     public CardMapper(UserService userService) {
         this.userService = userService;
     }
-
 
     public CardDetails mapCard(CardRegistrationDTO cardRegistrationDTO) {
         CardDetails cardDetails = new CardDetails();
