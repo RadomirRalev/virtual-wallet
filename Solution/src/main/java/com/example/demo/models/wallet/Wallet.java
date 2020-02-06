@@ -14,7 +14,7 @@ public class Wallet {
     @Column(name = "wallet_id")
     private int id;
     @Column(name = "balance")
-    private int balance;
+    private double balance;
     @Column(name = "name")
     private String name;
     @Column(name = "is_default")
@@ -35,11 +35,11 @@ public class Wallet {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

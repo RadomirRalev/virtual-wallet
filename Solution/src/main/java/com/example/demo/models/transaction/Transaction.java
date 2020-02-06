@@ -1,13 +1,13 @@
 package com.example.demo.models.transaction;
 
-import javax.persistence.*;
-import java.util.UUID;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class Transaction {
     @Id
     private int id;
-    private int amount;
+    private double amount;
     private String description;
     private String currency;
     private String idempotencyKey;
@@ -47,11 +47,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 }

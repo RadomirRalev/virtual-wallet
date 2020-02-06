@@ -5,7 +5,6 @@ import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-
 import java.io.IOException;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
@@ -35,11 +33,9 @@ public class ProfileController {
     @GetMapping("/profile")
     public String profile(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
-        int availableSum = userService.getAvailableSum(user.getId());
-        Wallet wallet = user.getWallets().get(0);
-        model.addAttribute("user", user);
-        model.addAttribute("wallet", wallet);
+        double availableSum = userService.getAvailableSum(user.getId());
         model.addAttribute("availableSum", availableSum);
+        model.addAttribute("user", user);
         return "user/profile";
     }
 

@@ -38,6 +38,8 @@ public class TransactionsController {
     @GetMapping("/deposit")
     public String makeDeposit(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        double availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
         model.addAttribute("depositDTO", new TransactionDTO());
         model.addAttribute("user", user);
         return "deposit";
@@ -62,6 +64,8 @@ public class TransactionsController {
     @GetMapping("/withdrawal")
     public String makeWithdrawal(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        double availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
         model.addAttribute("withdrawalDTO", new TransactionDTO());
         model.addAttribute("user", user);
         return "withdrawal";

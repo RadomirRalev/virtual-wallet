@@ -172,10 +172,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getAvailableSum(int userId) {
+    public double getAvailableSum(int userId) {
         List<Wallet> list = walletRepository.getWalletsbyUserId(userId);
         return list.stream()
-                .mapToInt(Wallet::getBalance)
+                .mapToDouble(Wallet::getBalance)
                 .sum();
     }
 

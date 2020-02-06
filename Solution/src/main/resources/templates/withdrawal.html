@@ -54,7 +54,7 @@
                                                         <div class="form-group col-md-9">
                                                             <label for="inputSum">Sum</label>
                                                             <p class="error-field" th:errors="*{amount}"></p>
-                                                            <input th:field="*{amount}" type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length===4) return false;" class="form-control" id="inputSum" placeholder="Insert sum" required>
+                                                            <input th:field="*{amount}" type="number" step=".01" min="0" onKeyPress="if(this.value.length===7) return false;" class="form-control" id="inputSum" placeholder="Insert sum" required>
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="inputCard">Pick card</label>
@@ -93,9 +93,9 @@
                         <div class="col-md-3 col-sm-6 col-lg-3">
                             <div class="sidebar-wrap">
                                 <div class="widget">
-                                    <h6 itemprop="headline">MONEY AVAILABLE</h6>
+                                    <h6 itemprop="headline">TOTAL MONEY AVAILABLE</h6>
                                     <form class="srch-frm">
-                                        <h5 itemprop="headline" style="text-align: center">$<span></span></h5>
+                                        <h5 itemprop="headline" style="text-align: center">$<span th:text="${availableSum}"></span></h5>
                                     </form>
                                 </div>
                                 <div class="widget">
@@ -129,6 +129,16 @@
             this.value = this.value.replace(/^0/, "")
         }
     })</script>
+<script>
+    $("#inputSum").blur(function(){
+        var num = parseFloat($(this).val());
+        var cleanNum = num.toFixed(2);
+        $(this).val(cleanNum);
+        if(num/cleanNum < 1){
+            $('#error').text('Please enter only 2 decimal places');
+        }
+    });
+</script>
 <!--scripts-->
 </body>
 </html>
