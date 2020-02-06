@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
 
@@ -16,4 +17,6 @@ public interface WalletService {
     List<Wallet> getWalletsbyUserId(int userId);
 
     Wallet updateWallet(Wallet walletToBeUpdated);
+
+    Wallet setAsDefault(Wallet walletToBeUpdated, User user);
 }

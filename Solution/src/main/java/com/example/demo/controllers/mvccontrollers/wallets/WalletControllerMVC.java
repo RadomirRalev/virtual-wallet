@@ -37,7 +37,7 @@ public class WalletControllerMVC {
     }
 
     @PostMapping("/createwallet")
-    public String createNewCard(@Valid @ModelAttribute("WalletCreationDTO") WalletCreationDTO walletCreationDTO,
+    public String createNewWallet(@Valid @ModelAttribute("WalletCreationDTO") WalletCreationDTO walletCreationDTO,
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "createwallet";
@@ -74,6 +74,23 @@ public class WalletControllerMVC {
         Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
         walletToUpdate.setName(walletUpdateDTO.getName());
         walletService.updateWallet(walletToUpdate);
+        return "redirect:/mywallets";
+    }
+
+    @GetMapping("/mywallets/setdefault")
+    public String setDefault(@RequestParam int id, Model model) {
+        Wallet wallet = walletService.getById(id);
+        WalletUpdateDTO walletUpdateDTO = new WalletUpdateDTO();
+        model.addAttribute("wallet", wallet);
+        model.addAttribute("walletUpdateDTO", walletUpdateDTO);
+        return "setdefault";
+    }
+
+    @PostMapping("mywallets/setdefault")
+    public String setAsDefault(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
+        Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
+        User user = walletToUpdate.getUser();
+        walletService.setAsDefault(walletToUpdate, user);
         return "redirect:/mywallets";
     }
 }

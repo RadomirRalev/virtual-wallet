@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.CARD_WITH_ID_NOT_EXISTS;
+import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 
 @Repository
@@ -75,4 +76,37 @@ public class WalletRepositoryImpl implements WalletRepository {
         }
     }
 
+    @Override
+    public Wallet getDefaultWallet(int userId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Wallet> query = session.createQuery("from Wallet where is_default = :status and user_id = :userid", Wallet.class);
+            query.setParameter("status", ENABLE);
+            query.setParameter("userid", userId);
+            return query.list().get(0);
+        }
+    }
+
+    @Override
+    public Wallet disableDefaultWallet(int walletId) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Wallet wallet = session.get(Wallet.class, walletId);
+            wallet.setWalletDefault(DISABLE);
+            session.saveOrUpdate(wallet);
+            session.getTransaction().commit();
+            return wallet;
+        }
+    }
+
+    @Override
+    public Wallet setAsDefault(Wallet walletToBeUpdated) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Wallet wallet = session.get(Wallet.class, walletToBeUpdated.getId());
+            wallet.setWalletDefault(ENABLE);
+            session.saveOrUpdate(wallet);
+            session.getTransaction().commit();
+            return wallet;
+        }
+    }
 }

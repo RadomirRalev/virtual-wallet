@@ -15,4 +15,10 @@ public interface WalletRepository {
     List<Wallet> getWalletsbyUserId(int userId);
 
     Wallet updateWallet(Wallet walletToBeUpdated);
+
+    Wallet getDefaultWallet(int userId);
+
+    Wallet disableDefaultWallet(int walletId);
+
+    Wallet setAsDefault(Wallet walletToBeUpdated);
 }
