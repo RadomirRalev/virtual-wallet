@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -104,6 +105,8 @@ public class ProfileController {
         return "user/confirm-identity";
     }
 
+
+    //TODO
     @PostMapping("/profile/confirm-identity")
     public String confirmIdentity(@Valid @ModelAttribute("confirmIdentityRegistrationDTO")
                                           ConfirmIdentityRegistrationDTO confirmIdentityRegistrationDTO,
@@ -112,7 +115,6 @@ public class ProfileController {
         String extension = FilenameUtils.getExtension(confirmIdentityRegistrationDTO.getFront_picture().getOriginalFilename());
         String extension1 = FilenameUtils.getExtension(confirmIdentityRegistrationDTO.getRear_picture().getOriginalFilename());
         String extension2 = FilenameUtils.getExtension(confirmIdentityRegistrationDTO.getSelfie().getOriginalFilename());
-        long kur = confirmIdentityRegistrationDTO.getSelfie().getSize();
 
         try {
             confirmIdentityService.createConfrimIdentity(confirmIdentityRegistrationDTO,user.getId() );
@@ -121,5 +123,15 @@ public class ProfileController {
             return "user/confirm-identity";
         }
         return "messages/success-confirm-identity";
+    }
+
+    @GetMapping("/profile/{username}")
+    public String account(@PathVariable("username") String username, Model model) {
+        String currentUser = currentPrincipalName();
+
+        model.addAttribute("user", userService.getByUsername(username));
+        model.addAttribute("currentuser", currentUser);
+
+        return "/user/profile";
     }
 }
