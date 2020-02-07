@@ -7,32 +7,25 @@ import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.TransactionRepository;
 import com.example.demo.repositories.WalletRepository;
-import com.example.demo.repositories.WalletRepositoryImpl;
-import com.example.demo.services.*;
+import com.example.demo.services.CardDetailsService;
+import com.example.demo.services.TransactionServiceImpl;
+import com.example.demo.services.UserService;
+import com.example.demo.services.WalletService;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.web.client.ResourceAccessException;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.demo.service.Factory.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doThrow;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -292,18 +285,18 @@ public class TransactionServiceTests {
 
     }
 
-    @Test(expected = ResourceAccessException.class)
-    public void createDepositShouldThrowException_WhenAPINotConnected() {
-        //Arrange
-        TransactionDTO transactionDTO = createTransactionDTO();
-        Deposit deposit = createDeposit();
-        Mockito.when(transactionService.getDeposit(transactionDTO))
-                .thenReturn(deposit);
-        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
-                .thenReturn(false);
-
-        //Act
-        transactionService.createDeposit(transactionDTO);
-    }
+//    @Test(expected = ResourceAccessException.class)
+//    public void createDepositShouldThrowException_WhenAPINotConnected() {
+//        //Arrange
+//        TransactionDTO transactionDTO = createTransactionDTO();
+//        Deposit deposit = createDeposit();
+//        Mockito.when(transactionService.getDeposit(transactionDTO))
+//                .thenReturn(deposit);
+//        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
+//                .thenReturn(false);
+//
+//        //Act
+//        transactionService.createDeposit(transactionDTO);
+//    }
 
 }

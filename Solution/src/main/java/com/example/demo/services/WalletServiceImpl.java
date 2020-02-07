@@ -20,16 +20,11 @@ public class WalletServiceImpl implements WalletService {
     private UserService userService;
     private WalletMapper walletMapper;
 
-
-    public void setWalletRepository(WalletRepository walletRepository, WalletMapper walletMapper) {
-        this.walletRepository = walletRepository;
-        this.walletMapper = walletMapper;
-    }
-
     @Autowired
-    public WalletServiceImpl(WalletRepository walletRepository,UserService userService) {
+    public WalletServiceImpl(WalletRepository walletRepository,UserService userService, WalletMapper walletMapper) {
         this.walletRepository = walletRepository;
         this.userService = userService;
+        this.walletMapper = walletMapper;
     }
 
     @Override

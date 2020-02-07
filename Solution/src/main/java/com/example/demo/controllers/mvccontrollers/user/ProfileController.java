@@ -6,7 +6,6 @@ import com.example.demo.models.user.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.UserService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-
 import java.io.IOException;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
@@ -128,10 +126,15 @@ public class ProfileController {
     @GetMapping("/profile/{username}")
     public String account(@PathVariable("username") String username, Model model) {
         String currentUser = currentPrincipalName();
+        try {
+            User user = userService.getByUsername(currentPrincipalName());
+            double availableSum = userService.getAvailableSum(user.getId());
+            model.addAttribute("availableSum", availableSum);
+        } catch (EntityNotFoundException e) {
 
+        }
         model.addAttribute("user", userService.getByUsername(username));
         model.addAttribute("currentuser", currentUser);
-
         return "/user/profile";
     }
 }

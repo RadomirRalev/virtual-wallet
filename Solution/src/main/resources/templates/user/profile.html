@@ -7,7 +7,7 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <title>Virtual Wallet</title>
-    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>
+<!--    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>-->
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
@@ -61,7 +61,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" alt="" src="" style="width: auto">
+                                            <img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" alt="" src="" style="width: 250px; height: 250px; border-radius: 8px">
                                         </div>
                                     </div><!-- Post Author -->
                                     <!-- Comment Reply -->

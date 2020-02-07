@@ -81,6 +81,10 @@ public class WalletControllerMVC {
     @GetMapping("/mywallets/setdefault")
     public String setDefault(@RequestParam int id, Model model) {
         Wallet wallet = walletService.getById(id);
+        User user = wallet.getUser();
+        if (!user.getUsername().equals(currentPrincipalName())) {
+            return "messages/access-denied";
+        }
         WalletUpdateDTO walletUpdateDTO = new WalletUpdateDTO();
         model.addAttribute("wallet", wallet);
         model.addAttribute("walletUpdateDTO", walletUpdateDTO);

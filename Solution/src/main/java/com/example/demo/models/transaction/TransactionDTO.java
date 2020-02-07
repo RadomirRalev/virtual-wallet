@@ -10,7 +10,7 @@ public class TransactionDTO {
     private int senderId;
     private int receiverId;
     private String type;
-    @Length(min = 2, max = 200)
+    @Length(min = 2, max = 200, message = "Description should be between 2 and 200 symbols.")
     private String description;
     private String idempotencyKey;
     @Pattern(regexp = "^[A-Z]{3}$", message = "Currency must be valid ISO code.")
