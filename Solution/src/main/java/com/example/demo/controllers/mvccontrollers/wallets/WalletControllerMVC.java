@@ -2,6 +2,7 @@ package com.example.demo.controllers.mvccontrollers.wallets;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidWalletException;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
 import com.example.demo.models.wallet.WalletUpdateDTO;

@@ -38,6 +38,8 @@ public class User {
     private String lastName;
     @Column(name = "blocked")
     private boolean blocked;
+    @Column (name = "confirm_identity")
+    private boolean confirm_identity;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy="user")
@@ -156,5 +158,13 @@ public class User {
 
     public void setWallets(List<Wallet> wallets) {
         this.wallets = wallets;
+    }
+
+    public boolean isConfirm_identity() {
+        return confirm_identity;
+    }
+
+    public void setConfirm_identity(boolean confirm_identity) {
+        this.confirm_identity = confirm_identity;
     }
 }

@@ -3,6 +3,8 @@ package com.example.demo.constants;
 public class ExceptionConstants {
     public static final String USER_USERNAME_NOT_FOUND = "User with username %s not found in the database.";
     public static final String USER_ID_NOT_FOUND = "User with id %d not found in the database.";
+    public static final String USER_CONFIRMIDENTITY_NOT_FOUND = "Picture of identity on user" +
+            " with id %d not found in the database.";
     public static final String USER_PHONE_NUMBER_NOT_FOUND = "User with phone number %s not found in the database.";
     public static final String USER_EMAIL_NOT_FOUND = "User with email %s not found in the database.";
     public static final String TOKEN_NOT_FOUND = "Token %s not found in the database.";

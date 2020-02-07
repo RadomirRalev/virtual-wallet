@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.models.role.Role;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -10,6 +11,7 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     private SessionFactory sessionFactory;
 
+    @Autowired
     public RoleRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
