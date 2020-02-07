@@ -13,11 +13,11 @@
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <style>
         .fixed-bg {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
 
         .fixed-bg2 {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
     </style>
     <!-- Styles -->
@@ -70,9 +70,9 @@
                             <div class="col-md-3 col-sm-6 col-lg-3">
                                 <div class="sidebar-wrap">
                                     <div class="widget">
-                                        <h6 itemprop="headline">MONEY AVAILABLE</h6>
+                                        <h6 itemprop="headline">TOTAL MONEY AVAILABLE</h6>
                                         <form class="srch-frm">
-                                            <h5 itemprop="headline" style="text-align: center">$<span th:text="${wallet.getBalance()}"></span></h5>
+                                            <h5 itemprop="headline" style="text-align: center">$<span th:text="${availableSum}"></span></h5>
                                         </form>
                                     </div>
                                     <div class="widget">

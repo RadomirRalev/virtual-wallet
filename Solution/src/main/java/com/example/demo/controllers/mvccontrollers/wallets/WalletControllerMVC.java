@@ -50,7 +50,7 @@ public class WalletControllerMVC {
             model.addAttribute("error", e.getMessage());
             return "createwallet";
         }
-        return "successcardregistration";
+        return "redirect:/mywallets";
     }
 
     @GetMapping("/mywallets")

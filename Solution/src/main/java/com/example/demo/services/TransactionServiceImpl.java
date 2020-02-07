@@ -56,8 +56,8 @@ public class TransactionServiceImpl implements TransactionService {
         List<Wallet> receiverList = deposit.getCardSender()
                 .getUser()
                 .getWallets();
-        int receiverId = receiverList.get(0).getId();
-        int balanceReceiver = walletRepository.getById(receiverId).getBalance() + deposit.getAmount();
+        int receiverId = deposit.getReceiver().getId();
+        double balanceReceiver = walletRepository.getById(receiverId).getBalance() + deposit.getAmount();
         //TODO Simplify lines 51-55
         return transactionRepository.createDeposit(deposit, balanceReceiver, receiverId);
     }
@@ -71,8 +71,8 @@ public class TransactionServiceImpl implements TransactionService {
         checkIfFundsAreEnough(internal.getSender(), internal.getAmount());
         int senderId = internal.getSender().getId();
         int receiverId = internal.getReceiver().getId();
-        int balanceSender = internal.getSender().getBalance() - internal.getAmount();
-        int balanceReceiver = internal.getReceiver().getBalance() + internal.getAmount();
+        double balanceSender = internal.getSender().getBalance() - internal.getAmount();
+        double balanceReceiver = internal.getReceiver().getBalance() + internal.getAmount();
         return transactionRepository.createInternal(internal, balanceSender, balanceReceiver, senderId, receiverId);
     }
 
@@ -83,7 +83,7 @@ public class TransactionServiceImpl implements TransactionService {
         int senderId = withdrawal.getSender().getId();
         int receiverId = withdrawal.getReceiver().getId();
         //TODO Check if receiver card exists
-        int balanceSender = withdrawal.getSender().getBalance() - withdrawal.getAmount();
+        double balanceSender = withdrawal.getSender().getBalance() - withdrawal.getAmount();
         return transactionRepository.createWithdrawal(withdrawal, balanceSender, senderId);
     }
 
@@ -113,7 +113,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void checkIfFundsAreEnough(Wallet sender, int amount) {
+    public void checkIfFundsAreEnough(Wallet sender, double amount) {
         if (sender.getBalance() - amount < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }

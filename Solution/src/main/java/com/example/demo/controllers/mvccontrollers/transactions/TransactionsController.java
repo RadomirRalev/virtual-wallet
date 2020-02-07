@@ -4,7 +4,6 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidTransactionException;
 import com.example.demo.models.transaction.TransactionDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
 import com.example.demo.services.TransactionService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +31,22 @@ public class TransactionsController {
     }
 
     @GetMapping("/transactions")
-    public String account(Model model) {
+    public String transactions(Model model) {
         return "transactions";
     }
 
     @GetMapping("/deposit")
     public String makeDeposit(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
-        Wallet wallet = user.getWallets().get(0);
+        double availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
         model.addAttribute("depositDTO", new TransactionDTO());
         model.addAttribute("user", user);
-        model.addAttribute("wallet", wallet);
         return "deposit";
     }
 
     @PostMapping("/deposit")
     public String createDeposit(@Valid @ModelAttribute("depositDTO") TransactionDTO transactionDTO,
-                             @Valid @ModelAttribute("wallet") Wallet wallet,
                              BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -60,6 +58,32 @@ public class TransactionsController {
             model.addAttribute("error", e.getMessage());
             return "deposit";
         }
-        return "success-card-registration";
+        return "redirect:mywallets";
+    }
+
+    @GetMapping("/withdrawal")
+    public String makeWithdrawal(Model model) {
+        User user = userService.getByUsername(currentPrincipalName());
+        double availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
+        model.addAttribute("withdrawalDTO", new TransactionDTO());
+        model.addAttribute("user", user);
+        return "withdrawal";
+    }
+
+    @PostMapping("/withdrawal")
+    public String createWithdrawal(@Valid @ModelAttribute("withdrawalDTO") TransactionDTO transactionDTO,
+                                BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "withdrawal";
+        }
+        try {
+            transactionService.createWithdrawal(transactionDTO);
+        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            model.addAttribute("error", e.getMessage());
+            return "withdrawal";
+        }
+        return "redirect:mywallets";
     }
 }

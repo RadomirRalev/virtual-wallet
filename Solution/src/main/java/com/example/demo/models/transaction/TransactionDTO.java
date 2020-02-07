@@ -2,12 +2,11 @@ package com.example.demo.models.transaction;
 
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 public class TransactionDTO {
 
-    private int amount;
+    private double amount;
     private int senderId;
     private int receiverId;
     private String type;
@@ -20,7 +19,7 @@ public class TransactionDTO {
     public TransactionDTO() {
     }
 
-    public TransactionDTO(int amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency) {
+    public TransactionDTO(double amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency) {
         this.amount = amount;
         this.senderId = senderId;
         this.type = type;
@@ -30,11 +29,11 @@ public class TransactionDTO {
         this.currency = currency;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

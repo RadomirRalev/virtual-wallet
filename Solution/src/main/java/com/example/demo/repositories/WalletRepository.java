@@ -21,4 +21,5 @@ public interface WalletRepository {
     Wallet disableDefaultWallet(int walletId);
 
     Wallet setAsDefault(Wallet walletToBeUpdated);
+
 }

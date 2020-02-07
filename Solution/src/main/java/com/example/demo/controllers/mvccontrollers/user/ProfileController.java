@@ -2,12 +2,15 @@ package com.example.demo.controllers.mvccontrollers.user;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.models.user.*;
+import com.example.demo.models.user.ConfirmIdentityRegistrationDTO;
+import com.example.demo.models.user.PasswordUpdateDTO;
+import com.example.demo.models.user.ProfileUpdateDTO;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.UserService;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
-import java.io.FilenameFilter;
 import java.io.IOException;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
@@ -26,20 +28,24 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 public class ProfileController {
     private UserService userService;
     private ConfirmIdentityService confirmIdentityService;
+    private WalletRepository walletRepository;
+
 
     @Autowired
-    public ProfileController(UserService userService, ConfirmIdentityService confirmIdentityService) {
+    public ProfileController(UserService userService,ConfirmIdentityService confirmIdentityService,
+                             WalletRepository walletRepository) {
         this.userService = userService;
         this.confirmIdentityService = confirmIdentityService;
+        this.walletRepository = walletRepository;
 
     }
 
     @GetMapping("/profile")
     public String profile(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
-        Wallet wallet = user.getWallets().get(0);
+        double availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
         model.addAttribute("user", user);
-        model.addAttribute("wallet", wallet);
         return "user/profile";
     }
 
@@ -79,7 +85,7 @@ public class ProfileController {
 
     @PostMapping("/profile/information")
     public String editProfileInformation(@Valid @ModelAttribute("profileUpdateDTO") ProfileUpdateDTO profileUpdateDTO,
-                                         Model model) {
+                                Model model) {
         try {
             User user = userService.getByUsername(currentPrincipalName());
             userService.updateUser(user, profileUpdateDTO);

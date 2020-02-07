@@ -1,8 +1,6 @@
 package com.example.demo.services;
 
 import com.example.demo.models.transaction.*;
-import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.wallet.Wallet;
 
 import java.util.List;
@@ -29,5 +27,5 @@ public interface TransactionService {
 
     Deposit getDeposit(TransactionDTO transactionDTO);
 
-    void checkIfFundsAreEnough(Wallet sender, int amount);
+    void checkIfFundsAreEnough(Wallet sender, double amount);
 }

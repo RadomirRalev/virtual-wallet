@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Deposit</title>
+    <title>Withdrawal</title>
     <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/css/picture.css}"/>
 
     <!-- Styles -->
@@ -47,9 +47,9 @@
                                 <div class="team-detail-inf-inr">
                                     <div class="row">
                                         <div class="col-md-9 col-sm-12 col-lg-9">
-                                            <h6 itemprop="headline">DEPOSIT MONEY</h6>
+                                            <h6 itemprop="headline">WITHDRAW MONEY</h6>
                                             <div class="team-detail-inf-itm">
-                                                <form th:action="@{/deposit}" th:object="${depositDTO}" method="post">
+                                                <form th:action="@{/withdrawal}" th:object="${withdrawalDTO}" method="post">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-9">
                                                             <label for="inputSum">Sum</label>
@@ -58,7 +58,7 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="inputCard">Pick card</label>
-                                                            <select th:field="*{senderId}" id="inputCard" class="form-control">
+                                                            <select th:field="*{receiverId}" id="inputCard" class="form-control">
                                                                 <option th:each="card : ${user.getCardDetails()}"
                                                                         th:value="${card.id}"
                                                                         th:text="${card.cardNumber}">...</option>
@@ -66,19 +66,11 @@
                                                         </div>
                                                         <div class="form-group col-md-6">
                                                             <label for="inputCard">Pick wallet (Default wallet pre-selected)</label>
-                                                            <select id="receiverId" name="receiverId" class="form-control">
+                                                            <select id="senderId" name="senderId" class="form-control">
                                                                 <option th:each="wallet1 : ${user.getWallets()}"
                                                                         th:value="${wallet1.id}"
                                                                         th:text="${wallet1.name}"
                                                                         th:selected="${wallet1.isWalletDefault()}">...</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            <label for="inputCurrency">Pick currency</label>
-                                                            <select th:field="*{currency}" id="inputCurrency" class="form-control">
-                                                                <option th:value="'BGN'" th:text="BGN"></option>
-                                                                <option th:value="'EUR'" th:text="EUR"></option>
-                                                                <option th:value="'USD'" th:text="USD"></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -87,7 +79,7 @@
                                                         <textarea th:field="*{description}" class="form-control" id="exampleFormControlTextarea1" rows="3" minlength="2" maxlength="200" required></textarea>
                                                     </div>
                                                     <div class="col-md-12 col-sm-12 col-lg-12">
-                                                        <button class="theme-btn theme-bg brd-rd30" type="submit">DEPOSIT
+                                                        <button class="theme-btn theme-bg brd-rd30" type="submit">WITHDRAW
                                                         </button>
                                                     </div>
                                                 </form>
@@ -133,10 +125,10 @@
 </script>
 <script>
     $("#inputSum").on("input", function() {
-    if (/^0/.test(this.value)) {
-        this.value = this.value.replace(/^0/, "")
-    }
-})</script>
+        if (/^0/.test(this.value)) {
+            this.value = this.value.replace(/^0/, "")
+        }
+    })</script>
 <script>
     $("#inputSum").blur(function(){
         var num = parseFloat($(this).val());
@@ -150,3 +142,4 @@
 <!--scripts-->
 </body>
 </html>
+

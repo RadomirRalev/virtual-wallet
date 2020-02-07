@@ -26,7 +26,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Internal createInternal(Internal internal, int balanceSender, int balanceReceiver, int senderId, int receiverId) {
+    public Internal createInternal(Internal internal, double balanceSender, double balanceReceiver, int senderId, int receiverId) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.save(internal);
@@ -42,7 +42,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Withdrawal createWithdrawal(Withdrawal withdrawal, int balanceSender, int senderId) {
+    public Withdrawal createWithdrawal(Withdrawal withdrawal, double balanceSender, int senderId) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.save(withdrawal);
@@ -57,7 +57,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public Deposit createDeposit(Deposit deposit, int balanceReceiver, int receiverId) {
+    public Deposit createDeposit(Deposit deposit, double balanceReceiver, int receiverId) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 session.save(deposit);
@@ -125,7 +125,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         }
     }
 
-    private void setBalance(int balance, int id, Session session) {
+    private void setBalance(double balance, int id, Session session) {
         org.hibernate.Transaction txn = session.beginTransaction();
         Query query = session.createQuery("update Wallet set balance = :balance where id = :id");
         query.setParameter("balance", balance);

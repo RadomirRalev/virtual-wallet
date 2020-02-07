@@ -146,9 +146,9 @@
                     </thead>
                     <tbody th:each="wallet : ${walletList}">
                     <tr>
-                        <td><div th:text="${wallet.name}"></div></td>
-                        <td><div th:text="${wallet.balance}"></div></td>
-                        <td><div th:text="${wallet.isWalletDefault()}"></div></td>
+                        <td><h6><div th:text="${wallet.name}"></div></h6></td>
+                        <td><h6><div th:text="${wallet.balance}"></div></h6></td>
+                        <td><h6><div th:text="${wallet.isWalletDefault()}"></div></h6></td>
                         <td style="position: relative">
                             <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                             <a th:href="@{/mywallets/editwallet(id=${wallet.id})}" class="edit" title="Edit Name" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>

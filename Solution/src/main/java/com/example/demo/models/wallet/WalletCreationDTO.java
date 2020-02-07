@@ -2,7 +2,7 @@ package com.example.demo.models.wallet;
 
 public class WalletCreationDTO {
     private int id;
-    private int balance;
+    private double balance;
     private int userId;
     //TODO validation
     private String name;
@@ -18,11 +18,11 @@ public class WalletCreationDTO {
         this.id = id;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 
