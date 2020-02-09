@@ -193,4 +193,19 @@ public class UserServiceImpl implements UserService {
     public boolean isPhoneNumberExist(String phoneNumber) {
         return userRepository.isPhoneNumberExist(phoneNumber);
     }
+
+    @Override
+    public List<User> searchByUsername(String username) {
+        return userRepository.searchByUsername(username);
+    }
+
+    @Override
+    public List<User> searchByPhoneNumber(String phoneNum) {
+        return userRepository.searchByPhoneNumber(phoneNum);
+    }
+
+    @Override
+    public List<User> searchByEmail(String email) {
+        return userRepository.searchByEmail(email);
+    }
 }

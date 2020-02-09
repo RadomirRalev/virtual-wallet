@@ -77,10 +77,27 @@
                                     </div>
                                     <div class="widget">
                                         <h6 itemprop="headline">SEARCH</h6>
-                                        <form class="srch-frm">
-                                            <input type="text" placeholder="Enter your keywords">
-                                            <button type="submit"><i class="fas fa-search"></i></button>
-                                        </form>
+                                        <div class="jn-frm-wrp">
+                                            <form class="jn-frm" th:action="@{/search}" method="get">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                        <input type="text" th:name="text" placeholder="Contact" minlength="4" required>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                        <div class="slc-wrp">
+                                                            <select th:name="criterium" class="selectpicker show-tick">
+                                                                <option th:value="username">Username</option>
+                                                                <option th:value="phonenumber">Phone number</option>
+                                                                <option th:value="email">E-mail</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                        <button class="theme-btn theme-bg" type="submit">Search</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div><!-- Sidebar Wrap -->
                             </div>
@@ -98,6 +115,11 @@
 </main><!-- Project Main Wrapper -->
 <!--scripts-->
 <div th:insert="fragments/scriptsfragments :: scripts"></div>
+<script>
+    $(function() {
+        $('.selectpicker').selectpicker();
+    });
+</script>
 <!--scripts-->
 </body>
 </html>

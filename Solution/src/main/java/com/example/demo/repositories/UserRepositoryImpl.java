@@ -200,4 +200,31 @@ public class UserRepositoryImpl implements UserRepository {
                     .list().isEmpty();
         }
     }
+
+    @Override
+    public List<User> searchByUsername(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username like :username");
+            query.setParameter("username", "%" + username + "%");
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> searchByPhoneNumber(String phoneNum) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum");
+            query.setParameter("phoneNum", phoneNum);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> searchByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where email like :email");
+            query.setParameter("email", "%" + email + "%");
+            return query.list();
+        }
+    }
 }

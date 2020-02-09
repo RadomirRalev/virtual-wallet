@@ -43,7 +43,7 @@
                                 <h5 itemprop="headline">EDIT WALLET</h5>
                                 <form th:action="@{/mywallets/editwallet}" th:object="${walletUpdateDTO}" class="reply-form" method="post" name="form1">
                                     <div class="form-group">
-                                        <select th:field="*{id}" class="form-control" id="beerid" style="display: none;">
+                                        <select th:field="*{id}" class="form-control" id="walletid" style="display: none;">
                                             <option th:value="${wallet.getId()}"
                                                     th:text="${wallet.getId()}"></option>
                                         </select>

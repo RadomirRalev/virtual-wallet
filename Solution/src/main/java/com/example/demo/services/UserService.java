@@ -39,4 +39,11 @@ public interface UserService {
     List<User> getUsersPaginatedHibernate(Integer page);
 
     double getAvailableSum(int userId);
+
+    List<User> searchByUsername(String username);
+
+    List<User> searchByPhoneNumber(String phoneNum);
+
+    List<User> searchByEmail(String email);
+
 }

@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Virtual Wallet</title>
+    <title>Search Results</title>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <style>
         .fixed-bg {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
 
         .fixed-bg2 {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
     </style>
     <!-- Styles -->
@@ -33,24 +33,18 @@
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
-    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Users List', currentpage = 'Users List')"></section>
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
     <!-- Secondary Header Text -->
     <section>
         <div class="spacing">
             <div class="container">
                 <div class="ico-stat-tabl brd-rd5">
                     <table>
-                        <thead><tr><th>ID</th><th>USERNAME</th><th>E-MAIL</th><th>PHONE NUMBER</th><th>PICTURE</th><th>FIRST NAME</th><th>LAST NAME</th><th></th></tr></thead>
+                        <thead><tr><th>USERNAME</th><th>PICTURE</th><th>FIRST NAME</th><th>LAST NAME</th><th></th></tr></thead>
                         <tbody th:each="user : ${users}">
                         <tr>
-                            <!--                            User ID-->
-                            <td><div th:text="${user.getId()}"></div></td>
                             <!--                            Username-->
                             <td><div th:text="${user.getUsername()}"></div></td>
-                            <!--                            Email-->
-                            <td><div th:text="${user.getEmail()}"></div></td>
-                            <!--                            Phone number-->
-                            <td><div th:text="${user.getPhoneNumber()}"></div></td>
                             <!--                            Picture-->
                             <td><img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" width="50" height="50" alt="" src="">
                                 <img th:if="${user.picture.isEmpty()}"
@@ -62,8 +56,10 @@
                             <td><div th:text="${user.getLastName()}"></div></td>
                             <!--                        Send money-->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
-                                <button class="theme-btn theme-bg brd-rd30" type="submit">SEND MONEY
+                                <form th:action="@{/walletstransaction}">
+                                <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn theme-bg brd-rd30" type="submit">SEND MONEY
                                 </button>
+                                </form>
                             </div></td>
                         </tr>
                         </tbody>
@@ -76,26 +72,26 @@
                         <div class="page-item brd-rd30" th:each="page : ${pages}">
                             <a class="page-link" th:href="@{/userslist/(page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
                         </div>
-<!--                            <div th:if="${pages.size() == 1}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                            </div>-->
-<!--                            <div th:if="${pages.size() == 2}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                            </div>-->
-<!--                            <div th:if="${pages.size() == 3}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
-<!--                            </div>-->
-<!--                            <div th:unless="${pages.size() <= 3}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
-<!--                                <i>...............</i>-->
-<!--                                <a class="page-link" href="#" title="" itemprop="url" th:href="@{/userslist/(page=${pages.get(pages.size() - 1)})}" th:text="${pages.get(pages.l() - 1)}"></a>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <!--                            <div th:if="${pages.size() == 1}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:if="${pages.size() == 2}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:if="${pages.size() == 3}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:unless="${pages.size() <= 3}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
+                        <!--                                <i>...............</i>-->
+                        <!--                                <a class="page-link" href="#" title="" itemprop="url" th:href="@{/userslist/(page=${pages.get(pages.size() - 1)})}" th:text="${pages.get(pages.l() - 1)}"></a>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
                         <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
                     </div>
                 </div><!-- Pagination Wrap -->

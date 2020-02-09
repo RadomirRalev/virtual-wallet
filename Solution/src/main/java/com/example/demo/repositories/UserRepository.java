@@ -35,4 +35,11 @@ public interface UserRepository {
     List<User> getUsersPaginatedHibernate(Integer page);
 
     boolean doesUserExist(int id);
+
+    List<User> searchByUsername(String username);
+
+    List<User> searchByPhoneNumber(String phoneNum);
+
+    List<User> searchByEmail(String email);
+
 }

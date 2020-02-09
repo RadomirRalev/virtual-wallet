@@ -13,13 +13,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
@@ -136,5 +134,27 @@ public class ProfileController {
         model.addAttribute("user", userService.getByUsername(username));
         model.addAttribute("currentuser", currentUser);
         return "/user/profile";
+    }
+
+    @GetMapping("/search")
+    public String filterUsers(@RequestParam String text,
+                              @RequestParam(value = "criterium") String criterium
+            , Model model) {
+        List<User> searchResult;
+        switch(criterium) {
+            case "username" :
+                searchResult = userService.searchByUsername(text);
+                model.addAttribute("users", searchResult);
+                break;
+            case "phonenumber" :
+                searchResult = userService.searchByPhoneNumber(text);
+                model.addAttribute("users", searchResult);
+                break;
+            case "email" :
+                searchResult = userService.searchByEmail(text);
+                model.addAttribute("users", searchResult);
+                break;
+        }
+        return "searchresults";
     }
 }

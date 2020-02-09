@@ -4,8 +4,10 @@ import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidTransactionException;
 import com.example.demo.models.transaction.TransactionDTO;
 import com.example.demo.models.user.User;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.services.TransactionService;
 import com.example.demo.services.UserService;
+import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -22,12 +25,14 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 public class TransactionsController {
     private UserService userService;
     private TransactionService transactionService;
+    private WalletService walletService;
 
 
     @Autowired
-    public TransactionsController(UserService userService, TransactionService transactionService) {
+    public TransactionsController(UserService userService, TransactionService transactionService, WalletService walletService) {
         this.userService = userService;
         this.transactionService = transactionService;
+        this.walletService = walletService;
     }
 
     @GetMapping("/transactions")
@@ -83,6 +88,37 @@ public class TransactionsController {
         } catch (DuplicateEntityException | InvalidTransactionException e) {
             model.addAttribute("error", e.getMessage());
             return "withdrawal";
+        }
+        return "redirect:mywallets";
+    }
+
+    @GetMapping("/walletstransaction")
+    public String makeWalletToWalletTransaction(@RequestParam int receiverId,
+            Model model) {
+        User sender = userService.getByUsername(currentPrincipalName());
+        User receiver = userService.getById(receiverId);
+        Wallet receiverWallet= walletService.getDefaultWallet(receiverId);
+        double availableSum = userService.getAvailableSum(sender.getId());
+        model.addAttribute("availableSum", availableSum);
+        model.addAttribute("walletsTransactionDTO", new TransactionDTO());
+        model.addAttribute("sender", sender);
+        model.addAttribute("receiver", receiver);
+        model.addAttribute("receiverWallet", receiverWallet);
+        return "walletstransaction";
+    }
+
+    @PostMapping("/walletstransaction")
+    public String createWalletToWalletTransaction(@Valid @ModelAttribute("walletsTransactionDTO") TransactionDTO transactionDTO,
+                                   BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "walletstransaction";
+        }
+        try {
+            transactionService.createInternal(transactionDTO);
+        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            model.addAttribute("error", e.getMessage());
+            return "walletstransaction";
         }
         return "redirect:mywallets";
     }

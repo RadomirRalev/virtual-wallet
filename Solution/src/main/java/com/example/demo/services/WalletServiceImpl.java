@@ -65,4 +65,10 @@ public class WalletServiceImpl implements WalletService {
         walletRepository.disableDefaultWallet(defaultWallet.getId());
         return walletRepository.setAsDefault(walletToBeUpdated);
     }
+
+    @Override
+    public Wallet getDefaultWallet(int userId) {
+        return walletRepository.getDefaultWallet(userId);
+    }
+
 }
