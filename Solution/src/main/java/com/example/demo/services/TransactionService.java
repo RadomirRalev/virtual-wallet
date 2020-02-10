@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionService {
@@ -28,4 +29,8 @@ public interface TransactionService {
     Deposit getDeposit(TransactionDTO transactionDTO);
 
     void checkIfFundsAreEnough(Wallet sender, double amount);
+
+    List<Transaction> getTransactionsByUserId(int userId);
+
+    List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId);
 }

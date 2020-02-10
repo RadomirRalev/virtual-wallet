@@ -15,6 +15,8 @@ public class TransactionDTO {
     private String idempotencyKey;
     @Pattern(regexp = "^[A-Z]{3}$", message = "Currency must be valid ISO code.")
     private String currency;
+    private String senderName;
+    private String receiverName;
 
     public TransactionDTO() {
     }
@@ -83,5 +85,13 @@ public class TransactionDTO {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
     }
 }

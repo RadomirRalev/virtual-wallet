@@ -19,9 +19,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
+import static com.example.demo.constants.FormatConstants.df2;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
     private VerificationTokenService verificationTokenService;
     private VerificationTokenMapper verificationTokenMapper;
     private EmailSenderServiceImpl emailSenderService;
+
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
@@ -109,17 +112,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUsername(String username) {
         return userRepository.getByUsername(username);
-
-        //TODO
-//        int walletId = 0;
-//        if (user.getWallets().stream().map(Wallet::getCurrency).anyMatch(s -> s.equals("USD"))) {
-//            walletId = user.getWallets().stream()
-//                    .findFirst()
-//                    .filter(wallet -> wallet.getCurrency().equals("USD"))
-//                    .get()
-//                    .getId();
-//        }
-//        System.out.println(walletId);
     }
 
     @Override
@@ -172,11 +164,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public double getAvailableSum(int userId) {
-        List<Wallet> list = walletRepository.getWalletsbyUserId(userId);
-        return list.stream()
-                .mapToDouble(Wallet::getBalance)
-                .sum();
+    public String getAvailableSum(int userId) {
+        double availableSum = getSum(userId);
+        df2.setRoundingMode(RoundingMode.UP);
+        return df2.format(availableSum);
     }
 
     @Override
@@ -207,5 +198,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchByEmail(String email) {
         return userRepository.searchByEmail(email);
+    }
+
+    private double getSum(int userId) {
+        List<Wallet> list = walletRepository.getWalletsbyUserId(userId);
+        return list.stream()
+                .mapToDouble(Wallet::getBalance)
+                .sum();
     }
 }

@@ -1,14 +1,11 @@
 package com.example.demo.models.transaction;
 
-import com.example.demo.models.wallet.Wallet;
 import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
 import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
 
 @Component
@@ -34,6 +31,8 @@ public class TransactionMapper {
         deposit.setIdempotencyKey(UUID.randomUUID().toString());
         deposit.setCardSender(cardDetailsService.getById(transactionDTO.getSenderId()));
         deposit.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
+        deposit.setSenderName(cardDetailsService.getById(transactionDTO.getSenderId()).getCardNumber());
+        deposit.setReceiverName(walletService.getById(transactionDTO.getReceiverId()).getName());
         return deposit;
     }
 
@@ -45,6 +44,8 @@ public class TransactionMapper {
         internal.setCurrency(transactionDTO.getCurrency());
         internal.setSender(walletService.getById(transactionDTO.getSenderId()));
         internal.setReceiver(walletService.getById(transactionDTO.getReceiverId()));
+        internal.setSenderName(walletService.getById(transactionDTO.getSenderId()).getName());
+        internal.setReceiverName(walletService.getById(transactionDTO.getReceiverId()).getUser().getUsername());
         return internal;
     }
 
@@ -56,6 +57,8 @@ public class TransactionMapper {
         withdrawal.setCurrency(transactionDTO.getCurrency());
         withdrawal.setSender(walletService.getById(transactionDTO.getSenderId()));
         withdrawal.setReceiver(cardDetailsService.getById(transactionDTO.getReceiverId()));
+        withdrawal.setSenderName(walletService.getById(transactionDTO.getSenderId()).getName());
+        withdrawal.setReceiverName(cardDetailsService.getById(transactionDTO.getReceiverId()).getCardNumber());
         return withdrawal;
     }
 }

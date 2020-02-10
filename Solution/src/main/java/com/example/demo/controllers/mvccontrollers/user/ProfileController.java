@@ -2,12 +2,15 @@ package com.example.demo.controllers.mvccontrollers.user;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.models.transaction.DateFilterDTO;
+import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.user.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.ConfirmIdentityService;
+import com.example.demo.services.TransactionService;
 import com.example.demo.services.UserService;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
@@ -26,21 +31,23 @@ public class ProfileController {
     private UserService userService;
     private ConfirmIdentityService confirmIdentityService;
     private WalletRepository walletRepository;
+    private TransactionService transactionService;
 
 
     @Autowired
     public ProfileController(UserService userService,ConfirmIdentityService confirmIdentityService,
-                             WalletRepository walletRepository) {
+                             WalletRepository walletRepository, TransactionService transactionService) {
         this.userService = userService;
         this.confirmIdentityService = confirmIdentityService;
         this.walletRepository = walletRepository;
+        this.transactionService = transactionService;
 
     }
 
     @GetMapping("/profile")
     public String profile(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
-        double availableSum = userService.getAvailableSum(user.getId());
+        String availableSum = userService.getAvailableSum(user.getId());
         model.addAttribute("availableSum", availableSum);
         model.addAttribute("user", user);
         return "user/profile";
@@ -126,7 +133,7 @@ public class ProfileController {
         String currentUser = currentPrincipalName();
         try {
             User user = userService.getByUsername(currentPrincipalName());
-            double availableSum = userService.getAvailableSum(user.getId());
+            String availableSum = userService.getAvailableSum(user.getId());
             model.addAttribute("availableSum", availableSum);
         } catch (EntityNotFoundException e) {
 
@@ -156,5 +163,30 @@ public class ProfileController {
                 break;
         }
         return "searchresults";
+    }
+
+    @GetMapping("/transactionhistory")
+    public String getTransactionHistory(Model model) {
+        User user = userService.getByUsername(currentPrincipalName());
+        List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId());
+        model.addAttribute("transactionHistory", transactionHistory);
+        model.addAttribute("user", user);
+        model.addAttribute("dateFilterDTO", new DateFilterDTO());
+        return "transactionhistory";
+    }
+
+    @GetMapping("/transactionshistory/filterbydate")
+    public String getTransactionsByDate(Model model,
+                                        @ModelAttribute("dateFilterDTO") DateFilterDTO dateFilterDTO) {
+        User user = userService.getByUsername(currentPrincipalName());
+        String start = dateFilterDTO.getStartDate();
+        String end = dateFilterDTO.getEndDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate startDate = LocalDate.parse(start, formatter);
+        LocalDate endDate = LocalDate.parse(end, formatter);
+        List<Transaction> filteredTransactions = transactionService.getTransactionsByDate(startDate, endDate, user.getId());
+        model.addAttribute("dateFilterDTO", dateFilterDTO);
+        model.addAttribute("transactionHistory", filteredTransactions);
+        return "transactionhistory";
     }
 }

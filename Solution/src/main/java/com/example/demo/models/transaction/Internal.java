@@ -18,6 +18,7 @@ public class Internal extends Transaction {
     @JoinColumn(name = "receiver_id")
     private Wallet receiver;
 
+    @Override
     public Wallet getSender() {
         return sender;
     }
@@ -26,6 +27,7 @@ public class Internal extends Transaction {
         this.sender = sender;
     }
 
+    @Override
     public Wallet getReceiver() {
         return receiver;
     }

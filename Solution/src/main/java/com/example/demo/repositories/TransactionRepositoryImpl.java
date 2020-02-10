@@ -2,6 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.user.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,6 +109,26 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
+    public List<Transaction> getTransactionsByUserId(int id) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Transaction> queryInternalSender = session.createQuery("select sender from Internal where sender.user.id = :id", Transaction.class);
+            Query<Transaction> queryInternalReceiver = session.createQuery("select receiver from Internal where receiver.user.id = :id", Transaction.class);
+            Query<Transaction> queryDepositReceiver = session.createQuery("select receiver from Deposit where receiver.user.id = :id", Transaction.class);
+            Query<Transaction> queryWithdrawal = session.createQuery("select sender from Withdrawal where sender.user.id = :id", Transaction.class);
+            queryInternalSender.setParameter("id", id);
+            queryInternalReceiver.setParameter("id", id);
+            queryDepositReceiver.setParameter("id", id);
+            queryWithdrawal.setParameter("id", id);
+            List<Transaction> result = new ArrayList<>();
+            result.addAll(queryInternalSender.list());
+            result.addAll(queryInternalReceiver.list());
+            result.addAll(queryDepositReceiver.list());
+            result.addAll(queryWithdrawal.list());
+            return result;
+        }
+    }
+
+    @Override
     public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
         try (Session session = sessionFactory.openSession()) {
             Query<Transaction> queryInternal = session.createQuery("from Internal " +
@@ -123,6 +146,39 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             result.addAll(queryWithdrawal.list());
             return !result.isEmpty();
         }
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Transaction> queryInternalSender = session.createQuery("from Internal " +
+                    " where date between :startDate and :endDate and sender.user.id = :userId", Transaction.class);
+            Query<Transaction> queryInternalReceiver = session.createQuery("from Internal " +
+                    "where date between :startDate and :endDate and receiver.user.id = :userId", Transaction.class);
+            Query<Transaction> queryDeposit = session.createQuery("from Deposit " +
+                    "where date between :startDate and :endDate and receiver.user.id = :userId", Transaction.class);
+            Query<Transaction> queryWithdrawal = session.createQuery("from Withdrawal " +
+                    "where date between :startDate and :endDate and sender.user.id = :userId", Transaction.class);
+            queryInternalSender.setParameter("startDate", startDate);
+            queryInternalSender.setParameter("endDate", endDate);
+            queryInternalSender.setParameter("userId", userId);
+            queryInternalReceiver.setParameter("startDate", startDate);
+            queryInternalReceiver.setParameter("endDate", endDate);
+            queryInternalReceiver.setParameter("userId", userId);
+            queryDeposit.setParameter("startDate", startDate);
+            queryDeposit.setParameter("endDate", endDate);
+            queryDeposit.setParameter("userId", userId);
+            queryWithdrawal.setParameter("startDate", startDate);
+            queryWithdrawal.setParameter("endDate", endDate);
+            queryWithdrawal.setParameter("userId", userId);
+            List<Transaction> result = new ArrayList<>();
+            result.addAll(queryInternalSender.list());
+            result.addAll(queryInternalReceiver.list());
+            result.addAll(queryDeposit.list());
+            result.addAll(queryWithdrawal.list());
+            return result;
+        }
+
     }
 
     private void setBalance(double balance, int id, Session session) {

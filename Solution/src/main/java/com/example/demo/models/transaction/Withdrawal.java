@@ -19,6 +19,7 @@ public class Withdrawal extends Transaction {
     @JoinColumn(name = "receiver_card_id")
     private CardDetails receiver;
 
+    @Override
     public Wallet getSender() {
         return sender;
     }
@@ -27,6 +28,7 @@ public class Withdrawal extends Transaction {
         this.sender = sender;
     }
 
+    @Override
     public CardDetails getReceiver() {
         return receiver;
     }

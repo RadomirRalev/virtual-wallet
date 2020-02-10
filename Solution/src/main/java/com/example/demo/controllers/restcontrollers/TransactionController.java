@@ -1,21 +1,18 @@
 package com.example.demo.controllers.restcontrollers;
 
-import com.example.demo.exceptions.*;
+import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
+import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
 import com.example.demo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
-
-import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 
 @RestController
 @RequestMapping("api/transaction")
@@ -68,6 +65,15 @@ public class TransactionController {
     public Deposit createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createDeposit(transactionDTO);
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PostMapping("/walletstransaction")
+    public Internal createWalletsTransaction(@RequestBody @Valid TransactionDTO transactionDTO) {
+        try {
+            return transactionService.createInternal(transactionDTO);
         } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

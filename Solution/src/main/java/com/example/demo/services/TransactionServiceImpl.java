@@ -4,6 +4,7 @@ import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
@@ -11,6 +12,8 @@ import com.example.demo.repositories.WalletRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
@@ -39,6 +42,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public List<Transaction> getTransactionsByUserId(int userId) {
+        List<Wallet> wallets = walletRepository.getWalletsbyUserId(userId);
+        List<Transaction> result = new ArrayList<>();
+        for (Wallet wallet : wallets) {
+            result.addAll(transactionRepository.getTransactionsbyWalletId(wallet.getId()));
+        }
+        return result;
+    }
+
+    @Override
     public List<Transaction> getTransactionsbyWalletId(int id) {
         if (checkIfWalletIdExists(id)) {
                 throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
@@ -53,7 +66,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
         }
         communicateWithApi(deposit);
-        List<Wallet> receiverList = deposit.getCardSender()
+        List<Wallet> receiverList = deposit.getSender()
                 .getUser()
                 .getWallets();
         int receiverId = deposit.getReceiver().getId();
@@ -117,5 +130,10 @@ public class TransactionServiceImpl implements TransactionService {
         if (sender.getBalance() - amount < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId) {
+        return transactionRepository.getTransactionsByDate(startDate, endDate, userId);
     }
 }

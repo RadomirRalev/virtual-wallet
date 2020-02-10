@@ -1,16 +1,23 @@
 package com.example.demo.models.transaction;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.time.LocalDate;
 
 @MappedSuperclass
-public class Transaction {
+public abstract class Transaction {
     @Id
     private int id;
     private double amount;
+    @DateTimeFormat
+    private LocalDate date;
     private String description;
     private String currency;
     private String idempotencyKey;
+    private String senderName;
+    private String receiverName;
 
     public Transaction() {
     }
@@ -54,4 +61,32 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public abstract Object getSender();
+
+    public abstract Object getReceiver();
 }

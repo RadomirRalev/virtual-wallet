@@ -19,7 +19,8 @@ public class Deposit extends Transaction {
     public Deposit() {
     }
 
-    public CardDetails getCardSender() {
+    @Override
+    public CardDetails getSender() {
         return sender;
     }
 
@@ -27,6 +28,7 @@ public class Deposit extends Transaction {
         this.sender = sender;
     }
 
+    @Override
     public Wallet getReceiver() {
         return receiver;
     }
@@ -34,4 +36,5 @@ public class Deposit extends Transaction {
     public void setReceiver(Wallet receiver) {
         this.receiver = receiver;
     }
+
 }

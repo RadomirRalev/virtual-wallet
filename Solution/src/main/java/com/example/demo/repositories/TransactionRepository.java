@@ -5,6 +5,7 @@ import com.example.demo.models.transaction.Internal;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.Withdrawal;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository {
@@ -19,5 +20,9 @@ public interface TransactionRepository {
     Deposit createDeposit(Deposit deposit, double balanceReceiver, int receiverId);
 
     boolean checkIfIdempotencyKeyExists(String idempotencyKey);
+
+    List<Transaction> getTransactionsByUserId(int userId);
+
+    List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId);
 
 }
