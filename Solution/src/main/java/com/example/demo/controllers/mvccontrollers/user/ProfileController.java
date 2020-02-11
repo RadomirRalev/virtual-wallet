@@ -2,7 +2,7 @@ package com.example.demo.controllers.mvccontrollers.user;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.models.transaction.DateFilterDTO;
+import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.user.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
@@ -171,22 +169,21 @@ public class ProfileController {
         List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId());
         model.addAttribute("transactionHistory", transactionHistory);
         model.addAttribute("user", user);
-        model.addAttribute("dateFilterDTO", new DateFilterDTO());
-        return "transactionhistory";
+        model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        return "user/transactionhistory";
     }
 
-    @GetMapping("/transactionshistory/filterbydate")
-    public String getTransactionsByDate(Model model,
-                                        @ModelAttribute("dateFilterDTO") DateFilterDTO dateFilterDTO) {
+    @GetMapping("filteredtransactions")
+    public String filterTransactions(Model model,
+                                        @RequestParam String startDate,
+                                        @RequestParam String endDate,
+                                        @RequestParam String searchRecipient,
+                                        @RequestParam String direction) {
         User user = userService.getByUsername(currentPrincipalName());
-        String start = dateFilterDTO.getStartDate();
-        String end = dateFilterDTO.getEndDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate startDate = LocalDate.parse(start, formatter);
-        LocalDate endDate = LocalDate.parse(end, formatter);
-        List<Transaction> filteredTransactions = transactionService.getTransactionsByDate(startDate, endDate, user.getId());
-        model.addAttribute("dateFilterDTO", dateFilterDTO);
+        int userId = user.getId();
+        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId);
         model.addAttribute("transactionHistory", filteredTransactions);
-        return "transactionhistory";
+        model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        return "user/filteredtransactions";
     }
 }

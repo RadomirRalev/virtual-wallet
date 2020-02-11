@@ -9,6 +9,7 @@ public class TransactionDTO {
     private double amount;
     private int senderId;
     private int receiverId;
+    @Length(min = 2, max = 50, message = "Type should be between 2 and 50 symbols.")
     private String type;
     @Length(min = 2, max = 200, message = "Description should be between 2 and 200 symbols.")
     private String description;

@@ -18,6 +18,7 @@ public abstract class Transaction {
     private String idempotencyKey;
     private String senderName;
     private String receiverName;
+    private String type;
 
     public Transaction() {
     }
@@ -84,6 +85,14 @@ public abstract class Transaction {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public abstract Object getSender();

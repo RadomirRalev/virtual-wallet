@@ -3,7 +3,6 @@ package com.example.demo.services;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionService {
@@ -32,5 +31,9 @@ public interface TransactionService {
 
     List<Transaction> getTransactionsByUserId(int userId);
 
-    List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId);
+    List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId);
+
+    List<Transaction> getTransactionsByDate(String direction, String startDate, String endDate, int userId);
+
+    List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId);
 }

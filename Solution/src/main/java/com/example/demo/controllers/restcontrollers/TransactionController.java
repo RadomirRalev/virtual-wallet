@@ -53,7 +53,7 @@ public class TransactionController {
     }
 
     @PostMapping("/withdrawal")
-    public Withdrawal createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
+    public Transaction createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createWithdrawal(transactionDTO);
         } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException e) {
@@ -62,7 +62,7 @@ public class TransactionController {
     }
 
     @PostMapping("/deposit")
-    public Deposit createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
+    public Transaction createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
             return transactionService.createDeposit(transactionDTO);
         } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {

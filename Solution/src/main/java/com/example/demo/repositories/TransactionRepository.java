@@ -23,6 +23,10 @@ public interface TransactionRepository {
 
     List<Transaction> getTransactionsByUserId(int userId);
 
-    List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId);
+    List<Transaction> getTransactionsByUserId(String direction, String recipientSearchString, int userId);
+
+    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, int userId);
+
+    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, String recipientSearchString, int userId);
 
 }

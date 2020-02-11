@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Transaction History</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <style>
+        .fixed-bg {
+            background-image: url(../../static/images/pg-tp-bg.jpg);
+        }
+
+        .fixed-bg2 {
+            background-image: url(../../static/images/pg-tp-bg.jpg);
+        }
+    </style>
+    <!-- Styles -->
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+<main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
+    <!-- Header -->
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <!-- Secondary Header Text -->
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+        <div class="spacing">
+            <div class="container">
+                <form class="form-inline" th:action="@{/filteredtransactions}" th:object="${transactionFilterDTO}">
+                    <div class="form-group"  style="padding: 6px">
+                        <div class='input-group date' id='datetimepicker6'>
+                            <input type='text' class="form-control" th:field="*{startDate}" placeholder="Start Date"/>
+                            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="padding: 6px">
+                        <div class='input-group date' id='datetimepicker7'>
+                            <input type='text' class="form-control" th:field="*{endDate}" placeholder="End Date"/>
+                            <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" th:field="*{searchRecipient}" placeholder="Search by recipient">
+                    </div>
+                    <div class="form-group" style="padding: 6px">
+                    <select th:field="*{direction}" type='text' class="form-control" style="height: 34px">
+                            <option th:value="'All'" th:text="All" selected>All</option>
+                            <option th:value="'Outgoing'" th:text="Outgoing">Outgoing</option>
+                            <option th:value="'Incoming'" th:text="Incoming">Incoming</option>
+                        </select>
+                    </div>
+                        <div class="form-group">
+                        <button class="btn btn-primary mb-2" type="submit">FILTER</button>
+                        </div>
+                </form>
+                <div class="ico-stat-tabl brd-rd5">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>TYPE</th>
+                            <th>SENDER</th>
+                            <th>RECEIVER</th>
+                            <th>AMOUNT</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="transaction : ${transactionHistory}">
+                        <tr>
+                            <!--                        Date-->
+                            <td>
+                                <div th:text="${transaction.getDate()}"></div>
+                            </td>
+                            <!--                        Type-->
+                            <td>
+                                <div th:text="${transaction.getType()}"></div>
+                            </td>
+                            <!--                        Sender-->
+                            <td>
+                                <div th:text="${transaction.getSenderName()}"></div>
+                            </td>
+                            <!--                        Receiver-->
+                            <td>
+                                <div th:text="${transaction.getReceiverName()}"></div>
+                            </td>
+                            <!--                        Amount-->
+                            <td>
+                                <div>$<span th:text="${transaction.getAmount()}"></span></div>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- ICO Stats Table -->
+                <div class="pagination-wrap text-center">
+                    <div class="pagination">
+                        <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i
+                                class="fa fa-angle-double-left"></i></a></div>
+
+                        <div class="page-item brd-rd30" th:each="page : ${pages}">
+                            <a class="page-link" th:href="@{/userslist/(page=${page})}" th:text="${page}" href="#"
+                               title="" itemprop="url"></a>
+                        </div>
+                        <!--                            <div th:if="${pages.size() == 1}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:if="${pages.size() == 2}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:if="${pages.size() == 3}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
+                        <!--                            </div>-->
+                        <!--                            <div th:unless="${pages.size() <= 3}">-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
+                        <!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
+                        <!--                                <i>...............</i>-->
+                        <!--                                <a class="page-link" href="#" title="" itemprop="url" th:href="@{/userslist/(page=${pages.get(pages.size() - 1)})}" th:text="${pages.get(pages.l() - 1)}"></a>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+                        <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i
+                                class="fa fa-angle-double-right"></i></a></div>
+                    </div>
+                </div><!-- Pagination Wrap -->
+            </div>
+        </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
+<!--scripts-->
+<div th:insert="fragments/scriptsfragments :: scripts"></div>
+<!-- ... -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker6').datetimepicker({
+            viewMode: 'days',
+            format: 'DD/MM/YYYY'
+        });
+        $('#datetimepicker7').datetimepicker({
+            viewMode: 'days',
+            format: 'DD/MM/YYYY',
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#datetimepicker6").on("dp.change", function (e) {
+            $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
+        });
+    });
+</script>
+
+<!--scripts-->
+</body>
+</html>

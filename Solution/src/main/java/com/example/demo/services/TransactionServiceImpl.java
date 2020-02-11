@@ -4,7 +4,6 @@ import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
-import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,9 +131,41 @@ public class TransactionServiceImpl implements TransactionService {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
     }
+    @Override
+    public List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId) {
+        if ((!startDate.isEmpty() && !endDate.isEmpty()) && recipientSearchString.isEmpty()) {
+            return getTransactionsByDate(direction, startDate, endDate, userId);
+        }
+        if ((startDate.isEmpty() && endDate.isEmpty()) && !recipientSearchString.isEmpty()) {
+            return getTransactionsByRecipient(direction, recipientSearchString, userId);
+        }
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            return getTransactionsByRecipientAndDate(direction, startDate, endDate, recipientSearchString, userId);
+        }
+        return getTransactionsByUserId(userId);
+    }
+
 
     @Override
-    public List<Transaction> getTransactionsByDate(LocalDate startDate, LocalDate endDate, int userId) {
-        return transactionRepository.getTransactionsByDate(startDate, endDate, userId);
+    public List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId) {
+        LocalDate startDate = parseDate(start);
+        LocalDate endDate = parseDate(end);
+        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId);
+    }
+
+    @Override
+    public List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId) {
+        return transactionRepository.getTransactionsByUserId(direction, recipientSearchString, userId);
+    }
+
+    public List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId) {
+        LocalDate startDate = parseDate(start);
+        LocalDate endDate = parseDate(end);
+        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId);
+    }
+
+    private LocalDate parseDate(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return LocalDate.parse(dateString, formatter);
     }
 }
