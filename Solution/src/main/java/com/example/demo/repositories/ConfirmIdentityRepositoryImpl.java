@@ -1,7 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.models.user.ConfirmIdentity;
+import com.example.demo.models.confirmIdentity.ConfirmIdentity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -38,6 +38,16 @@ public class ConfirmIdentityRepositoryImpl implements ConfirmIdentityRepository 
                 throw new EntityNotFoundException(USER_ID_NOT_FOUND, userId);
             }
             return query.list().get(0);
+        }
+    }
+
+    public boolean isUserHaveConfirmIdentity(int userId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from ConfirmIdentity " +
+                    " where userId = :userId and dataOk = :dataOk ", ConfirmIdentity.class)
+                    .setParameter("userId", userId)
+                    .setParameter("dataOk", false)
+                    .list().isEmpty();
         }
     }
 }

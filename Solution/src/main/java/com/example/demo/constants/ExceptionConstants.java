@@ -8,6 +8,7 @@ public class ExceptionConstants {
     public static final String USER_PHONE_NUMBER_NOT_FOUND = "User with phone number %s not found in the database.";
     public static final String USER_EMAIL_NOT_FOUND = "User with email %s not found in the database.";
     public static final String TOKEN_NOT_FOUND = "Token %s not found in the database.";
+    public static final String USER_ALREADY_CONFIRMED_HIS_IDENTITY = "User %s has already confirmed his identity";
     public static final String USER_TOKEN_NOT_FOUND = "User with id %d haven`t token.";
     public static final String USER_USERNAME_EXISTS = "User with username %s already exists.";
     public static final String USER_EMAIL_EXISTS = "User with email %s already exists.";
@@ -30,4 +31,7 @@ public class ExceptionConstants {
     public static final String SENDER_FUNDS_ARE_NOT_SUFFICIENT = "Not sufficient funds.";
     public static final String YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE = "You cannot make the same transaction twice.";
     public static final String INVALID_TOKEN = "Invalid Token ! Please contact support.";
+    public static final String ALLOW_PICTURE_FORMAT = "Allow picture format is jpg.";
+    public static final String IDENTITY_CONFIRM_REQUEST_PROCESSED = "Your identity confirm request is being processed.";
+    public static final String IDENTITY_CONFIRM_SUCCESS = "Your identity confirm request was successful.";
 }

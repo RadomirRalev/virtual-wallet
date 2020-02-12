@@ -1,4 +1,4 @@
-package com.example.demo.models.user;
+package com.example.demo.models.confirmIdentity;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,4 +1,4 @@
-package com.example.demo.models.user;
+package com.example.demo.models.confirmIdentity;
 
 import java.io.IOException;
 
@@ -10,6 +10,7 @@ public class ConfirmIdentityMapper {
         confirmIdentity.setFront_picture(confirmIdentityRegistrationDTO.getFront_picture().getBytes());
         confirmIdentity.setRear_picture(confirmIdentityRegistrationDTO.getRear_picture().getBytes());
         confirmIdentity.setSelfie(confirmIdentityRegistrationDTO.getSelfie().getBytes());
+        confirmIdentity.setDataOk(false);
         return confirmIdentity;
     }
 }

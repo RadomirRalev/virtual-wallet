@@ -7,8 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv="Refresh" content="5; http://localhost:8181/"/>
 
-    <title>Error!</title>
+    <title>Error page!</title>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
@@ -18,11 +19,21 @@
 
 <body>
 
-    <p>
-        <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
-    </p>
+<div class="pageloader blue-bg">
+    <h3 style="text-align: center;color: #f0f0f0; position:relative; top:150px;"><i th:if="${error != null}" th:text="${error}"></i></h3>
+    <div class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 
 </body>
 
-</html>
 
+</html>

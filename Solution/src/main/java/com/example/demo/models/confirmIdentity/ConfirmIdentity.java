@@ -1,4 +1,4 @@
-package com.example.demo.models.user;
+package com.example.demo.models.confirmIdentity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,6 +27,8 @@ public class ConfirmIdentity {
     private byte[] selfie;
     @Column(name = "user_id")
     private int userId;
+    @Column(name = "data_ok")
+    private boolean dataOk;
 
     public ConfirmIdentity() {
     }
@@ -69,5 +71,13 @@ public class ConfirmIdentity {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean isDataOk() {
+        return dataOk;
+    }
+
+    public void setDataOk(boolean dataOk) {
+        this.dataOk = dataOk;
     }
 }
