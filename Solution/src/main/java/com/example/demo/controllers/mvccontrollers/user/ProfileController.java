@@ -2,8 +2,8 @@ package com.example.demo.controllers.mvccontrollers.user;
 
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.transaction.Transaction;
+import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.user.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
@@ -33,13 +33,12 @@ public class ProfileController {
 
 
     @Autowired
-    public ProfileController(UserService userService,ConfirmIdentityService confirmIdentityService,
+    public ProfileController(UserService userService, ConfirmIdentityService confirmIdentityService,
                              WalletRepository walletRepository, TransactionService transactionService) {
         this.userService = userService;
         this.confirmIdentityService = confirmIdentityService;
         this.walletRepository = walletRepository;
         this.transactionService = transactionService;
-
     }
 
     @GetMapping("/profile")
@@ -87,7 +86,7 @@ public class ProfileController {
 
     @PostMapping("/profile/information")
     public String editProfileInformation(@Valid @ModelAttribute("profileUpdateDTO") ProfileUpdateDTO profileUpdateDTO,
-                                Model model) {
+                                         Model model) {
         try {
             User user = userService.getByUsername(currentPrincipalName());
             userService.updateUser(user, profileUpdateDTO);
@@ -118,8 +117,8 @@ public class ProfileController {
         String extension2 = FilenameUtils.getExtension(confirmIdentityRegistrationDTO.getSelfie().getOriginalFilename());
 
         try {
-            confirmIdentityService.createConfrimIdentity(confirmIdentityRegistrationDTO,user.getId() );
-        } catch (IOException  e) {
+            confirmIdentityService.createConfrimIdentity(confirmIdentityRegistrationDTO, user.getId());
+        } catch (IOException e) {
             model.addAttribute("error", e.getMessage());
             return "user/confirm-identity";
         }
@@ -146,16 +145,16 @@ public class ProfileController {
                               @RequestParam(value = "criterium") String criterium
             , Model model) {
         List<User> searchResult;
-        switch(criterium) {
-            case "username" :
+        switch (criterium) {
+            case "username":
                 searchResult = userService.searchByUsername(text);
                 model.addAttribute("users", searchResult);
                 break;
-            case "phonenumber" :
+            case "phonenumber":
                 searchResult = userService.searchByPhoneNumber(text);
                 model.addAttribute("users", searchResult);
                 break;
-            case "email" :
+            case "email":
                 searchResult = userService.searchByEmail(text);
                 model.addAttribute("users", searchResult);
                 break;
@@ -175,13 +174,15 @@ public class ProfileController {
 
     @GetMapping("filteredtransactions")
     public String filterTransactions(Model model,
-                                        @RequestParam String startDate,
-                                        @RequestParam String endDate,
-                                        @RequestParam String searchRecipient,
-                                        @RequestParam String direction) {
+                                     @RequestParam String startDate,
+                                     @RequestParam String endDate,
+                                     @RequestParam String searchRecipient,
+                                     @RequestParam String direction,
+                                     @RequestParam String sort) {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId);
+        filteredTransactions = transactionService.sortTransactions(filteredTransactions, sort);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
         return "user/filteredtransactions";

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> getUsers();
+    List<User> getUsers(int page);
 
     User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException;
 

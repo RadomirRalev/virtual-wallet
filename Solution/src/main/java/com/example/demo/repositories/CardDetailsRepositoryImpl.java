@@ -84,11 +84,21 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     }
 
     @Override
-    public boolean isCardExist(String number) {
+    public boolean checkIfCardNumberExists(String number) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from CardDetails " +
                     " where number = :number ", CardDetails.class)
                     .setParameter("number", number)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
+    public boolean checkIfCardIdExists(int cardId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from CardDetails " +
+                    " where id = :cardId ", CardDetails.class)
+                    .setParameter("cardId", cardId)
                     .list().isEmpty();
         }
     }

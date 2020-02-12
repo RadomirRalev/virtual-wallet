@@ -10,7 +10,7 @@ public interface WalletService {
 
     Wallet createWallet(WalletCreationDTO walletCreationDTO, int userId);
 
-    Wallet getById(int id);
+    Wallet getWalletById(int id);
 
     boolean checkIfWalletIdExists(int id);
 

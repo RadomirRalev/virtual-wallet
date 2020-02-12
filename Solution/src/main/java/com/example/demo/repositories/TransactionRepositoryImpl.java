@@ -1,6 +1,9 @@
 package com.example.demo.repositories;
 
-import com.example.demo.models.transaction.*;
+import com.example.demo.models.transaction.Deposit;
+import com.example.demo.models.transaction.Internal;
+import com.example.demo.models.transaction.Transaction;
+import com.example.demo.models.transaction.Withdrawal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -113,6 +116,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             Query<Transaction> queryWithdrawal = session.createQuery(SELECT_SENDER_WITHDRAWAL_SENDERID, Transaction.class);
             queryWithdrawal.setParameter("userId", userId);
             return getTransactions(queryInternalSender, queryInternalReceiver, queryDepositReceiver, queryWithdrawal);
+
         }
     }
 

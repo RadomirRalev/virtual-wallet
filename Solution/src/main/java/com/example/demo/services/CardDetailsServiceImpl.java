@@ -75,6 +75,6 @@ public class CardDetailsServiceImpl implements CardDetailsService {
 
     @Override
     public boolean isCardExist(String number) {
-        return cardDetailsRepository.isCardExist(number);
+        return cardDetailsRepository.checkIfCardNumberExists(number);
     }
 }

@@ -5,15 +5,9 @@ public class TransactionFilterDTO {
     private String endDate;
     private String searchRecipient;
     private String direction;
+    private String sort;
 
     public TransactionFilterDTO() {
-    }
-
-    public TransactionFilterDTO(String startDate, String endDate, String searchRecipient, String direction) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.searchRecipient = searchRecipient;
-        this.direction = direction;
     }
 
     public String getStartDate() {
@@ -46,5 +40,13 @@ public class TransactionFilterDTO {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }

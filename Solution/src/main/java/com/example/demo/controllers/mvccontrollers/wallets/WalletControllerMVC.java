@@ -63,7 +63,7 @@ public class WalletControllerMVC {
 
     @GetMapping("/mywallets/editwallet")
     public String editWallet(@RequestParam int id, Model model) {
-        Wallet wallet = walletService.getById(id);
+        Wallet wallet = walletService.getWalletById(id);
         WalletUpdateDTO walletUpdateDTO = new WalletUpdateDTO();
         model.addAttribute("wallet", wallet);
         model.addAttribute("walletUpdateDTO", walletUpdateDTO);
@@ -72,7 +72,7 @@ public class WalletControllerMVC {
 
     @PostMapping("mywallets/editwallet")
     public String updateWallet(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
-        Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
+        Wallet walletToUpdate = walletService.getWalletById(walletUpdateDTO.getId());
         walletToUpdate.setName(walletUpdateDTO.getName());
         walletService.updateWallet(walletToUpdate);
         return "redirect:/mywallets";
@@ -80,7 +80,7 @@ public class WalletControllerMVC {
 
     @GetMapping("/mywallets/setdefault")
     public String setDefault(@RequestParam int id, Model model) {
-        Wallet wallet = walletService.getById(id);
+        Wallet wallet = walletService.getWalletById(id);
         User user = wallet.getUser();
         if (!user.getUsername().equals(currentPrincipalName())) {
             return "messages/access-denied";
@@ -93,7 +93,7 @@ public class WalletControllerMVC {
 
     @PostMapping("mywallets/setdefault")
     public String setAsDefault(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
-        Wallet walletToUpdate = walletService.getById(walletUpdateDTO.getId());
+        Wallet walletToUpdate = walletService.getWalletById(walletUpdateDTO.getId());
         User user = walletToUpdate.getUser();
         walletService.setAsDefault(walletToUpdate, user);
         return "redirect:/mywallets";

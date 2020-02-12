@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.Transaction;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -35,25 +36,25 @@ public class WalletRepositoryImpl implements WalletRepository {
     }
 
     @Override
-    public Wallet getById(int id) {
+    public Wallet getWalletById(int walletId) {
         try (Session session = sessionFactory.openSession()) {
             Query<Wallet> query = session.createQuery("from Wallet " +
-                    " where id = :id", Wallet.class);
-            query.setParameter("id", id);
+                    " where id = :walletId", Wallet.class);
+            query.setParameter("walletId", walletId);
             if (query.list().size() != 1) {
-                throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
+                throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, walletId);
             }
             return query.list().get(0);
         }
     }
 
     @Override
-    public boolean checkIfWalletIdExists(int id) {
+    public boolean checkIfWalletIdExists(int walletId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Wallet> query = session.createQuery("from Wallet " +
-                    " where id = :id", Wallet.class);
-            query.setParameter("id", id);
-            return query.list().isEmpty();
+            return !session.createQuery("from Wallet " +
+                    " where id = :walletId", Wallet.class)
+                    .setParameter("walletId", walletId)
+                    .list().isEmpty();
         }
     }
 

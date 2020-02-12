@@ -8,9 +8,9 @@ public interface WalletRepository {
 
     Wallet createWallet(Wallet wallet);
 
-    Wallet getById(int id);
+    Wallet getWalletById(int walletId);
 
-    boolean checkIfWalletIdExists(int id);
+    boolean checkIfWalletIdExists(int walletId);
 
     List<Wallet> getWalletsbyUserId(int userId);
 

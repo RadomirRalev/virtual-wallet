@@ -75,13 +75,22 @@ public class RegistrationController {
         return "messages/confirm-account";
     }
 
+//    @GetMapping("/userslist")
+//    public String getUsersList(@RequestParam(required = false, defaultValue = "1") Integer page,
+//                               Model model) {
+//        List<User> users = userService.getUsersPaginatedHibernate(page);
+//        List<Integer> pages = userService.getPages();
+//        model.addAttribute("users", users);
+//        model.addAttribute("pages", pages);
+//        return "user/userslist";
+//    }
+
     @GetMapping("/userslist")
     public String getUsersList(@RequestParam(required = false, defaultValue = "1") Integer page,
                                Model model) {
-        List<User> users = userService.getUsersPaginatedHibernate(page);
-        List<Integer> pages = userService.getPages();
+        List<User> users = userService.getUsers(page);
         model.addAttribute("users", users);
-        model.addAttribute("pages", pages);
-        return "userslist";
+        model.addAttribute("page", page);
+        return "user/userslist";
     }
 }

@@ -13,6 +13,7 @@ import com.example.demo.models.wallet.WalletMapper;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WalletRepository;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,8 +52,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.getUsers();
+    public List<User> getUsers(int page) {
+        return userRepository.getUsers(page);
     }
 
     public List<Integer> getPages() {
@@ -60,7 +61,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-
     public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
 
         if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getPasswordConfirmation())) {

@@ -7,14 +7,16 @@ import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WalletRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
@@ -23,17 +25,20 @@ import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 public class TransactionServiceImpl implements TransactionService {
 
     private TransactionRepository transactionRepository;
-    private CardDetailsRepository cardDetailsRepository;
+    private UserRepository userRepository;
     private WalletRepositoryImpl walletRepository;
     private TransactionMapper transactionMapper;
+    private CardDetailsRepository cardDetailsRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, CardDetailsRepository cardDetailsRepository,
-                                  TransactionMapper transactionMapper, WalletRepositoryImpl walletRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository,
+                                  TransactionMapper transactionMapper, WalletRepositoryImpl walletRepository,
+                                  CardDetailsRepository cardDetailsRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
-        this.cardDetailsRepository = cardDetailsRepository;
+        this.userRepository = userRepository;
         this.walletRepository = walletRepository;
+        this.cardDetailsRepository = cardDetailsRepository;
     }
 
     @Override
@@ -43,20 +48,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> getTransactionsByUserId(int userId) {
-        List<Wallet> wallets = walletRepository.getWalletsbyUserId(userId);
-        List<Transaction> result = new ArrayList<>();
-        for (Wallet wallet : wallets) {
-            result.addAll(transactionRepository.getTransactionsbyWalletId(wallet.getId()));
+        if (!checkIfUserIdExists(userId)) {
+            throw new EntityNotFoundException(USER_ID_NOT_FOUND, userId);
         }
-        return result;
+        return transactionRepository.getTransactionsByUserId(userId);
     }
 
     @Override
-    public List<Transaction> getTransactionsbyWalletId(int id) {
-        if (checkIfWalletIdExists(id)) {
-                throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
-            }
-        return transactionRepository.getTransactionsbyWalletId(id);
+    public List<Transaction> getTransactionsbyWalletId(int walletId) {
+        if (!checkIfWalletIdExists(walletId)) {
+            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, walletId);
+        }
+        return transactionRepository.getTransactionsbyWalletId(walletId);
     }
 
     @Override
@@ -66,12 +69,11 @@ public class TransactionServiceImpl implements TransactionService {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
         }
         communicateWithApi(deposit);
-        List<Wallet> receiverList = deposit.getSender()
-                .getUser()
-                .getWallets();
         int receiverId = deposit.getReceiver().getId();
-        double balanceReceiver = walletRepository.getById(receiverId).getBalance() + deposit.getAmount();
-        //TODO Simplify lines 51-55
+        if (!checkIfWalletIdExists(receiverId)) {
+            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, receiverId);
+        }
+        double balanceReceiver = walletRepository.getWalletById(receiverId).getBalance() + deposit.getAmount();
         return transactionRepository.createDeposit(deposit, balanceReceiver, receiverId);
     }
 
@@ -83,7 +85,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
         checkIfFundsAreEnough(internal.getSender(), internal.getAmount());
         int senderId = internal.getSender().getId();
+        if (!checkIfWalletIdExists(senderId)) {
+            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, senderId);
+        }
         int receiverId = internal.getReceiver().getId();
+        if (!checkIfWalletIdExists(receiverId)) {
+            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, receiverId);
+        }
         double balanceSender = internal.getSender().getBalance() - internal.getAmount();
         double balanceReceiver = internal.getReceiver().getBalance() + internal.getAmount();
         return transactionRepository.createInternal(internal, balanceSender, balanceReceiver, senderId, receiverId);
@@ -94,8 +102,13 @@ public class TransactionServiceImpl implements TransactionService {
         Withdrawal withdrawal = getWithdrawal(transactionDTO);
         checkIfFundsAreEnough(withdrawal.getSender(), withdrawal.getAmount());
         int senderId = withdrawal.getSender().getId();
+        if (!checkIfWalletIdExists(senderId)) {
+            throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, senderId);
+        }
         int receiverId = withdrawal.getReceiver().getId();
-        //TODO Check if receiver card exists
+        if (!checkIfCardIdExists(receiverId)) {
+            throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, receiverId);
+        }
         double balanceSender = withdrawal.getSender().getBalance() - withdrawal.getAmount();
         return transactionRepository.createWithdrawal(withdrawal, balanceSender, senderId);
     }
@@ -116,22 +129,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
-        return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
-    }
-
-    @Override
-    public boolean checkIfWalletIdExists(int id) {
-        return walletRepository.checkIfWalletIdExists(id);
-    }
-
-    @Override
-    public void checkIfFundsAreEnough(Wallet sender, double amount) {
-        if (sender.getBalance() - amount < 0) {
-            throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
-        }
-    }
-    @Override
     public List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId) {
         if ((!startDate.isEmpty() && !endDate.isEmpty()) && recipientSearchString.isEmpty()) {
             return getTransactionsByDate(direction, startDate, endDate, userId);
@@ -145,27 +142,71 @@ public class TransactionServiceImpl implements TransactionService {
         return getTransactionsByUserId(userId);
     }
 
-
     @Override
-    public List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId) {
-        LocalDate startDate = parseDate(start);
-        LocalDate endDate = parseDate(end);
-        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId);
+    public List<Transaction> sortTransactions(List<Transaction> filteredTransactions, String sort) {
+        if (sort.equalsIgnoreCase("AmountAsc")) {
+            return sortTransactionList(filteredTransactions, Comparator.comparing(Transaction::getAmount));
+        }
+        if (sort.equalsIgnoreCase("AmountDes")) {
+            return sortTransactionList(filteredTransactions, Comparator.comparing(Transaction::getAmount)
+                    .reversed());
+        }
+        if (sort.equalsIgnoreCase("DateAsc")) {
+            return sortTransactionList(filteredTransactions, Comparator.comparing(Transaction::getDate));
+        }
+        if (sort.equalsIgnoreCase("DateDes")) {
+            return sortTransactionList(filteredTransactions, Comparator.comparing(Transaction::getDate)
+                    .reversed());
+        }
+        return filteredTransactions;
     }
 
-    @Override
-    public List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId) {
-        return transactionRepository.getTransactionsByUserId(direction, recipientSearchString, userId);
-    }
-
-    public List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId) {
+    private List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId) {
         LocalDate startDate = parseDate(start);
         LocalDate endDate = parseDate(end);
         return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId);
     }
 
+    private List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId) {
+        LocalDate startDate = parseDate(start);
+        LocalDate endDate = parseDate(end);
+        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId);
+    }
+
+    private List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId) {
+        return transactionRepository.getTransactionsByUserId(direction, recipientSearchString, userId);
+    }
+
+    private List<Transaction> sortTransactionList(List<Transaction> filteredTransactions, Comparator<Transaction> comparing) {
+        return filteredTransactions.stream()
+                .sorted(comparing)
+                .collect(Collectors.toList());
+    }
+
     private LocalDate parseDate(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return LocalDate.parse(dateString, formatter);
+    }
+
+    private void checkIfFundsAreEnough(Wallet sender, double amount) {
+        if (sender.getBalance() - amount < 0) {
+            throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
+        }
+    }
+
+    private boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
+        return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
+    }
+
+    private boolean checkIfWalletIdExists(int walletId) {
+        return walletRepository.checkIfWalletIdExists(walletId);
+    }
+
+    private boolean checkIfUserIdExists(int userId) {
+        return userRepository.checkIfUserIdExists(userId);
+    }
+
+    private boolean checkIfCardIdExists(int cardId) {
+        return cardDetailsRepository.checkIfCardIdExists(cardId);
     }
 }

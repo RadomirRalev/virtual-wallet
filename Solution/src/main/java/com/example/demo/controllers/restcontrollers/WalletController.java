@@ -2,16 +2,10 @@ package com.example.demo.controllers.restcontrollers;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidCardException;
 import com.example.demo.exceptions.InvalidWalletException;
-import com.example.demo.models.card.CardDetails;
-import com.example.demo.models.card.CardRegistrationDTO;
-import com.example.demo.models.user.ProfileUpdateDTO;
-import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
 import com.example.demo.models.wallet.WalletUpdateDTO;
-import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -55,7 +48,7 @@ public class WalletController {
 
     @PutMapping("/wallet/{id}")
     public Wallet updateWalletName(@PathVariable int id, @RequestBody @Valid WalletUpdateDTO walletUpdateDTO) {
-        Wallet walletToUpdate = walletService.getById(id);
+        Wallet walletToUpdate = walletService.getWalletById(id);
         walletToUpdate.setName(walletUpdateDTO.getName());
         try {
             return walletService.updateWallet(walletToUpdate);
@@ -66,7 +59,7 @@ public class WalletController {
 
     @PutMapping("/wallet/setasdefault/{id}")
     public Wallet setWalletAsDefault(@PathVariable int id, @RequestBody @Valid WalletUpdateDTO walletUpdateDTO) {
-        Wallet walletToUpdate = walletService.getById(id);
+        Wallet walletToUpdate = walletService.getWalletById(id);
         walletToUpdate.setName(walletUpdateDTO.getName());
         try {
             return walletService.updateWallet(walletToUpdate);

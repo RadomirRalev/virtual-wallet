@@ -44,11 +44,11 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Wallet getById(int id) {
-        if (checkIfWalletIdExists(id)) {
+    public Wallet getWalletById(int id) {
+        if (!checkIfWalletIdExists(id)) {
             throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, id);
         }
-        return walletRepository.getById(id);
+        return walletRepository.getWalletById(id);
     }
 
     @Override

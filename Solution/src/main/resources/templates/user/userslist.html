@@ -71,32 +71,15 @@
                 </div><!-- ICO Stats Table -->
                 <div class="pagination-wrap text-center">
                     <div class="pagination">
-                        <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a></div>
-
-                        <div class="page-item brd-rd30" th:each="page : ${pages}">
+                        <div class="page-item prev brd-rd50">
+                            <a class="page-link" th:href="@{/userslist/(page=${page - 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
+                        </div>
+                        <div class="page-item brd-rd30">
                             <a class="page-link" th:href="@{/userslist/(page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
                         </div>
-<!--                            <div th:if="${pages.size() == 1}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                            </div>-->
-<!--                            <div th:if="${pages.size() == 2}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                            </div>-->
-<!--                            <div th:if="${pages.size() == 3}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
-<!--                            </div>-->
-<!--                            <div th:unless="${pages.size() <= 3}">-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(0)})}" href="#" title="" itemprop="url">1</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(1)})}" href="#" title="" itemprop="url">2</a>-->
-<!--                                <a class="page-link" th:href="@{/userslist/(page=${pages.get(2)})}" href="#" title="" itemprop="url">3</a>-->
-<!--                                <i>...............</i>-->
-<!--                                <a class="page-link" href="#" title="" itemprop="url" th:href="@{/userslist/(page=${pages.get(pages.size() - 1)})}" th:text="${pages.get(pages.l() - 1)}"></a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
+                        <div class="page-item next brd-rd50">
+                            <a class="page-link" th:href="@{/userslist/(page=${page + 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
+                        </div>
                     </div>
                 </div><!-- Pagination Wrap -->
             </div>

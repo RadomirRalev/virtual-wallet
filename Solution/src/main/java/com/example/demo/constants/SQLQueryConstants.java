@@ -1,5 +1,13 @@
 package com.example.demo.constants;
 
+import com.example.demo.models.user.User;
+import com.google.common.collect.Lists;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
+import org.hibernate.query.Query;
+
+import java.util.List;
+
 public class SQLQueryConstants {
 
     //Status
@@ -50,10 +58,34 @@ public class SQLQueryConstants {
     public static final String FROM_INTERNAL_KEY = "from Internal where idempotencyKey = :idempotencyKey ";
     public static final String FROM_DEPOSIT_KEY = "from Deposit where idempotencyKey = :idempotencyKey ";
     public static final String FROM_WITHDRAWAL_KEY = "from Withdrawal where idempotencyKey = :idempotencyKey ";
-    public static final String SELECT_SENDER_INTERNAL_SENDERID = "select sender from Internal where sender.user.id = :userId";
-    public static final String SELECT_RECEIVER_INTERNAL_RECEIVERID = "select receiver from Internal where receiver.user.id = :userId";
-    public static final String SELECT_RECEIVER_DEPOSIT_RECEIVERID = "select receiver from Deposit where receiver.user.id = :userId";
-    public static final String SELECT_SENDER_WITHDRAWAL_SENDERID = "select sender from Withdrawal where sender.user.id = :userId";
+    public static final String SELECT_SENDER_INTERNAL_SENDERID = "from Internal where sender.user.id = :userId";
+    public static final String SELECT_RECEIVER_INTERNAL_RECEIVERID = "from Internal where receiver.user.id = :userId";
+    public static final String SELECT_RECEIVER_DEPOSIT_RECEIVERID = "from Deposit where receiver.user.id = :userId";
+    public static final String SELECT_SENDER_WITHDRAWAL_SENDERID = "from Withdrawal where sender.user.id = :userId";
+
+    public static List<User> getPaginated(int positions, Query<User> query) {
+        ScrollableResults resultScroll = query.scroll(ScrollMode.FORWARD_ONLY);
+        resultScroll.first();
+        resultScroll.scroll(positions);
+        List<User> usersList = Lists.newArrayList();
+        int i = 0;
+        while (RESULTS_PER_PAGE > i++) {
+            usersList.add((User) resultScroll.get(0));
+            if (!resultScroll.next())
+                break;
+        }
+        return usersList;
+    }
+
+    public static int getPositions(Integer page) {
+        return (page - 1) * RESULTS_PER_PAGE;
+    }
+
+    public static List<Object> getPaginatedResult(int page, Query<Object> query) {
+        query.setMaxResults(5);
+        query.setFirstResult(((page - 1)*5));
+        return query.list();
+    }
 
 
 

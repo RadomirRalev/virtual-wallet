@@ -67,6 +67,15 @@
                             <option th:value="'Incoming'" th:text="Incoming">Incoming</option>
                         </select>
                     </div>
+                    <div class="form-group" style="padding: 6px">
+                        <select th:field="*{sort}" type='text' class="form-control" style="height: 34px">
+                            <option th:value="'None'" th:text="Sort" selected>Sort</option>
+                            <option th:value="'AmountAsc'" th:text="'Sort by Amount - Ascending'">Sort by Amount - Ascending</option>
+                            <option th:value="'AmountDes'" th:text="'Sort by Amount - Descending'">Sort by Amount - Descending</option>
+                            <option th:value="'DateAsc'" th:text="'Sort by Date - Ascending'">Sort by Date - Ascending</option>
+                            <option th:value="'DateDes'" th:text="'Sort by Date - Descending'">Sort by Date - Descending</option>
+                        </select>
+                    </div>
                         <div class="form-group">
                         <button class="btn btn-primary mb-2" type="submit">FILTER</button>
                         </div>

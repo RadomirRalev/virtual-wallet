@@ -1,7 +1,6 @@
 package com.example.demo.repositories;
 
 import com.example.demo.models.card.CardDetails;
-import com.example.demo.models.user.User;
 
 public interface CardDetailsRepository {
 
@@ -15,6 +14,8 @@ public interface CardDetailsRepository {
 
     void setCardStatus(String number, boolean status);
 
-    boolean isCardExist(String number);
+    boolean checkIfCardNumberExists(String number);
+
+    boolean checkIfCardIdExists(int cardId);
 
 }

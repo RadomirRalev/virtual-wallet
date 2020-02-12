@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserRepository {
 
-    List<User> getUsers();
+    List<User> getUsers(int page);
 
     User createUser(User user);
 
@@ -34,7 +34,7 @@ public interface UserRepository {
 
     List<User> getUsersPaginatedHibernate(Integer page);
 
-    boolean doesUserExist(int id);
+    boolean checkIfUserIdExists(int id);
 
     List<User> searchByUsername(String username);
 

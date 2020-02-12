@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.helpers.PaginationResult;
 import com.example.demo.models.user.User;
+import com.example.demo.models.wallet.Wallet;
 import com.google.common.collect.Lists;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -28,11 +29,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<User> getUsers(int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
-            return query.list();
+            return getPaginatedResult(page, query);
         }
+    }
+
+    private List<User> getPaginatedResult(int page, Query<User> query) {
+        query.setMaxResults(5);
+        query.setFirstResult(((page - 1)*5));
+        return query.list();
     }
 
     @Override
@@ -44,23 +51,12 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
     @Override
     public List<User> getUsersPaginatedHibernate(Integer page) {
-        int positions = (page - 1) * RESULTS_PER_PAGE;
+        int positions = getPositions(page);
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
-            ScrollableResults resultScroll = query.scroll(ScrollMode.FORWARD_ONLY);
-            resultScroll.first();
-            resultScroll.scroll(positions);
-            List<User> usersList = Lists.newArrayList();
-            int i = 0;
-            while (RESULTS_PER_PAGE > i++) {
-                usersList.add((User) resultScroll.get(0));
-                if (!resultScroll.next())
-                    break;
-            }
-            return usersList;
+            return getPaginated(positions, query);
         }
     }
 
@@ -78,9 +74,6 @@ public class UserRepositoryImpl implements UserRepository {
             Query<User> query = session.createQuery("from User " +
                     " where id = :id", User.class);
             query.setParameter("id", id);
-            if (query.list().size() != 1) {
-                throw new EntityNotFoundException(USER_ID_NOT_FOUND, id);
-            }
             return query.list().get(0);
         }
     }
@@ -192,11 +185,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean doesUserExist(int id) {
+    public boolean checkIfUserIdExists(int userId) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
-                    " where id = :id", User.class)
-                    .setParameter("id", id)
+                    " where id = :userId", User.class)
+                    .setParameter("userId", userId)
                     .list().isEmpty();
         }
     }
