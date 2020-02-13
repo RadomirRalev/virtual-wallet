@@ -1,9 +1,7 @@
 package com.example.demo.controllers.mvccontrollers.user;
 
-import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidOptionalFieldParameter;
-import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.exceptions.*;
+import com.example.demo.helpers.PictureFormat;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.verificationToken.VerificationToken;
@@ -50,7 +48,8 @@ public class RegistrationController {
 
         try {
              userService.createUser(userRegistrationDTO);
-        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException | IOException e) {
+        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException |
+                InvalidPictureFormat | IOException e) {
             model.addAttribute("error", e.getMessage());
             return "registration";
         }

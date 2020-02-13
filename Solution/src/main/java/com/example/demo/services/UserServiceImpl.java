@@ -3,6 +3,8 @@ package com.example.demo.services;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.exceptions.InvalidPictureFormat;
+import com.example.demo.helpers.PictureFormat;
 import com.example.demo.models.role.Role;
 import com.example.demo.models.role.RoleMapper;
 import com.example.demo.models.user.*;
@@ -13,7 +15,6 @@ import com.example.demo.models.wallet.WalletMapper;
 import com.example.demo.repositories.RoleRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WalletRepository;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.FormatConstants.df2;
+import static com.example.demo.constants.TypesConstants.EMPTY;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,7 +38,6 @@ public class UserServiceImpl implements UserService {
     private VerificationTokenService verificationTokenService;
     private VerificationTokenMapper verificationTokenMapper;
     private EmailSenderServiceImpl emailSenderService;
-
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder,
@@ -78,10 +79,11 @@ public class UserServiceImpl implements UserService {
         if (isPhoneNumberExist(userRegistrationDTO.getPhoneNumber())) {
             throw new DuplicateEntityException(USER_PHONE_EXISTS, userRegistrationDTO.getPhoneNumber());
         }
+        if (!userRegistrationDTO.getFile().isEmpty() && !PictureFormat.isPictureJPG(userRegistrationDTO.getFile())) {
+            throw new InvalidPictureFormat(ALLOW_PICTURE_FORMAT);
+        }
 
-        //TODO change mapper methods names ?
         User user = UserMapper.createUser(userRegistrationDTO);
-
         User createdUser = userRepository.createUser(user);
 
         Role role = RoleMapper.createRole(createdUser);
@@ -93,7 +95,7 @@ public class UserServiceImpl implements UserService {
         VerificationToken verificationToken = verificationTokenMapper.createVerificationToken(createdUser.getId());
         verificationTokenService.create(verificationToken);
         SimpleMailMessage emailMessage =
-                verificationTokenMapper.createEmail(user.getEmail(),verificationToken.getToken());
+                verificationTokenMapper.createEmail(user.getEmail(), verificationToken.getToken());
         emailSenderService.sendEmail(emailMessage);
 
         return createdUser;
@@ -164,6 +166,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void setStatusIdentity(String username, boolean status) {
+        userRepository.setStatusIdentity(username, status);
+        if (isIdentityConfirm(username)) {
+            throw new DuplicateEntityException(USER_ALREADY_HAVE_CONFIRM_IDENTITY, username);
+        }
+    }
+
+    @Override
     public String getAvailableSum(int userId) {
         double availableSum = getSum(userId);
         df2.setRoundingMode(RoundingMode.UP);
@@ -183,6 +193,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isPhoneNumberExist(String phoneNumber) {
         return userRepository.isPhoneNumberExist(phoneNumber);
+    }
+
+    @Override
+    public boolean isIdentityConfirm(String username) {
+        return userRepository.isIdentityConfirm(username);
     }
 
     @Override

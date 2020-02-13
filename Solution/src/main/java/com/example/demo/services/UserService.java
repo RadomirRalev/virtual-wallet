@@ -28,11 +28,15 @@ public interface UserService {
 
     void setStatusUser(String username, boolean status);
 
+    void setStatusIdentity(String username, boolean status);
+
     boolean isUsernameExist(String username);
 
     boolean isEmailExist(String email);
 
     boolean isPhoneNumberExist(String phoneNumber);
+
+    public boolean isIdentityConfirm(String username);
 
     List<Integer> getPages();
 

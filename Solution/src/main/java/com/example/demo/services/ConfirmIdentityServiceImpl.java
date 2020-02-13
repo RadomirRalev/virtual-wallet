@@ -31,7 +31,7 @@ public class ConfirmIdentityServiceImpl implements ConfirmIdentityService {
     public ConfirmIdentity createConfrimIdentity(ConfirmIdentityRegistrationDTO confirmIdentityRegistrationDTO,
                                                  String username) throws IOException {
         User user = userService.getByUsername(username);
-        if (isUserHaveConfirmIdentity(user.getId())) {
+        if (isUserHaveConfirmIdentityRequest(user.getId())) {
             throw new DuplicateEntityException(String.format(USER_ALREADY_CONFIRMED_HIS_IDENTITY, username));
         }
         if (!PictureFormat.isPictureJPG(confirmIdentityRegistrationDTO.getFront_picture())) {
@@ -49,13 +49,18 @@ public class ConfirmIdentityServiceImpl implements ConfirmIdentityService {
     }
 
     @Override
-    public ConfirmIdentity getByUserId(int userId) {
-        return confirmIdentityRepository.getByUserId(userId);
+    public ConfirmIdentity getByUserIdRequestForConfirm(int userId) {
+        return confirmIdentityRepository.getByUserIdRequestForConfirm(userId);
     }
 
     @Override
-    public boolean isUserHaveConfirmIdentity(int userId) {
-        return confirmIdentityRepository.isUserHaveConfirmIdentity(userId);
+    public void setStatus(int userId, boolean status) {
+        confirmIdentityRepository.setStatus(userId, status);
+    }
+
+    @Override
+    public boolean isUserHaveConfirmIdentityRequest(int userId) {
+        return confirmIdentityRepository.isUserHaveConfirmIdentityRequest(userId);
     }
 
 }

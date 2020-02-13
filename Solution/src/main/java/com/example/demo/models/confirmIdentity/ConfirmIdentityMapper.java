@@ -10,7 +10,7 @@ public class ConfirmIdentityMapper {
         confirmIdentity.setFront_picture(confirmIdentityRegistrationDTO.getFront_picture().getBytes());
         confirmIdentity.setRear_picture(confirmIdentityRegistrationDTO.getRear_picture().getBytes());
         confirmIdentity.setSelfie(confirmIdentityRegistrationDTO.getSelfie().getBytes());
-        confirmIdentity.setDataOk(false);
+        confirmIdentity.setHaveRequest(true);
         return confirmIdentity;
     }
 }

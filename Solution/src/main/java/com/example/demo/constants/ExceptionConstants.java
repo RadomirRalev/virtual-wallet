@@ -3,12 +3,13 @@ package com.example.demo.constants;
 public class ExceptionConstants {
     public static final String USER_USERNAME_NOT_FOUND = "User with username %s not found in the database.";
     public static final String USER_ID_NOT_FOUND = "User with id %d not found in the database.";
-    public static final String USER_CONFIRMIDENTITY_NOT_FOUND = "Picture of identity on user" +
+    public static final String USER_CONFIRM_IDENTITY_NOT_FOUND = "Pictures confirm identity for user" +
             " with id %d not found in the database.";
     public static final String USER_PHONE_NUMBER_NOT_FOUND = "User with phone number %s not found in the database.";
     public static final String USER_EMAIL_NOT_FOUND = "User with email %s not found in the database.";
     public static final String TOKEN_NOT_FOUND = "Token %s not found in the database.";
-    public static final String USER_ALREADY_CONFIRMED_HIS_IDENTITY = "User %s has already confirmed his identity";
+    public static final String USER_ALREADY_CONFIRMED_HIS_IDENTITY = "User %s has already confirmed his identity.";
+    public static final String USER_ALREADY_HAVE_CONFIRM_IDENTITY = "User %s already have confirm identity.";
     public static final String USER_TOKEN_NOT_FOUND = "User with id %d haven`t token.";
     public static final String USER_USERNAME_EXISTS = "User with username %s already exists.";
     public static final String USER_EMAIL_EXISTS = "User with email %s already exists.";

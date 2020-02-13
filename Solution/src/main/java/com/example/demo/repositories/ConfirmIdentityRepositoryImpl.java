@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import static com.example.demo.constants.ExceptionConstants.USER_ID_NOT_FOUND;
+import static com.example.demo.constants.ExceptionConstants.*;
 
 @Repository
 public class ConfirmIdentityRepositoryImpl implements ConfirmIdentityRepository {
@@ -28,25 +28,38 @@ public class ConfirmIdentityRepositoryImpl implements ConfirmIdentityRepository 
         return confirmIdentity;
     }
 
+
     @Override
-    public ConfirmIdentity getByUserId(int userId) {
+    public ConfirmIdentity getByUserIdRequestForConfirm(int userId) {
         try (Session session = sessionFactory.openSession()) {
             Query<ConfirmIdentity> query = session.createQuery("from ConfirmIdentity " +
-                    " where userId = :userId ", ConfirmIdentity.class);
+                    " where userId = :userId and haveRequest = true ", ConfirmIdentity.class);
             query.setParameter("userId", userId);
-            if (query.list().size() != 1) {
-                throw new EntityNotFoundException(USER_ID_NOT_FOUND, userId);
+            if (query.list().isEmpty()) {
+                throw new EntityNotFoundException(USER_CONFIRM_IDENTITY_NOT_FOUND, userId);
             }
             return query.list().get(0);
         }
     }
 
-    public boolean isUserHaveConfirmIdentity(int userId) {
+    public void setStatus(int userId, boolean status) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createQuery("update ConfirmIdentity " +
+                    " set haveRequest = :status where userId = :userId ")
+                    .setParameter("userId", userId)
+                    .setParameter("status", status)
+                    .executeUpdate();
+            session.getTransaction()
+                    .commit();
+        }
+    }
+
+    public boolean isUserHaveConfirmIdentityRequest(int userId) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from ConfirmIdentity " +
-                    " where userId = :userId and dataOk = :dataOk ", ConfirmIdentity.class)
+                    " where userId = :userId and haveRequest = true ", ConfirmIdentity.class)
                     .setParameter("userId", userId)
-                    .setParameter("dataOk", false)
                     .list().isEmpty();
         }
     }

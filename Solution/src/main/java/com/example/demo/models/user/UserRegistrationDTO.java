@@ -26,22 +26,19 @@ public class UserRegistrationDTO {
     private String phoneNumber;
     private int walletId;
     private MultipartFile file;
-    private String firstName;
-    private String lastName;
+
 
     public UserRegistrationDTO() {
     }
 
     public UserRegistrationDTO(String username, String email, String password,
-                               String passwordConfirmation, String phoneNumber,
-                               String firstName, String lastName) {
+                               String passwordConfirmation, String phoneNumber) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.phoneNumber = phoneNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
+
     }
 
     public String getUsername() {
@@ -100,20 +97,5 @@ public class UserRegistrationDTO {
         this.file = file;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
 }

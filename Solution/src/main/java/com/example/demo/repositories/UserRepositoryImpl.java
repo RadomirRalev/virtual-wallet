@@ -38,7 +38,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     private List<User> getPaginatedResult(int page, Query<User> query) {
         query.setMaxResults(5);
-        query.setFirstResult(((page - 1)*5));
+        query.setFirstResult(((page - 1) * 5));
         return query.list();
     }
 
@@ -135,6 +135,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void setStatusIdentity(String username, boolean status) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createQuery("update User " +
+                    " set confirm_identity = :status where username = :username ")
+                    .setParameter("username", username)
+                    .setParameter("status", status)
+                    .executeUpdate();
+            session.getTransaction()
+                    .commit();
+        }
+    }
+
+    @Override
     public User updateUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -180,6 +194,16 @@ public class UserRepositoryImpl implements UserRepository {
             return !session.createQuery("from User " +
                     " where phoneNumber = :phoneNumber", User.class)
                     .setParameter("phoneNumber", phoneNumber)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
+    public boolean isIdentityConfirm(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from User " +
+                    " where confirm_identity = true and username = :username", User.class)
+                    .setParameter("username", username)
                     .list().isEmpty();
         }
     }

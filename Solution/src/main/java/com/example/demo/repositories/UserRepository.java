@@ -20,6 +20,8 @@ public interface UserRepository {
 
     void setStatusUser(String username, boolean status);
 
+    void setStatusIdentity(String username, boolean status);
+
     User updateUser(User user);
 
     User changePassword(User user);
@@ -29,6 +31,8 @@ public interface UserRepository {
     boolean isEmailExist(String email);
 
     boolean isPhoneNumberExist(String phoneNumber);
+
+    public boolean isIdentityConfirm(String username);
 
     List<Integer> getPages();
 

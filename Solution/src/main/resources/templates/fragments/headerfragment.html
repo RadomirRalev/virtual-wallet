@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html">
 <head th:fragment="headerfiles">
     <meta charset="UTF-8">
     <title>Header Fragment</title>
@@ -24,6 +26,7 @@
                     <nav>
                         <div>
                             <ul>
+                                <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin Panel</a></li>
                                 <li><a th:href="@{/deposit}">Deposit Money</a></li>
                                 <li><a th:href="@{/withdrawal}" title="" itemprop="url">Withdraw Money</a></li>
                                 <li><a href="about.html" title="" itemprop="url">Send Money</a></li>

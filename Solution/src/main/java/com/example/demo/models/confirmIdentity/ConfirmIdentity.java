@@ -28,7 +28,7 @@ public class ConfirmIdentity {
     @Column(name = "user_id")
     private int userId;
     @Column(name = "data_ok")
-    private boolean dataOk;
+    private boolean haveRequest;
 
     public ConfirmIdentity() {
     }
@@ -73,11 +73,11 @@ public class ConfirmIdentity {
         this.userId = userId;
     }
 
-    public boolean isDataOk() {
-        return dataOk;
+    public boolean isHaveRequest() {
+        return haveRequest;
     }
 
-    public void setDataOk(boolean dataOk) {
-        this.dataOk = dataOk;
+    public void setHaveRequest(boolean dataOk) {
+        this.haveRequest = dataOk;
     }
 }

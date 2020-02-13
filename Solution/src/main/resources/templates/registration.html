@@ -67,12 +67,6 @@
                                                     <p class="error-field" th:errors="*{email}"></p>
                                                     <input type="email" name='text1' placeholder="Email Address (Obligatory)" th:field="*{email}" required>
                                                 </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="First Name (Optional)" th:field="*{firstName}">
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" placeholder="Last Name (Optional)" th:field="*{lastName}">
-                                                </div>
                                                 <p>Add pic (Optional)</p>
                                                 <input type="file" name="file" class="form-control-file"
                                                        id="userDetails" th:field="*{file}"/>

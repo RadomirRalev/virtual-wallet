@@ -1,13 +1,12 @@
 package com.example.demo.controllers.restcontrollers;
 
-import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidOptionalFieldParameter;
-import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.exceptions.*;
+import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +17,22 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_REQUEST_PROCESSED;
+import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_SUCCESS;
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
+import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @RestController
 @RequestMapping("api/user")
 public class UserController {
 
     private UserService userService;
+    private ConfirmIdentityService confirmIdentityService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ConfirmIdentityService confirmIdentityService) {
         this.userService = userService;
+        this.confirmIdentityService = confirmIdentityService;
     }
 
     @GetMapping
@@ -40,7 +44,8 @@ public class UserController {
     public User create(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         try {
             return userService.createUser(userRegistrationDTO);
-        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException | IOException e) {
+        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException |
+                InvalidPictureFormat | IOException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -105,10 +110,30 @@ public class UserController {
     public void deleteUser(@PathVariable String username) {
         try {
             userService.setStatusUser(username, DISABLE);
-        }
-        catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
+    @PostMapping("/profile/information")
+    public User editProfileInformation(@Valid @RequestBody ProfileUpdateDTO profileUpdateDTO) throws IOException {
+        User user = userService.getByUsername(currentPrincipalName());
+        return userService.updateUser(user, profileUpdateDTO);
+    }
+
+    @PostMapping("/profile/confirm-identity")
+    public void confirmIdentity(@Valid @RequestBody ConfirmIdentityRegistrationDTO confirmIdentityRegistrationDTO) {
+        User user = userService.getByUsername(currentPrincipalName());
+        if (user.isConfirm_identity()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, IDENTITY_CONFIRM_SUCCESS);
+        }
+        if (confirmIdentityService.isUserHaveConfirmIdentityRequest(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, IDENTITY_CONFIRM_REQUEST_PROCESSED);
+        }
+        try {
+            confirmIdentityService.createConfrimIdentity(confirmIdentityRegistrationDTO, currentPrincipalName());
+        } catch (IOException | InvalidPictureFormat e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
 }

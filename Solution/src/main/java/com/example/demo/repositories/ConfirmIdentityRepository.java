@@ -6,7 +6,9 @@ public interface ConfirmIdentityRepository {
 
     ConfirmIdentity createConfrimIdentity(ConfirmIdentity confirmIdentity);
 
-    ConfirmIdentity getByUserId(int userId);
+    ConfirmIdentity getByUserIdRequestForConfirm(int userId);
 
-    boolean isUserHaveConfirmIdentity (int userId);
+    public void setStatus(int userId, boolean status);
+
+    boolean isUserHaveConfirmIdentityRequest(int userId);
 }
