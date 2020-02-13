@@ -24,7 +24,7 @@ public interface UserService {
 
     User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) throws IOException;
 
-    User changePassword (User user, PasswordUpdateDTO passwordUpdateDTO);
+    User changePassword(User user, PasswordUpdateDTO passwordUpdateDTO);
 
     void setStatusUser(String username, boolean status);
 
@@ -36,11 +36,7 @@ public interface UserService {
 
     boolean isPhoneNumberExist(String phoneNumber);
 
-    public boolean isIdentityConfirm(String username);
-
-    List<Integer> getPages();
-
-    List<User> getUsersPaginatedHibernate(Integer page);
+    boolean isIdentityConfirm(String username);
 
     String getAvailableSum(int userId);
 

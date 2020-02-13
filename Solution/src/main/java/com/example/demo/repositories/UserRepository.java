@@ -32,11 +32,7 @@ public interface UserRepository {
 
     boolean isPhoneNumberExist(String phoneNumber);
 
-    public boolean isIdentityConfirm(String username);
-
-    List<Integer> getPages();
-
-    List<User> getUsersPaginatedHibernate(Integer page);
+    boolean isIdentityConfirm(String username);
 
     boolean checkIfUserIdExists(int id);
 

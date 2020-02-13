@@ -35,9 +35,9 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public List<Transaction> getTransactionsByWalletId(@PathVariable int id) {
+    public List<Transaction> getTransactionsByWalletId(@PathVariable int id, int page) {
         try {
-            return transactionService.getTransactionsbyWalletId(id);
+            return transactionService.getTransactionsbyWalletId(id, page);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

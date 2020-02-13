@@ -47,19 +47,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(int userId) {
+    public List<Transaction> getTransactionsByUserId(int userId, int page) {
         if (!checkIfUserIdExists(userId)) {
             throw new EntityNotFoundException(USER_ID_NOT_FOUND, userId);
         }
-        return transactionRepository.getTransactionsByUserId(userId);
+        return transactionRepository.getTransactionsByUserId(userId, page);
     }
 
     @Override
-    public List<Transaction> getTransactionsbyWalletId(int walletId) {
+    public List<Transaction> getTransactionsbyWalletId(int walletId, int page) {
         if (!checkIfWalletIdExists(walletId)) {
             throw new EntityNotFoundException(WALLET_WITH_ID_NOT_EXISTS, walletId);
         }
-        return transactionRepository.getTransactionsbyWalletId(walletId);
+        return transactionRepository.getTransactionsbyWalletId(walletId, page);
     }
 
     @Override
@@ -129,17 +129,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId) {
+    public List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId, int page) {
         if ((!startDate.isEmpty() && !endDate.isEmpty()) && recipientSearchString.isEmpty()) {
-            return getTransactionsByDate(direction, startDate, endDate, userId);
+            return getTransactionsByDate(direction, startDate, endDate, userId, page);
         }
         if ((startDate.isEmpty() && endDate.isEmpty()) && !recipientSearchString.isEmpty()) {
-            return getTransactionsByRecipient(direction, recipientSearchString, userId);
+            return getTransactionsByRecipient(direction, recipientSearchString, userId, page);
         }
         if (!startDate.isEmpty() && !endDate.isEmpty()) {
-            return getTransactionsByRecipientAndDate(direction, startDate, endDate, recipientSearchString, userId);
+            return getTransactionsByRecipientAndDate(direction, startDate, endDate, recipientSearchString, userId, page);
         }
-        return getTransactionsByUserId(userId);
+        return getTransactionsByUserId(userId, page);
     }
 
     @Override
@@ -161,20 +161,20 @@ public class TransactionServiceImpl implements TransactionService {
         return filteredTransactions;
     }
 
-    private List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId) {
+    private List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId, int page) {
         LocalDate startDate = parseDate(start);
         LocalDate endDate = parseDate(end);
-        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId);
+        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId, page);
     }
 
-    private List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId) {
+    private List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId, int page) {
         LocalDate startDate = parseDate(start);
         LocalDate endDate = parseDate(end);
-        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId);
+        return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId, page);
     }
 
-    private List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId) {
-        return transactionRepository.getTransactionsByUserId(direction, recipientSearchString, userId);
+    private List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId, int page) {
+        return transactionRepository.getTransactionsByUserId(direction, recipientSearchString, userId, page);
     }
 
     private List<Transaction> sortTransactionList(List<Transaction> filteredTransactions, Comparator<Transaction> comparing) {
@@ -194,7 +194,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    private boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
+    public boolean checkIfIdempotencyKeyExists(String idempotencyKey) {
         return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
     }
 

@@ -132,17 +132,20 @@ public class ProfileController {
     }
 
     @GetMapping("/transactionhistory")
-    public String getTransactionHistory(Model model) {
+    public String getTransactionHistory(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                        Model model) {
         User user = userService.getByUsername(currentPrincipalName());
-        List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId());
+        List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId(), page);
         model.addAttribute("transactionHistory", transactionHistory);
         model.addAttribute("user", user);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        model.addAttribute("page", page);
         return "user/transactionhistory";
     }
 
     @GetMapping("filteredtransactions")
     public String filterTransactions(Model model,
+                                     @RequestParam(required = false, defaultValue = "1") Integer page,
                                      @RequestParam String startDate,
                                      @RequestParam String endDate,
                                      @RequestParam String searchRecipient,
@@ -150,10 +153,11 @@ public class ProfileController {
                                      @RequestParam String sort) {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
-        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId);
+        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page);
         filteredTransactions = transactionService.sortTransactions(filteredTransactions, sort);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        model.addAttribute("page", page);
         return "user/filteredtransactions";
     }
 }

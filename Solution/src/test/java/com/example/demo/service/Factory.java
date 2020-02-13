@@ -65,19 +65,19 @@ public class Factory {
         withdrawal.setSender(wallet);
     }
 
-    public static void generateInternalWithInSufficientAmount(Internal internal, Wallet sender, Wallet receiver) {
+    public static void generateInternalWithInSufficientAmount(Internal betweenWallets, Wallet sender, Wallet receiver) {
         sender.setId(INDEX);
         sender.setBalance(BALANCE_ENOUGH);
-        internal.setAmount(TRANSACTION_AMOUNT_HIGHER_THAN_BALANCE);
-        internal.setSender(receiver);
-        internal.setReceiver(receiver);
+        betweenWallets.setAmount(TRANSACTION_AMOUNT_HIGHER_THAN_BALANCE);
+        betweenWallets.setSender(receiver);
+        betweenWallets.setReceiver(receiver);
     }
 
-    public static void generateInternalWithSufficientAmount(Internal internal, Wallet sender, Wallet receiver) {
+    public static void generateInternalWithSufficientAmount(Internal betweenWallets, Wallet sender, Wallet receiver) {
         sender.setId(INDEX);
         sender.setBalance(BALANCE_ENOUGH);
-        internal.setAmount(TRANSACTION_AMOUNT);
-        internal.setSender(receiver);
-        internal.setReceiver(receiver);
+        betweenWallets.setAmount(TRANSACTION_AMOUNT);
+        betweenWallets.setSender(receiver);
+        betweenWallets.setReceiver(receiver);
     }
 }

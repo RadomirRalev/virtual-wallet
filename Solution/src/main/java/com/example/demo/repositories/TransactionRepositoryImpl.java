@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.demo.constants.PaginationConstants.getPaginatedResult;
 import static com.example.demo.constants.SQLQueryConstants.*;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
@@ -90,7 +91,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> getTransactionsbyWalletId(int walletId) {
+    public List<Transaction> getTransactionsbyWalletId(int walletId, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<Transaction> queryInternalSender = session.createQuery(FROM_INTERNAL_SENDERID_WALLET, Transaction.class);
             queryInternalSender.setParameter("walletId", walletId);
@@ -100,12 +101,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             queryDepositReceiver.setParameter("walletId", walletId);
             Query<Transaction> queryWithdrawal = session.createQuery(FROM_WITHDRAWAL_SENDERID_WALLET, Transaction.class);
             queryWithdrawal.setParameter("walletId", walletId);
-            return getTransactions(queryInternalSender, queryInternalReceiver, queryDepositReceiver, queryWithdrawal);
+            return getTransactions(queryInternalSender, queryInternalReceiver, queryDepositReceiver, queryWithdrawal, page);
         }
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(int userId) {
+    public List<Transaction> getTransactionsByUserId(int userId, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<Transaction> queryInternalSender = session.createQuery(SELECT_SENDER_INTERNAL_SENDERID, Transaction.class);
             queryInternalSender.setParameter("userId", userId);
@@ -115,8 +116,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             queryDepositReceiver.setParameter("userId", userId);
             Query<Transaction> queryWithdrawal = session.createQuery(SELECT_SENDER_WITHDRAWAL_SENDERID, Transaction.class);
             queryWithdrawal.setParameter("userId", userId);
-            return getTransactions(queryInternalSender, queryInternalReceiver, queryDepositReceiver, queryWithdrawal);
-
+            return getTransactions(queryInternalSender, queryInternalReceiver, queryDepositReceiver, queryWithdrawal, page);
         }
     }
 
@@ -138,7 +138,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, int userId) {
+    public List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, int userId, int page) {
         try (Session session = sessionFactory.openSession()) {
             List<Transaction> result = new ArrayList<>();
             if (direction.equalsIgnoreCase("All") || direction.equalsIgnoreCase("Outgoing")) {
@@ -149,12 +149,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
                 getQueryStartDateEndDateUserId(startDate, endDate, userId, session, result, FROM_INTERNAL_DATE_RECEIVERID);
                 getQueryStartDateEndDateUserId(startDate, endDate, userId, session, result, FROM_DEPOSIT_DATE_RECEIVERID);
             }
-            return result;
+            return getPaginatedResult(page, result);
         }
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(String direction, String recipientSearchString, int userId) {
+    public List<Transaction> getTransactionsByUserId(String direction, String recipientSearchString, int userId, int page) {
         try (Session session = sessionFactory.openSession()) {
             List<Transaction> result = new ArrayList<>();
             if (direction.equalsIgnoreCase("All")) {
@@ -176,12 +176,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             if (direction.equalsIgnoreCase("Outgoing") && recipientSearchString.equalsIgnoreCase(currentPrincipalName())) {
                 getQueryRecipientUserId(recipientSearchString, userId, session, result);
             }
-            return result;
+            return getPaginatedResult(page, result);
         }
     }
 
     @Override
-    public List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, String recipientSearchString, int userId) {
+    public List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, String recipientSearchString, int userId, int page) {
         try (Session session = sessionFactory.openSession()) {
             List<Transaction> result = new ArrayList<>();
             if (direction.equalsIgnoreCase("All")) {
@@ -203,7 +203,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             if (direction.equalsIgnoreCase("Outgoing") && recipientSearchString.equalsIgnoreCase(currentPrincipalName())) {
                 getQueryRecipientUserIdDate(startDate, endDate, recipientSearchString, userId, session, result);
             }
-            return result;
+            return getPaginatedResult(page, result);
         }
     }
 
@@ -268,12 +268,19 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         txn.commit();
     }
 
-    private List<Transaction> getTransactions(Query<Transaction> queryInternalSender, Query<Transaction> queryInternalReceiver, Query<Transaction> queryDepositReceiver, Query<Transaction> queryWithdrawal) {
+    private List<Transaction> getTransactions(Query<Transaction> queryInternalSender) {
+        List<Transaction> result = new ArrayList<>();
+        result.addAll(queryInternalSender.list());
+        return result;
+    }
+
+    private List<Transaction> getTransactions(Query<Transaction> queryInternalSender, Query<Transaction> queryInternalReceiver, Query<Transaction> queryDepositReceiver, Query<Transaction> queryWithdrawal, int page) {
         List<Transaction> result = new ArrayList<>();
         result.addAll(queryInternalSender.list());
         result.addAll(queryInternalReceiver.list());
         result.addAll(queryDepositReceiver.list());
         result.addAll(queryWithdrawal.list());
-        return result;
+        return getPaginatedResult(page, result);
     }
 }
+
