@@ -11,9 +11,9 @@ import java.util.List;
 public interface TransactionRepository {
     List<Transaction> getTransactions();
 
-    List<Transaction> getTransactionsbyWalletId(int id);
+    List<Transaction> getTransactionsbyWalletId(int id, int page);
 
-    Internal createInternal(Internal internal, double balanceSender, double balanceReceiver, int senderId, int receiverId);
+    Internal createInternal(Internal betweenWallets, double balanceSender, double balanceReceiver, int senderId, int receiverId);
 
     Withdrawal createWithdrawal(Withdrawal withdrawal, double balanceSender, int senderId);
 
@@ -21,12 +21,12 @@ public interface TransactionRepository {
 
     boolean checkIfIdempotencyKeyExists(String idempotencyKey);
 
-    List<Transaction> getTransactionsByUserId(int userId);
+    List<Transaction> getTransactionsByUserId(int userId, int page);
 
-    List<Transaction> getTransactionsByUserId(String direction, String recipientSearchString, int userId);
+    List<Transaction> getTransactionsByUserId(String direction, String recipientSearchString, int userId, int page);
 
-    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, int userId);
+    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, int userId, int page);
 
-    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, String recipientSearchString, int userId);
+    List<Transaction> getTransactionsByUserId(String direction, LocalDate startDate, LocalDate endDate, String recipientSearchString, int userId, int page);
 
 }

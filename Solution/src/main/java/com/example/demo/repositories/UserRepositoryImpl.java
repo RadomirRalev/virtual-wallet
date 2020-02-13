@@ -1,12 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.helpers.PaginationResult;
 import com.example.demo.models.user.User;
-import com.example.demo.models.wallet.Wallet;
-import com.google.common.collect.Lists;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -16,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
+import static com.example.demo.constants.PaginationConstants.getPaginatedQueryResult;
 import static com.example.demo.constants.SQLQueryConstants.*;
 
 @Repository
@@ -32,31 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<User> getUsers(int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User", User.class);
-            return getPaginatedResult(page, query);
-        }
-    }
-
-    private List<User> getPaginatedResult(int page, Query<User> query) {
-        query.setMaxResults(5);
-        query.setFirstResult(((page - 1)*5));
-        return query.list();
-    }
-
-    @Override
-    public List<Integer> getPages() {
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User", User.class);
-            PaginationResult<User> result = new PaginationResult<User>(query, PAGES_TO_SHOW, RESULTS_PER_PAGE, MAX_NAVIGATION_RESULT);
-            return result.getNavigationPages();
-        }
-    }
-
-    @Override
-    public List<User> getUsersPaginatedHibernate(Integer page) {
-        int positions = getPositions(page);
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User", User.class);
-            return getPaginated(positions, query);
+            return getPaginatedQueryResult(page, query);
         }
     }
 

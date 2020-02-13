@@ -130,15 +130,15 @@ public class TransactionServiceTests {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
-        Internal internal = transactionMapper.createInternalTransaction(transactionDTO);
+        Internal betweenWallets = transactionMapper.createInternalTransaction(transactionDTO);
         List<Internal> list = new ArrayList<>();
-        list.add(internal);
+        list.add(betweenWallets);
 
         //Act
-        Internal internalTest = list.get(0);
+        Internal betweenWalletsTest = list.get(0);
 
         //Assert
-        Assert.assertSame(internal, internalTest);
+        Assert.assertSame(betweenWallets, betweenWalletsTest);
     }
 
     @Test
@@ -211,12 +211,12 @@ public class TransactionServiceTests {
     public void createInternalShouldThrowException_WhenWalletMoneyAreNotEnough() {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
-        Internal internal = createInternal();
+        Internal betweenWallets = createInternal();
         Wallet walletSender = createWallet();
         Wallet walletReceiver = createWallet();
-        generateInternalWithInSufficientAmount(internal, walletSender, walletReceiver);
+        generateInternalWithInSufficientAmount(betweenWallets, walletSender, walletReceiver);
         Mockito.when(transactionService.getInternal(transactionDTO))
-                .thenReturn(internal);
+                .thenReturn(betweenWallets);
 
         //Act
         transactionService.createInternal(transactionDTO);
@@ -226,14 +226,14 @@ public class TransactionServiceTests {
     public void createInternalShouldThrowException_WhenIdempotencyKeyExists() {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
-        Internal internal = createInternal();
+        Internal betweenWallets = createInternal();
         Wallet walletSender = createWallet();
         walletSender.setBalance(BALANCE_ENOUGH);
         Wallet walletReceiver = createWallet();
-        generateInternalWithInSufficientAmount(internal, walletSender, walletReceiver);
+        generateInternalWithInSufficientAmount(betweenWallets, walletSender, walletReceiver);
         Mockito.when(transactionService.getInternal(transactionDTO))
-                .thenReturn(internal);
-        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
+                .thenReturn(betweenWallets);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(betweenWallets.getIdempotencyKey()))
                 .thenReturn(true);
 
 
@@ -246,14 +246,14 @@ public class TransactionServiceTests {
     public void createInternalShouldCallRepository_Save() {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
-        Internal internal = createInternal();
+        Internal betweenWallets = createInternal();
         Wallet walletSender = createWallet();
         walletSender.setBalance(BALANCE_ENOUGH);
         Wallet walletReceiver = createWallet();
-        generateInternalWithSufficientAmount(internal, walletSender, walletReceiver);
+        generateInternalWithSufficientAmount(betweenWallets, walletSender, walletReceiver);
         Mockito.when(transactionService.getInternal(transactionDTO))
-                .thenReturn(internal);
-        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
+                .thenReturn(betweenWallets);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(betweenWallets.getIdempotencyKey()))
                 .thenReturn(false);
 
 
@@ -263,7 +263,7 @@ public class TransactionServiceTests {
         //Assert
         Mockito.verify(transactionRepository,
                 Mockito.times(1))
-                .createInternal(internal,
+                .createInternal(betweenWallets,
                         walletSender.getBalance() - TRANSACTION_AMOUNT,
                         walletReceiver.getBalance() + TRANSACTION_AMOUNT,
                         walletSender.getId(),
@@ -292,7 +292,7 @@ public class TransactionServiceTests {
 //        Deposit deposit = createDeposit();
 //        Mockito.when(transactionService.getDeposit(transactionDTO))
 //                .thenReturn(deposit);
-//        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
+//        Mockito.when(transactionService.checkIfIdempotencyKeyExists(betweenWallets.getIdempotencyKey()))
 //                .thenReturn(false);
 //
 //        //Act

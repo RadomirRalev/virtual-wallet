@@ -34,10 +34,6 @@ public interface UserService {
 
     boolean isPhoneNumberExist(String phoneNumber);
 
-    List<Integer> getPages();
-
-    List<User> getUsersPaginatedHibernate(Integer page);
-
     String getAvailableSum(int userId);
 
     List<User> searchByUsername(String username);

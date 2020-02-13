@@ -56,10 +56,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUsers(page);
     }
 
-    public List<Integer> getPages() {
-        return userRepository.getPages();
-    }
-
     @Override
     public User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException {
 
@@ -97,11 +93,6 @@ public class UserServiceImpl implements UserService {
         emailSenderService.sendEmail(emailMessage);
 
         return createdUser;
-    }
-
-    @Override
-    public List<User> getUsersPaginatedHibernate(Integer page) {
-        return userRepository.getUsersPaginatedHibernate(page);
     }
 
     @Override

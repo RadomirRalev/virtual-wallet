@@ -30,10 +30,6 @@ public interface UserRepository {
 
     boolean isPhoneNumberExist(String phoneNumber);
 
-    List<Integer> getPages();
-
-    List<User> getUsersPaginatedHibernate(Integer page);
-
     boolean checkIfUserIdExists(int id);
 
     List<User> searchByUsername(String username);
