@@ -47,7 +47,7 @@
                                         <div class="col-md-6 col-sm-6 col-lg-6">
                                             <div class="team-detail-inf-itm">
                                                 <h5 itemprop="headline">Confirm identity</h5>
-                                                <form class="reply-form" th:action="@{/profile/confirm-identity}"
+                                                <form class="reply-form" th:action="@{/confirm-identity}"
                                                       th:object="${confirmIdentityRegistrationDTO}"
                                                       method="post" name="form1"
                                                       enctype="multipart/form-data">
@@ -56,7 +56,6 @@
                                                             <i th:if="${error != null}" th:text="${error}"
                                                                class="error-field"></i>
                                                         </p>
-
                                                         <p>Please upload the front side of your ID card or photo page of Passport.</p>
                                                         <input type="file" name="file" class="form-control-file"
                                                                 th:field="*{front_picture}" required/>

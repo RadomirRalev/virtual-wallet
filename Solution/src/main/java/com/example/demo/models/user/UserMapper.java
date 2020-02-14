@@ -31,4 +31,10 @@ public class UserMapper {
         user.setPicture(profileUpdateDTO.getFile().getBytes());
         return user;
     }
+
+    public static User updateNames(User user, UserNamesDTO userNamesDTO)  {
+       user.setFirstName(userNamesDTO.getFirstName());
+       user.setLastName(userNamesDTO.getLastName());
+        return user;
+    }
 }

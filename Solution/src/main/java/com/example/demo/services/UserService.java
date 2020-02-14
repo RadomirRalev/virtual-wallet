@@ -1,9 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.models.user.PasswordUpdateDTO;
-import com.example.demo.models.user.ProfileUpdateDTO;
-import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.user.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +22,8 @@ public interface UserService {
     User updateUser(User user, ProfileUpdateDTO profileUpdateDTO) throws IOException;
 
     User changePassword(User user, PasswordUpdateDTO passwordUpdateDTO);
+
+    User updateNames(User user, UserNamesDTO userNamesDTO, String principal);
 
     void setStatusUser(String username, boolean status);
 

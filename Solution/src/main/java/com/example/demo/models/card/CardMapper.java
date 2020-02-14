@@ -26,4 +26,10 @@ public class CardMapper {
         cardDetails.setUser(userService.getById(cardRegistrationDTO.getUser_id()));
         return cardDetails;
     }
+
+    public static void updateCard(CardDetails cardDetails, CardUpdateDTO cardUpdateDTO) {
+        cardDetails.setCardNumber(cardUpdateDTO.getCardNumber());
+        cardDetails.setExpirationDate(cardUpdateDTO.getExpirationDate());
+        cardDetails.setSecurityCode(cardUpdateDTO.getSecurityCode());
+    }
 }

@@ -3,9 +3,12 @@ package com.example.demo.services;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidCardException;
+import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.models.card.CardMapper;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
+import com.example.demo.models.card.CardUpdateDTO;
+import com.example.demo.models.user.User;
 import com.example.demo.repositories.CardDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,8 +43,12 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     }
 
     @Override
-    public CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, int userId) {
-        cardRegistrationDTO.setUser_id(userId);
+    public CardDetails createCard(CardRegistrationDTO cardRegistrationDTO, String username) {
+        User cardOwner = userService.getByUsername(username);
+        if (!cardOwner.isConfirm_identity()) {
+            throw new InvalidPermission(CONFIRM_YOUR_IDENTITY_TO_REGISTER_CARD, username);
+        }
+        cardRegistrationDTO.setUser_id(cardOwner.getId());
 
         if (isCardExist(cardRegistrationDTO.getCardNumber())) {
             throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardRegistrationDTO.getCardNumber());
@@ -52,7 +59,7 @@ public class CardDetailsServiceImpl implements CardDetailsService {
         }
 
         if (!cardRegistrationDTO.getCardholderName().
-                equalsIgnoreCase(userService.getById(userId).getFirstName() + " " + userService.getById(userId).getLastName())) {
+                equalsIgnoreCase(cardOwner.getFirstName() + " " + cardOwner.getLastName())) {
             throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
         }
         CardDetails cardDetails = cardMapper.mapCard(cardRegistrationDTO);
@@ -61,8 +68,16 @@ public class CardDetailsServiceImpl implements CardDetailsService {
 
     //TODO
     @Override
-    public CardDetails updateCard(CardRegistrationDTO cardRegistrationDTO) {
-        throw new NotImplementedException();
+    public CardDetails updateCard(CardUpdateDTO cardUpdateDTO, int updatedCardId, String username) {
+        CardDetails cardToUpdate = getById(updatedCardId);
+        User currentUser = userService.getByUsername(username);
+
+        if (cardToUpdate.getUser().getId() != currentUser.getId()) {
+            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION_TO_UPDATE_CARD, currentUser.getUsername());
+        }
+
+        CardMapper.updateCard(cardToUpdate, cardUpdateDTO);
+        return cardDetailsRepository.updateCard(cardToUpdate);
     }
 
     @Override
@@ -76,5 +91,10 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     @Override
     public boolean isCardExist(String number) {
         return cardDetailsRepository.checkIfCardNumberExists(number);
+    }
+
+    @Override
+    public boolean isUserIsOwner(int cardId, int userId) {
+        return cardDetailsRepository.isUserIsOwner(cardId, userId);
     }
 }

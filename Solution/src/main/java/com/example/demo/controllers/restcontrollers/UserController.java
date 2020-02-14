@@ -2,10 +2,7 @@ package com.example.demo.controllers.restcontrollers;
 
 import com.example.demo.exceptions.*;
 import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
-import com.example.demo.models.user.PasswordUpdateDTO;
-import com.example.demo.models.user.ProfileUpdateDTO;
-import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.user.*;
 import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,7 @@ import java.util.List;
 import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_REQUEST_PROCESSED;
 import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_SUCCESS;
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
+import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @RestController
@@ -133,6 +131,18 @@ public class UserController {
         try {
             confirmIdentityService.createConfrimIdentity(confirmIdentityRegistrationDTO, currentPrincipalName());
         } catch (IOException | InvalidPictureFormat e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+    }
+
+    @PostMapping("/admin/{username}/confirm-identity")
+    public User AdminConfirmIdentity(@PathVariable("username") String username,
+                                     @Valid @ModelAttribute("profileUpdateDTO") UserNamesDTO namesDTO) {
+        try {
+            User user = userService.getByUsername(username);
+            userService.setStatusIdentity(username, ENABLE);
+            return userService.updateNames(user, namesDTO, currentPrincipalName());
+        } catch (EntityNotFoundException | DuplicateEntityException | InvalidPermission e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }

@@ -8,7 +8,8 @@ public interface ConfirmIdentityRepository {
 
     ConfirmIdentity getByUserIdRequestForConfirm(int userId);
 
-    public void setStatus(int userId, boolean status);
+    void setStatus(int userId, boolean status);
 
     boolean isUserHaveConfirmIdentityRequest(int userId);
+
 }

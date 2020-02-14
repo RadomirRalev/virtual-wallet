@@ -35,6 +35,8 @@
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='', currentpage = 'Edit Profile')"></section>
     <section>
         <div class="spacing">
             <div class="container">

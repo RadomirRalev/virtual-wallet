@@ -1,11 +1,11 @@
 package com.example.demo.controllers.mvccontrollers.user;
 
-import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPictureFormat;
 import com.example.demo.models.confirmIdentity.ConfirmIdentity;
 import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.user.User;
+import com.example.demo.models.user.UserNamesDTO;
 import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +36,9 @@ public class ConfirmIdentityController {
         this.confirmIdentityService = confirmIdentityService;
     }
 
-    @GetMapping("/profile/confirm-identity")
+    @GetMapping("/confirm-identity")
     public String confirmIdentity(Model model) {
-        ConfirmIdentityRegistrationDTO confirmIdentityRegistrationDTO = new ConfirmIdentityRegistrationDTO();
-        model.addAttribute("confirmIdentityRegistrationDTO", confirmIdentityRegistrationDTO);
+        model.addAttribute("confirmIdentityRegistrationDTO", new ConfirmIdentityRegistrationDTO());
 
         User user = userService.getByUsername(currentPrincipalName());
         if (user.isConfirm_identity()) {
@@ -55,7 +54,7 @@ public class ConfirmIdentityController {
         return "user/confirm-identity";
     }
 
-    @PostMapping("/profile/confirm-identity")
+    @PostMapping("/confirm-identity")
     public String confirmIdentity(@Valid @ModelAttribute("confirmIdentityRegistrationDTO")
                                           ConfirmIdentityRegistrationDTO confirmIdentityRegistrationDTO, Model model) {
         try {
@@ -69,6 +68,7 @@ public class ConfirmIdentityController {
 
     @GetMapping("/admin/{username}/confirm-identity")
     public String AdminConfirmIdentity(@PathVariable("username") String username, Model model) {
+        model.addAttribute("namesDTO", new UserNamesDTO());
         User user = userService.getByUsername(username);
         model.addAttribute("user", user);
 
@@ -87,8 +87,10 @@ public class ConfirmIdentityController {
     }
 
     @PostMapping("/admin/{username}/confirm-identity")
-    public String AdminConfirmIdentity(@PathVariable("username") String username) {
-
+    public String AdminConfirmIdentity(@PathVariable("username") String username,
+                                       @Valid @ModelAttribute("profileUpdateDTO") UserNamesDTO namesDTO) {
+        User user = userService.getByUsername(username);
+        userService.updateNames(user, namesDTO, currentPrincipalName());
         userService.setStatusIdentity(username, ENABLE);
         return "messages/success-confirm-identity";
     }

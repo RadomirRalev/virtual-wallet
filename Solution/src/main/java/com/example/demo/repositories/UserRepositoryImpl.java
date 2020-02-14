@@ -141,6 +141,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User updateNames(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+            return user;
+        }
+    }
+
+    @Override
     public boolean isUsernameExist(String username) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +

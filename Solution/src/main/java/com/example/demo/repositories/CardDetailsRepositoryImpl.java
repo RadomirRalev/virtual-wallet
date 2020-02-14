@@ -102,4 +102,15 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
                     .list().isEmpty();
         }
     }
+
+    @Override
+    public boolean isUserIsOwner(int cardId, int userId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from CardDetails " +
+                    " where id = :cardId and user.id = :userId ", CardDetails.class)
+                    .setParameter("cardId", cardId)
+                    .setParameter("userId", userId)
+                    .list().isEmpty();
+        }
+    }
 }

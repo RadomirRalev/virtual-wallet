@@ -12,9 +12,7 @@ public class UserNamesDTO {
     @Length(min = 3, message = "Minimum 3 symbols required.")
     private String lastName;
 
-    public UserNamesDTO(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserNamesDTO() {
     }
 
     public String getFirstName() {

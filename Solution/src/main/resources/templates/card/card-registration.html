@@ -12,11 +12,11 @@
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <style>
         .fixed-bg {
-            background-image: url(images/pg-tp-bg.jpg);
+            background-image: url(../../static/images/pg-tp-bg.jpg);
         }
 
         .fixed-bg2 {
-            background-image: url(images/pg-tp-bg.jpg);
+            background-image: url(../../static/images/pg-tp-bg.jpg);
         }
     </style>
 
@@ -42,9 +42,13 @@
                                 <div class="blog-detail">
                                     <div class="comment-reply">
                                         <h5 itemprop="headline">REGISTRATION FORM</h5>
-                                        <form class="reply-form" th:action="@{/cardregistration}" th:object="${CardRegistrationDTO}" method="post">
+                                        <form class="reply-form" th:action="@{/card-registration}" th:object="${CardRegistrationDTO}" method="post">
                                             <div class="row" style="text-align: center">
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <p>
+                                                        <i th:if="${error != null}" th:text="${error}"
+                                                           class="error-field"></i>
+                                                    </p>
                                                     <p class="error-field" th:errors="*{cardholderName}"></p>
                                                     <input type="text" name="txt_username" id="txt_card_owner" class="form-control" placeholder="Card Owner" th:field="*{cardholderName}" required>
                                                 </div>

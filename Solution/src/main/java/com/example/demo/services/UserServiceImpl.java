@@ -1,9 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
-import com.example.demo.exceptions.InvalidPasswordException;
-import com.example.demo.exceptions.InvalidPictureFormat;
+import com.example.demo.exceptions.*;
 import com.example.demo.helpers.PictureFormat;
 import com.example.demo.models.role.Role;
 import com.example.demo.models.role.RoleMapper;
@@ -26,10 +23,10 @@ import java.util.List;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.constants.FormatConstants.df2;
-import static com.example.demo.constants.TypesConstants.EMPTY;
 
 @Service
 public class UserServiceImpl implements UserService {
+
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
@@ -149,6 +146,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateNames(User user, UserNamesDTO userNamesDTO, String principal) {
+        User updater = getByUsername(principal);
+        if (updater.getRoles().stream().noneMatch(role -> role.getRole().equals("admin"))){
+            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION,principal);
+        }
+            User userToUpdate = UserMapper.updateNames(user, userNamesDTO);
+        return userRepository.updateNames(userToUpdate);
+    }
+
+    @Override
     public void setStatusUser(String username, boolean status) {
         if (!isUsernameExist(username)) {
             throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
@@ -158,10 +165,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setStatusIdentity(String username, boolean status) {
-        userRepository.setStatusIdentity(username, status);
         if (isIdentityConfirm(username)) {
             throw new DuplicateEntityException(USER_ALREADY_HAVE_CONFIRM_IDENTITY, username);
         }
+        userRepository.setStatusIdentity(username, status);
     }
 
     @Override

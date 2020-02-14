@@ -26,6 +26,8 @@ public interface UserRepository {
 
     User changePassword(User user);
 
+    User updateNames(User user);
+
     boolean isUsernameExist(String username);
 
     boolean isEmailExist(String email);
