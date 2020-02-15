@@ -27,7 +27,6 @@ import static com.example.demo.constants.FormatConstants.df2;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private WalletRepository walletRepository;
@@ -52,6 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers(int page) {
         return userRepository.getUsers(page);
+    }
+
+    @Override
+    public List<User> getUsersForConfirm() {
+        return userRepository.getUsersForConfirm();
     }
 
     @Override
@@ -126,6 +130,10 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(
                     String.format(PHONE_NUMBER_ALREADY_REGISTERED, profileUpdateDTO.getPhoneNumber()));
         }
+
+        if (!profileUpdateDTO.getFile().isEmpty() && !PictureFormat.isPictureJPG(profileUpdateDTO.getFile())) {
+            throw new InvalidPictureFormat(ALLOW_PICTURE_FORMAT);
+        }
         User userToUpdate = UserMapper.updateProfile(user, profileUpdateDTO);
         return userRepository.updateUser(userToUpdate);
     }
@@ -148,10 +156,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateNames(User user, UserNamesDTO userNamesDTO, String principal) {
         User updater = getByUsername(principal);
-        if (updater.getRoles().stream().noneMatch(role -> role.getRole().equals("admin"))){
-            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION,principal);
+        if (updater.getRoles().stream().noneMatch(role -> role.getRole().equals("ROLE_ADMIN"))) {
+            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION, principal);
         }
-            User userToUpdate = UserMapper.updateNames(user, userNamesDTO);
+        User userToUpdate = UserMapper.updateNames(user, userNamesDTO);
         return userRepository.updateNames(userToUpdate);
     }
 

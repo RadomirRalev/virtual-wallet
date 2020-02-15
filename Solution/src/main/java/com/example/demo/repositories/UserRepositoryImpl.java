@@ -33,6 +33,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public List<User> getUsersForConfirm() {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createNativeQuery(GET_USERS_FOR_CONFIRM, User.class);
+            return query.list();
+        }
+    }
+
+    @Override
     public User createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.save(user);

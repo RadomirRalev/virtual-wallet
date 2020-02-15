@@ -55,19 +55,14 @@
                                              alt="" src=""
                                              style="width: 1500px; border-radius: 8px; padding: 5px">
 
-<!--                                            <form th:action="@{/admin/{username}/confirm-identity(username=${user.getUsername()})}"-->
-<!--                                                  method="post">-->
-<!--                                                <input class="theme-btn theme-bg brd-rd30" type="submit"-->
-<!--                                                       value="confirm identity"/>-->
-<!--                                            </form>-->
-                                        <form class="reply-form" th:action="@{/admin/{username}/confirm-identity(username=${user.getUsername()})}"
+                                        <form class="reply-form"
+                                              th:action="@{/admin/{username}/confirm-identity(username=${user.getUsername()})}"
                                               th:object="${namesDTO}"
                                               method="post" name="form1"
                                               enctype="multipart/form-data">
                                             <div class="row" style="text-align: center">
                                                 <p>
-                                                    <i th:if="${error != null}" th:text="${error}"
-                                                       class="error-field"></i>
+                                                    <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
                                                 </p>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
                                                     <p class="error-field" th:errors="*{firstName}"></p>

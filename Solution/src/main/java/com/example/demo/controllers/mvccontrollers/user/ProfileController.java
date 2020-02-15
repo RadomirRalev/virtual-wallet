@@ -1,19 +1,21 @@
 package com.example.demo.controllers.mvccontrollers.user;
 
+import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
+import com.example.demo.exceptions.InvalidPictureFormat;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.repositories.WalletRepository;
-import com.example.demo.services.ConfirmIdentityService;
 import com.example.demo.services.TransactionService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -82,28 +84,30 @@ public class ProfileController {
 
     @PostMapping("/profile/information")
     public String editProfileInformation(@Valid @ModelAttribute("profileUpdateDTO") ProfileUpdateDTO profileUpdateDTO,
-                                         Model model) {
+                                         BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "user/profile-edit-profile";
+        }
+
         try {
             User user = userService.getByUsername(currentPrincipalName());
             userService.updateUser(user, profileUpdateDTO);
-        } catch (EntityNotFoundException | IOException e) {
+        } catch (EntityNotFoundException | DuplicateEntityException | InvalidPictureFormat | IOException e) {
             model.addAttribute("error", e.getMessage());
             return "user/profile-edit-profile";
         }
         return "messages/success-change-information";
     }
 
-    //TODO anonimen
     @GetMapping("/profile/{username}")
     public String account(@PathVariable("username") String username, Model model) {
         String currentUser = currentPrincipalName();
-        try {
+
             User user = userService.getByUsername(currentPrincipalName());
             String availableSum = userService.getAvailableSum(user.getId());
             model.addAttribute("availableSum", availableSum);
-        } catch (EntityNotFoundException e) {
 
-        }
         model.addAttribute("user", userService.getByUsername(username));
         model.addAttribute("currentuser", currentUser);
         return "/user/profile";

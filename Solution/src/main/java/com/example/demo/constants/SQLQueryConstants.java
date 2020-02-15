@@ -17,6 +17,12 @@ public class SQLQueryConstants {
     //Currency
     public static final String USD = "USD";
 
+    //User
+    public static final String GET_USERS_FOR_CONFIRM = "select * " +
+            "from users join confirm_identy " +
+            "on users.user_id = confirm_identy.user_id " +
+            "where have_request = true";
+
     //Transactions
     public static final String FROM_INTERNAL_DATE_SENDERID = "from Internal " +
             " where date between :startDate and :endDate and sender.user.id = :userId";

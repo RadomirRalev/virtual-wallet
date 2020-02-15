@@ -21,7 +21,7 @@ import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @RestController
-@RequestMapping("api/user")
+@RequestMapping("api/users")
 public class UserController {
 
     private UserService userService;

@@ -8,6 +8,8 @@ public interface UserRepository {
 
     List<User> getUsers(int page);
 
+    List<User> getUsersForConfirm();
+
     User createUser(User user);
 
     User getById(int id);

@@ -9,6 +9,8 @@ public interface UserService {
 
     List<User> getUsers(int page);
 
+    List<User> getUsersForConfirm();
+
     User createUser(UserRegistrationDTO userRegistrationDTO) throws IOException;
 
     User getById(int id);

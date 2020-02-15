@@ -50,20 +50,12 @@
                                         <div class="col-md-6 col-sm-6 col-lg-6">
                                             <div class="team-detail-inf-itm">
                                                 <h5 itemprop="headline">Users for confirm identity:</h5>
-<!--                                                <ul class="team-inf-lst">-->
-<!--                                                    <li><i class="fas fa-user theme-clr"-->
-<!--                                                           th:if="${user.getFirstName() != '' && user.getLastName() != ''}"></i>-->
-<!--                                                        <span th:text="${user.getFirstName()}"></span>-->
-<!--                                                        <span th:text="${user.getLastName()}"></span></li>-->
-<!--                                                    <li><i class="fas fa-phone theme-clr"></i><span-->
-<!--                                                            th:text="${user.getPhoneNumber()}"></span></li>-->
-<!--                                                    <li><i class="far fa-envelope-open theme-clr"></i><span-->
-<!--                                                            th:text="${user.getEmail()}"></span></li>-->
-<!--                                                    <th:block th:each="card : ${user.getCardDetails()}">-->
-<!--                                                        <li><i class="far fa-credit-card theme-clr"></i><span-->
-<!--                                                                th:text="${card.getCardNumber()}"></span></li>-->
-<!--                                                    </th:block>-->
-<!--                                                </ul>-->
+                                                <tbody th:each="user : ${userToConfirm}">
+                                                <tr>
+                                                    <td class="align-middle">
+                                                        <div><a th:text="${user.username}" th:href="@{/admin/{username}/confirm-identity(username=${user.username})}"></a></div></td>
+                                                </tr>
+                                                </tbody>
                                             </div>
                                         </div>
                                     </div>

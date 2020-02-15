@@ -4,9 +4,9 @@ import com.example.demo.models.verificationToken.VerificationToken;
 
 public interface VerificationTokenRepository {
 
-    public VerificationToken create(VerificationToken verificationToken);
+    VerificationToken create(VerificationToken verificationToken);
 
-    public VerificationToken getByToken(String token);
+    VerificationToken getByToken(String token);
 
 
 }

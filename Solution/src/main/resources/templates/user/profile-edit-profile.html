@@ -53,8 +53,7 @@
                                                       enctype="multipart/form-data">
                                                     <div class="row" style="text-align: center">
                                                         <p>
-                                                            <i th:if="${error != null}" th:text="${error}"
-                                                               class="error-field"></i>
+                                                            <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
                                                         </p>
                                                         <div class="col-md-12 col-sm-12 col-lg-12">
                                                             <p class="error-field" th:errors="*{phoneNumber}"></p>
@@ -100,6 +99,3 @@
 <!--scripts-->
 </body>
 </html>
-
-
-
