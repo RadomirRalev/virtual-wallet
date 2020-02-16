@@ -22,7 +22,7 @@ public class TransactionDTO {
     public TransactionDTO() {
     }
 
-    public TransactionDTO(double amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency) {
+    public TransactionDTO(double amount, int senderId, String type, String description, String idempotencyKey, int receiverId, String currency, String senderName, String receiverName) {
         this.amount = amount;
         this.senderId = senderId;
         this.type = type;
@@ -30,6 +30,8 @@ public class TransactionDTO {
         this.idempotencyKey = idempotencyKey;
         this.receiverId = receiverId;
         this.currency = currency;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
     }
 
     public double getAmount() {

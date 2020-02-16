@@ -4,8 +4,11 @@ import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WalletRepository;
 import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.TransactionServiceImpl;
@@ -26,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.example.demo.service.Factory.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -39,7 +43,11 @@ public class TransactionServiceTests {
     @Mock
     WalletService walletService;
     @Mock
+    UserRepository userRepository;
+    @Mock
     WalletRepository walletRepository;
+    @Mock
+    CardDetailsRepository cardDetailsRepository;
     @Mock
     SessionFactory sessionFactory;
     @Mock
@@ -114,11 +122,11 @@ public class TransactionServiceTests {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
+
+        //Act
         Deposit deposit = transactionMapper.createDeposit(transactionDTO);
         List<Deposit> list = new ArrayList<>();
         list.add(deposit);
-
-        //Act
         Deposit depositTest = list.get(0);
 
         //Assert
@@ -197,8 +205,13 @@ public class TransactionServiceTests {
         CardDetails cardDetails = createCard();
         Wallet wallet = createWallet();
         generateWithdrawalWithSufficientAmount(withdrawal, cardDetails, wallet);
+
         Mockito.when(transactionService.getWithdrawal(transactionDTO))
                 .thenReturn(withdrawal);
+        Mockito.when(transactionService.checkIfWalletIdExists(wallet.getId()))
+                .thenReturn(true);
+        Mockito.when(transactionService.checkIfCardIdExists(cardDetails.getId()))
+                .thenReturn(true);
 
         //Act
         transactionService.createWithdrawal(transactionDTO);
@@ -255,6 +268,10 @@ public class TransactionServiceTests {
                 .thenReturn(betweenWallets);
         Mockito.when(transactionService.checkIfIdempotencyKeyExists(betweenWallets.getIdempotencyKey()))
                 .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(walletSender.getId()))
+                .thenReturn(true);
+        Mockito.when(transactionService.checkIfCardIdExists(anyInt()))
+                .thenReturn(true);
 
 
         //Act
@@ -282,21 +299,62 @@ public class TransactionServiceTests {
 
         //Act
         transactionService.createDeposit(transactionDTO);
-
     }
 
-//    @Test(expected = ResourceAccessException.class)
-//    public void createDepositShouldThrowException_WhenAPINotConnected() {
-//        //Arrange
-//        TransactionDTO transactionDTO = createTransactionDTO();
-//        Deposit deposit = createDeposit();
-//        Mockito.when(transactionService.getDeposit(transactionDTO))
-//                .thenReturn(deposit);
-//        Mockito.when(transactionService.checkIfIdempotencyKeyExists(betweenWallets.getIdempotencyKey()))
-//                .thenReturn(false);
-//
-//        //Act
-//        transactionService.createDeposit(transactionDTO);
-//    }
+
+    @Test
+    public void getTransactionsbyUserIdShould_CallRepository() {
+        //Arrange
+        List<Transaction> transactionsList = new ArrayList<>();
+        User user = createUser();
+
+        Mockito.when(transactionRepository.getTransactionsByUserId(user.getId(), PAGE))
+                .thenReturn(transactionsList);
+        Mockito.when(transactionService.checkIfUserIdExists(user.getId()))
+                .thenReturn(true);
+        //Act
+        transactionService.getTransactionsByUserId(user.getId(), PAGE);
+
+        //Assert
+        Assert.assertSame(transactionService.getTransactionsByUserId(user.getId(), PAGE), transactionsList);
+    }
+
+    @Test
+    public void getTransactionsbyUserIdShould_ReturnEmptyListWhenNoTransactions() {
+        //Arrange
+        List<Transaction> transactionsList = new ArrayList<>();
+        User user = createUser();
+
+        Mockito.when(transactionRepository.getTransactionsByUserId(user.getId(), PAGE))
+                .thenReturn(transactionsList);
+        Mockito.when(transactionService.checkIfUserIdExists(user.getId()))
+                .thenReturn(true);
+
+        //Act
+        transactionService.getTransactionsByUserId(user.getId(), PAGE);
+
+        //Assert
+        Assert.assertTrue(transactionService.getAllTransactions().isEmpty());
+    }
+
+    @Test
+    public void getTransactionsbyUserIdShould_ReturnListWhenThereAreTransactions() {
+        //Arrange
+        Internal internal = createInternal();
+        Withdrawal withdrawal = createWithdrawal();
+        User user = createUser();
+
+        Mockito.when(transactionRepository.getTransactionsByUserId(user.getId(), PAGE))
+                .thenReturn(Arrays.asList(internal, withdrawal));
+        Mockito.when(transactionService.checkIfUserIdExists(user.getId()))
+                .thenReturn(true);
+
+        //Act
+        List<Transaction> list = transactionService.getTransactionsByUserId(user.getId(), PAGE);
+
+
+        //Assert
+        Assert.assertEquals(2, list.size());
+    }
 
 }

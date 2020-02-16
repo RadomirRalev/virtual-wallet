@@ -71,7 +71,7 @@
                 </div><!-- ICO Stats Table -->
                 <div class="pagination-wrap text-center">
                     <div class="pagination">
-                        <div class="page-item prev brd-rd50">
+                        <div class="page-item prev brd-rd50" th:if="${page - 1} > 0">
                             <a class="page-link" th:href="@{/userslist(page=${page - 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
                         </div>
                         <div class="page-item brd-rd30">

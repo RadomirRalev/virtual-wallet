@@ -5,10 +5,7 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
-import com.example.demo.repositories.CardDetailsRepository;
-import com.example.demo.repositories.TransactionRepository;
-import com.example.demo.repositories.UserRepository;
-import com.example.demo.repositories.WalletRepositoryImpl;
+import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +23,13 @@ public class TransactionServiceImpl implements TransactionService {
 
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
-    private WalletRepositoryImpl walletRepository;
+    private WalletRepository walletRepository;
     private TransactionMapper transactionMapper;
     private CardDetailsRepository cardDetailsRepository;
 
     @Autowired
     public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository,
-                                  TransactionMapper transactionMapper, WalletRepositoryImpl walletRepository,
+                                  TransactionMapper transactionMapper, WalletRepository walletRepository,
                                   CardDetailsRepository cardDetailsRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
@@ -198,15 +195,15 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.checkIfIdempotencyKeyExists(idempotencyKey);
     }
 
-    private boolean checkIfWalletIdExists(int walletId) {
+    public boolean checkIfWalletIdExists(int walletId) {
         return walletRepository.checkIfWalletIdExists(walletId);
     }
 
-    private boolean checkIfUserIdExists(int userId) {
+    public boolean checkIfUserIdExists(int userId) {
         return userRepository.checkIfUserIdExists(userId);
     }
 
-    private boolean checkIfCardIdExists(int cardId) {
+    public boolean checkIfCardIdExists(int cardId) {
         return cardDetailsRepository.checkIfCardIdExists(cardId);
     }
 }

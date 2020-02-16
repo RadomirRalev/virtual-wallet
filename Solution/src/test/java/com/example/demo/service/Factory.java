@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
@@ -13,6 +14,7 @@ public class Factory {
     public static final int TRANSACTION_AMOUNT_HIGHER_THAN_BALANCE = 1000;
     public static final int BALANCE_ENOUGH = 101;
     public static final int BALANCE_NOT_ENOUGH = 1;
+    public static final int PAGE = 1;
     public static UserService userService;
     public static CardDetailsService cardDetailsService;
     public static WalletService walletService;
@@ -34,6 +36,8 @@ public class Factory {
         return new CardDetails();
     }
 
+    public static User createUser() { return new User(); }
+
     public static TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
 
 
@@ -45,7 +49,7 @@ public class Factory {
     }
 
     public static TransactionDTO createTransactionDTO(){
-        return new TransactionDTO(1, 1, "t", "d", "i", 8, "bgn");
+        return new TransactionDTO(1, 1, "t", "d", "i", 8, "bgn", "sender", "receiver");
     }
 
 
