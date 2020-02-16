@@ -56,7 +56,7 @@
                             <td><div th:text="${user.getLastName()}"></div></td>
                             <!--                        Send money-->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
-                                <form th:action="@{/walletstransaction}">
+                                <form th:if="${!user.isBlocked()}" th:action="@{/walletstransaction}">
                                 <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn theme-bg brd-rd30" type="submit">SEND MONEY
                                 </button>
                                 </form>

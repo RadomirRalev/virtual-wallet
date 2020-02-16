@@ -172,6 +172,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void setBlockedStatus(String username, boolean status) {
+        if (!isUsernameExist(username)) {
+            throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
+        }
+        userRepository.setBlockedStatus(username, status);
+    }
+
+    @Override
     public void setStatusIdentity(String username, boolean status) {
         if (isIdentityConfirm(username)) {
             throw new DuplicateEntityException(USER_ALREADY_HAVE_CONFIRM_IDENTITY, username);
@@ -207,6 +215,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isBlocked(String username) {
+        return userRepository.isBlocked(username);
+    }
+
+    public boolean isBlocked(int userId) {
+        return userRepository.isBlocked(userId);
+    }
+
+    @Override
+    public boolean isEnabled(String username) {
+        return userRepository.isEnabled(username);
+    }
+
+
+    @Override
     public List<User> searchByUsername(String username) {
         return userRepository.searchByUsername(username);
     }
@@ -219,6 +242,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchByEmail(String email) {
         return userRepository.searchByEmail(email);
+    }
+
+    @Override
+    public List<User> searchByUsernameAsAdmin(String username) {
+        return userRepository.searchByUsernameAsAdmin(username);
+    }
+
+    @Override
+    public List<User> searchByPhoneNumberAsAdmin(String phoneNum) {
+        return userRepository.searchByPhoneNumberAsAdmin(phoneNum);
+    }
+
+    @Override
+    public List<User> searchByEmailAsAdmin(String email) {
+        return userRepository.searchByEmailAsAdmin(email);
+    }
+
+    @Override
+    public boolean checkIfUserIdExists(int id) {
+        return userRepository.checkIfUserIdExists(id);
     }
 
     private double getSum(int userId) {

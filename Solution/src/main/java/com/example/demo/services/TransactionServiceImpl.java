@@ -3,11 +3,11 @@ package com.example.demo.services;
 import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
+import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.CardDetailsRepository;
 import com.example.demo.repositories.TransactionRepository;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WalletRepositoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +24,20 @@ import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
+
     private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
+    private UserService userService;
     private WalletRepositoryImpl walletRepository;
     private TransactionMapper transactionMapper;
     private CardDetailsRepository cardDetailsRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository,
+    public TransactionServiceImpl(TransactionRepository transactionRepository, UserService userService,
                                   TransactionMapper transactionMapper, WalletRepositoryImpl walletRepository,
                                   CardDetailsRepository cardDetailsRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.walletRepository = walletRepository;
         this.cardDetailsRepository = cardDetailsRepository;
     }
@@ -63,7 +64,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Deposit createDeposit(TransactionDTO transactionDTO) {
+    public Deposit createDeposit(TransactionDTO transactionDTO, String sender) {
+        if (userService.isBlocked(sender)) {
+            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+        }
+
         Deposit deposit = getDeposit(transactionDTO);
         if (checkIfIdempotencyKeyExists(deposit.getIdempotencyKey())) {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
@@ -78,7 +83,15 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Internal createInternal(TransactionDTO transactionDTO) {
+    public Internal createInternal(TransactionDTO transactionDTO, String sender) {
+        if (userService.isBlocked(sender)) {
+            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+        }
+
+        if (userService.isBlocked(transactionDTO.getReceiverId())) {
+            throw new InvalidPermission(RECEIVER_IS_BLOCKED, sender);
+        }
+
         Internal internal = getInternal(transactionDTO);
         if (checkIfIdempotencyKeyExists(internal.getIdempotencyKey())) {
             throw new DuplicateIdempotencyKeyException(YOU_CANNOT_MAKE_THE_SAME_TRANSACTION_TWICE);
@@ -98,8 +111,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Withdrawal createWithdrawal(TransactionDTO transactionDTO) {
+    public Withdrawal createWithdrawal(TransactionDTO transactionDTO, String sender) {
+        if (userService.isBlocked(sender)) {
+            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+        }
         Withdrawal withdrawal = getWithdrawal(transactionDTO);
+
         checkIfFundsAreEnough(withdrawal.getSender(), withdrawal.getAmount());
         int senderId = withdrawal.getSender().getId();
         if (!checkIfWalletIdExists(senderId)) {
@@ -203,7 +220,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private boolean checkIfUserIdExists(int userId) {
-        return userRepository.checkIfUserIdExists(userId);
+        return userService.checkIfUserIdExists(userId);
     }
 
     private boolean checkIfCardIdExists(int cardId) {

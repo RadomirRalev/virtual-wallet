@@ -29,6 +29,8 @@ public interface UserService {
 
     void setStatusUser(String username, boolean status);
 
+    void setBlockedStatus(String username, boolean status);
+
     void setStatusIdentity(String username, boolean status);
 
     boolean isUsernameExist(String username);
@@ -39,6 +41,12 @@ public interface UserService {
 
     boolean isIdentityConfirm(String username);
 
+    boolean isBlocked(String username);
+
+    boolean isBlocked(int userId);
+
+    boolean isEnabled(String username);
+
     String getAvailableSum(int userId);
 
     List<User> searchByUsername(String username);
@@ -46,5 +54,13 @@ public interface UserService {
     List<User> searchByPhoneNumber(String phoneNum);
 
     List<User> searchByEmail(String email);
+
+    List<User> searchByUsernameAsAdmin(String username);
+
+    List<User> searchByPhoneNumberAsAdmin(String phoneNum);
+
+    List<User> searchByEmailAsAdmin(String email);
+
+    boolean checkIfUserIdExists(int id);
 
 }

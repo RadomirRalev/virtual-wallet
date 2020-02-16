@@ -115,6 +115,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public void setBlockedStatus(String username, boolean status) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createQuery("update User " +
+                    " set blocked = :status where username = :username ")
+                    .setParameter("username", username)
+                    .setParameter("status", status)
+                    .executeUpdate();
+            session.getTransaction()
+                    .commit();
+        }
+    }
+
+    @Override
     public void setStatusIdentity(String username, boolean status) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -199,6 +213,36 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public boolean isBlocked(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from User " +
+                    " where blocked = true and username = :username", User.class)
+                    .setParameter("username", username)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
+    public boolean isBlocked(int userId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from User " +
+                    " where blocked = true and id = :userId ", User.class)
+                    .setParameter("userId", userId)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
+    public boolean isEnabled(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from User " +
+                    " where enabled = true and username = :username", User.class)
+                    .setParameter("username", username)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
     public boolean checkIfUserIdExists(int userId) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
@@ -211,7 +255,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> searchByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where username like :username");
+            Query<User> query = session.createQuery("from User where username like :username and blocked =  false ");
             query.setParameter("username", "%" + username + "%");
             return query.list();
         }
@@ -220,7 +264,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> searchByPhoneNumber(String phoneNum) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum");
+            Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum and blocked=false ");
             query.setParameter("phoneNum", phoneNum);
             return query.list();
         }
@@ -229,7 +273,35 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> searchByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User where email like :email");
+            Query<User> query = session.createQuery("from User where email like :email and blocked=false ");
+            query.setParameter("email", "%" + email + "%");
+            return query.list();
+        }
+
+    }
+
+    @Override
+    public List<User> searchByUsernameAsAdmin(String username) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where username like :username ");
+            query.setParameter("username", "%" + username + "%");
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> searchByPhoneNumberAsAdmin(String phoneNum) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum ");
+            query.setParameter("phoneNum", phoneNum);
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> searchByEmailAsAdmin(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where email like :email  ");
             query.setParameter("email", "%" + email + "%");
             return query.list();
         }

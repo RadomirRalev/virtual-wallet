@@ -40,50 +40,49 @@
             <div class="container">
                 <div class="blog-detail-wrp">
                     <div class="row">
-                        <div class="col-md-9 col-sm-12 col-lg-9">
-                            <div class="blog-detail">
-                                <div class="team-detail-inf-inr">
-                                    <div class="row">
-                                        <h5 itemprop="headline">Confirm identity</h5>
-                                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getFront_picture()}}"
-                                             alt="" src=""
-                                             style="width: 1500px; border-radius: 8px; padding: 5px">
-                                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getRear_picture()}}"
-                                             alt="" src=""
-                                             style="width: 1500px; border-radius: 8px;padding: 5px">
-                                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getSelfie()}}"
-                                             alt="" src=""
-                                             style="width: 1500px; border-radius: 8px; padding: 5px">
+                        <h5>Confirm identity</h5>
+                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getFront_picture()}}"
+                             alt="" src=""
+                             style="width: 1500px; border-radius: 8px; padding: 5px">
+                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getRear_picture()}}"
+                             alt="" src=""
+                             style="width: 1500px; border-radius: 8px;padding: 5px">
+                        <img th:src="@{'data:image/jpeg; base64,'+${confirmIdentity.getSelfie()}}"
+                             alt="" src=""
+                             style="width: 1500px; border-radius: 8px; padding: 5px">
 
-                                        <form class="reply-form"
-                                              th:action="@{/admin/{username}/confirm-identity(username=${user.getUsername()})}"
-                                              th:object="${namesDTO}"
-                                              method="post" name="form1"
-                                              enctype="multipart/form-data">
-                                            <div class="row" style="text-align: center">
-                                                <p>
-                                                    <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
-                                                </p>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <p class="error-field" th:errors="*{firstName}"></p>
-                                                    <input type="text" placeholder="First name"
-                                                           th:field="*{firstName}" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <p class="error-field" th:errors="*{lastName}"></p>
-                                                    <input type="text" name='text1'
-                                                           placeholder="Last name"
-                                                           th:field="*{lastName}" required>
-                                                </div>
-                                            </div>
-                                            <input class="theme-btn theme-bg brd-rd30" type="submit"
-                                                   value="confirm identity"/>
-                                        </form>
-                                    </div>
-                                </div><!-- Post Author -->
-                                <!-- Comment Reply -->
+                        <form class="reply-form"
+                              th:action="@{/admin/{username}/confirm-identity(username=${user.getUsername()})}"
+                              th:object="${namesDTO}"
+                              method="post" name="form1"
+                              enctype="multipart/form-data">
+                            <div class="row" style="text-align: center">
+                                <p>
+                                    <i th:if="${error != null}" th:text="${error}" class="error-field"></i>
+                                </p>
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    <p class="error-field" th:errors="*{firstName}"></p>
+                                    <input type="text" placeholder="First name"
+                                           th:field="*{firstName}" required style="background: lightgrey; color: black">
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    <p class="error-field" th:errors="*{lastName}"></p>
+                                    <input type="text" name='text1'
+                                           placeholder="Last name"
+                                           th:field="*{lastName}" required style="background: lightgrey; color: black">
+                                </div>
                             </div>
-                        </div>
+                            <input class="theme-btn btn-outline-success" type="submit"
+                                   value="confirm identity"/>
+                        </form>
+                        <form class="reply-form"
+                              th:action="@{/admin/{username}/denied-identity(username=${user.getUsername()})}"
+                              method="post" name="form1"
+                              enctype="multipart/form-data">
+
+                            <input class="theme-btn btn-outline-danger" type="submit"
+                                   value="delete identity request!"/>
+                        </form>
                     </div>
                 </div><!-- Blog Detail Wrap -->
             </div>

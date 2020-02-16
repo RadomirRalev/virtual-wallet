@@ -12,11 +12,11 @@ public interface TransactionService {
 
     List<Transaction> getTransactionsByUserId(int userId, int page);
 
-    Internal createInternal(TransactionDTO transactionDTO);
+    Internal createInternal(TransactionDTO transactionDTO, String sender);
 
-    Withdrawal createWithdrawal(TransactionDTO transactionDTO);
+    Withdrawal createWithdrawal(TransactionDTO transactionDTO, String sender);
 
-    Deposit createDeposit(TransactionDTO transactionDTO);
+    Deposit createDeposit(TransactionDTO transactionDTO, String sender);
 
     Withdrawal getWithdrawal(TransactionDTO transactionDTO);
 

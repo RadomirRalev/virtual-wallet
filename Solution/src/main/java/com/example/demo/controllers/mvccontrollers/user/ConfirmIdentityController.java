@@ -105,4 +105,14 @@ public class ConfirmIdentityController {
         userService.setStatusIdentity(username, ENABLE);
         return "messages/success-confirm-identity";
     }
+
+    @PostMapping("/admin/{username}/denied-identity")
+    public String AdminDeniedIdentity(@PathVariable("username") String username) {
+        User userToUpdate = userService.getByUsername(username);
+
+        confirmIdentityService.setStatus(userToUpdate.getId(), DISABLE);
+        return "messages/success-confirm-identity";
+    }
+
+
 }

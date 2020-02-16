@@ -3,6 +3,7 @@ package com.example.demo.controllers.restcontrollers;
 import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
+import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.models.transaction.*;
 import com.example.demo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @RestController
 @RequestMapping("api/transaction")
@@ -46,8 +49,8 @@ public class TransactionController {
     @PostMapping("/internal")
     public Internal createInternal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
-            return transactionService.createInternal(transactionDTO);
-        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException e) {
+            return transactionService.createInternal(transactionDTO, currentPrincipalName());
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException | InvalidPermission e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -55,8 +58,8 @@ public class TransactionController {
     @PostMapping("/withdrawal")
     public Transaction createWithdrawal(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
-            return transactionService.createWithdrawal(transactionDTO);
-        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException e) {
+            return transactionService.createWithdrawal(transactionDTO, currentPrincipalName());
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | InsufficientFundsException | InvalidPermission e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -64,8 +67,8 @@ public class TransactionController {
     @PostMapping("/deposit")
     public Transaction createDeposit(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
-            return transactionService.createDeposit(transactionDTO);
-        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {
+            return transactionService.createDeposit(transactionDTO, currentPrincipalName());
+        } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException | InvalidPermission e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }
     }
@@ -73,7 +76,7 @@ public class TransactionController {
     @PostMapping("/walletstransaction")
     public Internal createWalletsTransaction(@RequestBody @Valid TransactionDTO transactionDTO) {
         try {
-            return transactionService.createInternal(transactionDTO);
+            return transactionService.createInternal(transactionDTO, currentPrincipalName());
         } catch (DuplicateIdempotencyKeyException | EntityNotFoundException | HttpClientErrorException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

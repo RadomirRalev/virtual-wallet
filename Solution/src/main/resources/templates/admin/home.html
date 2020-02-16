@@ -50,12 +50,13 @@
                                         <div class="col-md-6 col-sm-6 col-lg-6">
                                             <div class="team-detail-inf-itm">
                                                 <h5 itemprop="headline">Users for confirm identity:</h5>
+                                                <hr>
                                                 <tbody th:each="user : ${userToConfirm}">
                                                 <tr>
                                                     <td class="align-middle">
                                                         <div><a th:text="${user.username}" th:href="@{/admin/{username}/confirm-identity(username=${user.username})}"></a></div></td>
                                                 </tr>
-                                                </tbody>
+                                                <hr>
                                             </div>
                                         </div>
                                     </div>
@@ -71,11 +72,10 @@
                                 <div class="widget">
                                     <h6 itemprop="headline">SEARCH</h6>
                                     <div class="jn-frm-wrp">
-                                        <form class="jn-frm" th:action="@{/search}" method="get">
+                                        <form class="jn-frm" th:action="@{/admin/search}" method="get">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <input type="text" th:name="text" placeholder="Contact"
-                                                           minlength="4" required>
+                                                    <input type="text" th:name="text" placeholder="Contact">
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-12">
                                                     <div class="slc-wrp">

@@ -12,7 +12,6 @@ import com.example.demo.models.user.User;
 import com.example.demo.repositories.CardDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import static com.example.demo.constants.ExceptionConstants.*;
 import static com.example.demo.helpers.CardHelper.isValidExpirationDate;
@@ -48,7 +47,11 @@ public class CardDetailsServiceImpl implements CardDetailsService {
         if (!cardOwner.isConfirm_identity()) {
             throw new InvalidPermission(CONFIRM_YOUR_IDENTITY_TO_REGISTER_CARD, username);
         }
-        cardRegistrationDTO.setUser_id(cardOwner.getId());
+
+        if (!cardRegistrationDTO.getCardholderName().
+                equalsIgnoreCase(cardOwner.getFirstName() + " " + cardOwner.getLastName())) {
+            throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
+        }
 
         if (isCardExist(cardRegistrationDTO.getCardNumber())) {
             throw new DuplicateEntityException(CARD_WITH_NUMBER_EXISTS, cardRegistrationDTO.getCardNumber());
@@ -58,22 +61,18 @@ public class CardDetailsServiceImpl implements CardDetailsService {
             throw new InvalidCardException(EXPIRATION_DATE_IS_INVALID);
         }
 
-        if (!cardRegistrationDTO.getCardholderName().
-                equalsIgnoreCase(cardOwner.getFirstName() + " " + cardOwner.getLastName())) {
-            throw new InvalidCardException(THE_NAMES_DO_NOT_MATCH);
-        }
+        cardRegistrationDTO.setUser_id(cardOwner.getId());
         CardDetails cardDetails = cardMapper.mapCard(cardRegistrationDTO);
         return cardDetailsRepository.createCard(cardDetails);
     }
 
-    //TODO
     @Override
     public CardDetails updateCard(CardUpdateDTO cardUpdateDTO, int updatedCardId, String username) {
         CardDetails cardToUpdate = getById(updatedCardId);
         User currentUser = userService.getByUsername(username);
 
         if (cardToUpdate.getUser().getId() != currentUser.getId()) {
-            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION_TO_UPDATE_CARD, currentUser.getUsername());
+            throw new InvalidPermission(USER_HAVE_NOT_PERMISSION_TO_UPDATE_CARD, currentUser.getUsername());
         }
 
         CardMapper.updateCard(cardToUpdate, cardUpdateDTO);

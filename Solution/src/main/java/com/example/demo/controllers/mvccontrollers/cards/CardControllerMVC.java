@@ -2,7 +2,6 @@ package com.example.demo.controllers.mvccontrollers.cards;
 
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidCardException;
-import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.user.User;

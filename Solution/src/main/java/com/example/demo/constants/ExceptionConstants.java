@@ -11,6 +11,8 @@ public class ExceptionConstants {
     public static final String USER_ALREADY_CONFIRMED_HIS_IDENTITY = "User %s has already confirmed his identity.";
     public static final String USER_ALREADY_HAVE_CONFIRM_IDENTITY = "User %s already have confirm identity.";
     public static final String CONFIRM_YOUR_IDENTITY_TO_REGISTER_CARD = "Confirm your identity to register a card!";
+    public static final String SENDER_IS_BOCKED = "%s you are blocked and can`t make transactions!";
+    public static final String RECEIVER_IS_BLOCKED = "User with username %s you are blocked and you can`t send him transaction!";
     //TODO ???
     public static final String USER_TOKEN_NOT_FOUND = "User with id %d haven`t token.";
     public static final String USER_USERNAME_EXISTS = "User with username %s already exists.";
@@ -21,7 +23,7 @@ public class ExceptionConstants {
     public static final String CARD_WITH_ID_NOT_EXISTS = "Card with id %d does not exist.";
     public static final String WALLET_WITH_ID_NOT_EXISTS = "Wallet with id %d does not exist.";
     public static final String USER_HAVE_NOT_ADMIN_PERMISSION = "User with username %s have not admin permission !";
-    public static final String USER_HAVE_NOT_ADMIN_PERMISSION_TO_UPDATE_CARD = "User with username %s have not permission to update this card!";
+    public static final String USER_HAVE_NOT_PERMISSION_TO_UPDATE_CARD = "User with username %s have not permission to update this card!";
     public static final String PASSWORD_DO_NOT_MATCH = "Password doesn't match!";
     public static final String EMAIL_ALREADY_REGISTERED = "Email %s already registered.";
     public static final String PHONE_NUMBER_ALREADY_REGISTERED = "Phone number %s already registered.";

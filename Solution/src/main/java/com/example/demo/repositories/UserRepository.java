@@ -22,6 +22,8 @@ public interface UserRepository {
 
     void setStatusUser(String username, boolean status);
 
+    void setBlockedStatus(String username, boolean status);
+
     void setStatusIdentity(String username, boolean status);
 
     User updateUser(User user);
@@ -38,6 +40,12 @@ public interface UserRepository {
 
     boolean isIdentityConfirm(String username);
 
+    boolean isBlocked(String username);
+
+    boolean isBlocked(int userId);
+
+    boolean isEnabled(String username);
+
     boolean checkIfUserIdExists(int id);
 
     List<User> searchByUsername(String username);
@@ -45,5 +53,11 @@ public interface UserRepository {
     List<User> searchByPhoneNumber(String phoneNum);
 
     List<User> searchByEmail(String email);
+
+    List<User> searchByUsernameAsAdmin(String username);
+
+    List<User> searchByPhoneNumberAsAdmin(String phoneNum);
+
+    List<User> searchByEmailAsAdmin(String email);
 
 }
