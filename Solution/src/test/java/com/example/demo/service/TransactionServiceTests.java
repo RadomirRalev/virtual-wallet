@@ -194,8 +194,6 @@ public class TransactionServiceTests {
 
         Mockito.when(transactionService.getWithdrawal(transactionDTO))
                 .thenReturn(withdrawal);
-//        Mockito.when(userService.isBlocked(withdrawal.getSenderName()))
-//                .thenReturn(false);
         Mockito.when(transactionService.checkIfWalletIdExists(wallet.getId()))
                 .thenReturn(true);
         Mockito.when(transactionService.checkIfCardIdExists(cardDetails.getId()))

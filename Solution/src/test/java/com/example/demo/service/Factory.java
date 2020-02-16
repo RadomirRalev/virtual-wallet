@@ -6,7 +6,9 @@ import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.role.Role;
 import com.example.demo.models.transaction.*;
+import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
+import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.verificationToken.VerificationToken;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
@@ -102,6 +104,14 @@ public class Factory {
 
     public static CardUpdateDTO createCardUpdateDTO() {
         return new CardUpdateDTO();
+    }
+
+    public static ProfileUpdateDTO createProfileUpdateDTO() {
+        return new ProfileUpdateDTO();
+    }
+
+    public static UserRegistrationDTO createUserRegistrationDTO() {
+        return new UserRegistrationDTO();
     }
 
     public static VerificationToken createVerificationToken() {
