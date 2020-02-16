@@ -3,8 +3,11 @@ package com.example.demo.service;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardUpdateDTO;
+import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
+import com.example.demo.models.role.Role;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.user.User;
+import com.example.demo.models.verificationToken.VerificationToken;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
 import com.example.demo.services.CardDetailsService;
@@ -100,6 +103,19 @@ public class Factory {
     public static CardUpdateDTO createCardUpdateDTO() {
         return new CardUpdateDTO();
     }
+
+    public static VerificationToken createVerificationToken() {
+        return new VerificationToken();
+    }
+
+    public static Role createRole() {
+        return new Role();
+    }
+
+    public static ConfirmIdentityRegistrationDTO createConfirmIdentityRegistrationDTO() {
+        return new ConfirmIdentityRegistrationDTO();
+    }
+
 
     public static void generateWithdrawalWithSufficientAmount(Withdrawal withdrawal, CardDetails cardDetails, Wallet wallet) {
         cardDetails.setId(INDEX);
