@@ -1,6 +1,7 @@
 package com.example.demo.controllers.mvccontrollers.transactions;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.exceptions.InvalidTransactionException;
 import com.example.demo.models.transaction.TransactionDTO;
 import com.example.demo.models.user.User;
@@ -43,6 +44,9 @@ public class TransactionsController {
     @GetMapping("/deposit")
     public String makeDeposit(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        if (user.isBlocked()) {
+            return "messages/access-denied-sender-blocked";
+        }
         String availableSum = userService.getAvailableSum(user.getId());
         model.addAttribute("availableSum", availableSum);
         model.addAttribute("depositDTO", new TransactionDTO());
@@ -52,14 +56,13 @@ public class TransactionsController {
 
     @PostMapping("/deposit")
     public String createDeposit(@Valid @ModelAttribute("depositDTO") TransactionDTO transactionDTO,
-                             BindingResult bindingResult, Model model) {
-
+                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "deposit";
         }
         try {
-            transactionService.createDeposit(transactionDTO);
-        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            transactionService.createDeposit(transactionDTO, currentPrincipalName());
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission e) {
             model.addAttribute("error", e.getMessage());
             return "deposit";
         }
@@ -69,6 +72,9 @@ public class TransactionsController {
     @GetMapping("/withdrawal")
     public String makeWithdrawal(Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        if (user.isBlocked()) {
+            return "messages/access-denied-sender-blocked";
+        }
         String availableSum = userService.getAvailableSum(user.getId());
         model.addAttribute("availableSum", availableSum);
         model.addAttribute("withdrawalDTO", new TransactionDTO());
@@ -78,14 +84,13 @@ public class TransactionsController {
 
     @PostMapping("/withdrawal")
     public String createWithdrawal(@Valid @ModelAttribute("withdrawalDTO") TransactionDTO transactionDTO,
-                                BindingResult bindingResult, Model model) {
-
+                                   BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "withdrawal";
         }
         try {
-            transactionService.createWithdrawal(transactionDTO);
-        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            transactionService.createWithdrawal(transactionDTO, currentPrincipalName());
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission e) {
             model.addAttribute("error", e.getMessage());
             return "withdrawal";
         }
@@ -94,10 +99,16 @@ public class TransactionsController {
 
     @GetMapping("/walletstransaction")
     public String makeWalletToWalletTransaction(@RequestParam int receiverId,
-            Model model) {
+                                                Model model) {
         User sender = userService.getByUsername(currentPrincipalName());
+        if (sender.isBlocked()) {
+            return "messages/access-denied-sender-blocked";
+        }
         User receiver = userService.getById(receiverId);
-        Wallet receiverWallet= walletService.getDefaultWallet(receiverId);
+        if (receiver.isBlocked()) {
+            return "messages/access-denied-receiver-blocked";
+        }
+        Wallet receiverWallet = walletService.getDefaultWallet(receiverId);
         String availableSum = userService.getAvailableSum(sender.getId());
         model.addAttribute("availableSum", availableSum);
         model.addAttribute("walletsTransactionDTO", new TransactionDTO());
@@ -109,14 +120,15 @@ public class TransactionsController {
 
     @PostMapping("/walletstransaction")
     public String createWalletToWalletTransaction(@Valid @ModelAttribute("walletsTransactionDTO") TransactionDTO transactionDTO,
-                                   BindingResult bindingResult, Model model) {
+                                                  @ModelAttribute("receiver") User receiver,
+                                                  BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "walletstransaction";
         }
         try {
-            transactionService.createInternal(transactionDTO);
-        } catch (DuplicateEntityException | InvalidTransactionException e) {
+            transactionService.createInternal(transactionDTO, currentPrincipalName());
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission e) {
             model.addAttribute("error", e.getMessage());
             return "walletstransaction";
         }

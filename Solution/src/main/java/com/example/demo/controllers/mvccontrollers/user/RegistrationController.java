@@ -48,8 +48,7 @@ public class RegistrationController {
 
         try {
              userService.createUser(userRegistrationDTO);
-        } catch (InvalidOptionalFieldParameter | DuplicateEntityException | InvalidPasswordException |
-                InvalidPictureFormat | IOException e) {
+        } catch (DuplicateEntityException | InvalidPasswordException | InvalidPictureFormat | IOException e) {
             model.addAttribute("error", e.getMessage());
             return "registration";
         }

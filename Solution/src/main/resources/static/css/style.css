@@ -415,6 +415,13 @@ nav > div > ul ul
   border-radius: 5px;
 }
 
+.brd-rd6,
+nav > div > ul ul
+{
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
 .brd-rd3
 {
   -webkit-border-radius: 3px;
@@ -1480,22 +1487,24 @@ header.style2.sticky .menu-sec {background-color: rgba(0,0,0,.95);}
 }
 /*===== ICO Stats Table Sec =====*/
 .ico-stat-tabl {
-  float: left;
-  -webkit-width: calc(100% + 170px);
-  -ms-width: calc(100% + 170px);
-  width: calc(100% + 170px);
-  position: relative;
-  background-image: url(../images/ico-stats-bg.jpg);
-  background-color: #fff;
-  background-position: center;
-  background-repeat: no-repeat;
-  z-index: 1;
-  -webkit-box-shadow: 0 0 75px rgba(0,0,0,.22);
-  -ms-box-shadow: 0 0 75px rgba(0,0,0,.22);
-  -o-box-shadow: 0 0 75px rgba(0,0,0,.22);
-  box-shadow: 0 0 75px rgba(0,0,0,.22);
-  margin-left: -85px;
-}
+   float: left;
+   -webkit-width: calc(100% + 170px);
+   -ms-width: calc(100% + 170px);
+   width: calc(100% + 170px);
+   position: relative;
+   background-image: url(../images/ico-stats-bg.jpg);
+   background-color: #fff;
+   background-position: center;
+   background-repeat: no-repeat;
+   z-index: 1;
+   -webkit-box-shadow: 0 0 75px rgba(0,0,0,.22);
+   -ms-box-shadow: 0 0 75px rgba(0,0,0,.22);
+   -o-box-shadow: 0 0 75px rgba(0,0,0,.22);
+   box-shadow: 0 0 75px rgba(0,0,0,.22);
+   margin-left: -85px;
+ }
+
+
 .ico-stat-tabl > table {
   float: left;
   width: 100%;

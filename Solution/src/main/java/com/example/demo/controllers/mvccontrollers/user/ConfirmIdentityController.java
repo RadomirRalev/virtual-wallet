@@ -11,6 +11,7 @@ import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import java.io.IOException;
 
 import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_REQUEST_PROCESSED;
 import static com.example.demo.constants.ExceptionConstants.IDENTITY_CONFIRM_SUCCESS;
+import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 import static com.example.demo.constants.SQLQueryConstants.ENABLE;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
@@ -75,7 +77,6 @@ public class ConfirmIdentityController {
         if (userService.isIdentityConfirm(username)) {
             return "messages/user-already-confirm-identity";
         }
-
         try {
             ConfirmIdentity confirmIdentity = confirmIdentityService.getByUserIdRequestForConfirm(user.getId());
             model.addAttribute("confirmIdentity", confirmIdentity);
@@ -88,10 +89,30 @@ public class ConfirmIdentityController {
 
     @PostMapping("/admin/{username}/confirm-identity")
     public String AdminConfirmIdentity(@PathVariable("username") String username,
-                                       @Valid @ModelAttribute("profileUpdateDTO") UserNamesDTO namesDTO) {
-        User user = userService.getByUsername(username);
-        userService.updateNames(user, namesDTO, currentPrincipalName());
+                                       @Valid @ModelAttribute("profileUpdateDTO") UserNamesDTO namesDTO,
+                                       BindingResult bindingResult, Model model) {
+        User userToUpdate = userService.getByUsername(username);
+        ConfirmIdentity confirmIdentity = confirmIdentityService.getByUserIdRequestForConfirm(userToUpdate.getId());
+        model.addAttribute("confirmIdentity", confirmIdentity);
+        model.addAttribute("user", userToUpdate);
+
+        if (bindingResult.hasErrors()) {
+            return "admin/confirm-identity";
+        }
+
+        confirmIdentityService.setStatus(userToUpdate.getId(), DISABLE);
+        userService.updateNames(userToUpdate, namesDTO, currentPrincipalName());
         userService.setStatusIdentity(username, ENABLE);
         return "messages/success-confirm-identity";
     }
+
+    @PostMapping("/admin/{username}/denied-identity")
+    public String AdminDeniedIdentity(@PathVariable("username") String username) {
+        User userToUpdate = userService.getByUsername(username);
+
+        confirmIdentityService.setStatus(userToUpdate.getId(), DISABLE);
+        return "messages/success-confirm-identity";
+    }
+
+
 }

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Search Results</title>
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <style>
+        .fixed-bg {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+
+        .fixed-bg2 {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+    </style>
+    <!-- Styles -->
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+<main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <!-- Header -->
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <!-- Secondary Header Text -->
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+        <div class="spacing">
+            <div class="container">
+                <div>
+                    <table class="table">
+                        <thead class="thead-dark"><tr><th>USERNAME</th><th></th><th></th><th></th><th></th><th></th><th></th></tr></thead>
+                        <tbody th:each="user : ${users}">
+                        <tr>
+                            <!--                            Username-->
+                            <td><div th:text="${user.getUsername()}"></div></td>
+                            <!--                            Picture-->
+                            <td><img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" width="60" height="60"  alt="" src="">
+
+                            <!--                        First name-->
+                            <td><div th:text="${user.getFirstName()}"></div></td>
+                            <!--                        Last name-->
+                            <td><div th:text="${user.getLastName()}"></div></td>
+                            <!--                        Send money-->
+                            <td><div class="col-md-12 col-sm-12 col-lg-12">
+                                <form th:if="${!user.isBlocked()}" th:action="@{/admin/{username}/blocked(username=${user.getUsername()})}" method="post">
+                                    <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-danger brd-rd30" type="submit">Block
+                                    </button>
+                                </form>
+                                <form th:if="${user.isBlocked()}" th:action="@{/admin/{username}/un-blocked(username=${user.getUsername()})}" method="post">
+                                <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-success brd-rd30" type="submit">Unblocked
+                                </button>
+                                </form>
+                            </div></td>
+                            <td><div class="col-md-12 col-sm-12 col-lg-12">
+                                <form th:if="${user.isEnabled()}" th:action="@{/admin/{username}/disable(username=${user.getUsername()})}" method="post">
+                                    <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-danger brd-rd30" type="submit">Delete
+                                    </button>
+                                </form>
+                                <form th:if="${!user.isEnabled()}" th:action="@{/admin/{username}/enable(username=${user.getUsername()})}" method="post">
+                                    <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-success brd-rd30" type="submit">Enable
+                                    </button>
+                                </form>
+                            </div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- ICO Stats Table -->
+                <div class="pagination-wrap text-center">
+                    <div class="pagination">
+                        <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a></div>
+
+                        <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
+                    </div>
+                </div><!-- Pagination Wrap -->
+            </div>
+        </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
+<!--scripts-->
+<div th:insert="fragments/scriptsfragments :: scripts"></div>
+<!--scripts-->
+</body>
+</html>

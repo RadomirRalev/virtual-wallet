@@ -27,7 +27,7 @@ public class ConfirmIdentity {
     private byte[] selfie;
     @Column(name = "user_id")
     private int userId;
-    @Column(name = "data_ok")
+    @Column(name = "have_request")
     private boolean haveRequest;
 
     public ConfirmIdentity() {

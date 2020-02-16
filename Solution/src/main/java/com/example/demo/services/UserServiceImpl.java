@@ -27,7 +27,6 @@ import static com.example.demo.constants.FormatConstants.df2;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private WalletRepository walletRepository;
@@ -52,6 +51,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsers(int page) {
         return userRepository.getUsers(page);
+    }
+
+    @Override
+    public List<User> getUsersForConfirm() {
+        return userRepository.getUsersForConfirm();
     }
 
     @Override
@@ -126,6 +130,10 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateEntityException(
                     String.format(PHONE_NUMBER_ALREADY_REGISTERED, profileUpdateDTO.getPhoneNumber()));
         }
+
+        if (!profileUpdateDTO.getFile().isEmpty() && !PictureFormat.isPictureJPG(profileUpdateDTO.getFile())) {
+            throw new InvalidPictureFormat(ALLOW_PICTURE_FORMAT);
+        }
         User userToUpdate = UserMapper.updateProfile(user, profileUpdateDTO);
         return userRepository.updateUser(userToUpdate);
     }
@@ -148,10 +156,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateNames(User user, UserNamesDTO userNamesDTO, String principal) {
         User updater = getByUsername(principal);
-        if (updater.getRoles().stream().noneMatch(role -> role.getRole().equals("admin"))){
-            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION,principal);
+        if (updater.getRoles().stream().noneMatch(role -> role.getRole().equals("ROLE_ADMIN"))) {
+            throw new InvalidPermission(USER_HAVE_NOT_ADMIN_PERMISSION, principal);
         }
-            User userToUpdate = UserMapper.updateNames(user, userNamesDTO);
+        User userToUpdate = UserMapper.updateNames(user, userNamesDTO);
         return userRepository.updateNames(userToUpdate);
     }
 
@@ -161,6 +169,14 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
         }
         userRepository.setStatusUser(username, status);
+    }
+
+    @Override
+    public void setBlockedStatus(String username, boolean status) {
+        if (!isUsernameExist(username)) {
+            throw new EntityNotFoundException(USER_USERNAME_NOT_FOUND, username);
+        }
+        userRepository.setBlockedStatus(username, status);
     }
 
     @Override
@@ -199,6 +215,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isBlocked(String username) {
+        return userRepository.isBlocked(username);
+    }
+
+    public boolean isBlocked(int userId) {
+        return userRepository.isBlocked(userId);
+    }
+
+    @Override
+    public boolean isEnabled(String username) {
+        return userRepository.isEnabled(username);
+    }
+
+
+    @Override
     public List<User> searchByUsername(String username) {
         return userRepository.searchByUsername(username);
     }
@@ -211,6 +242,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchByEmail(String email) {
         return userRepository.searchByEmail(email);
+    }
+
+    @Override
+    public List<User> searchByUsernameAsAdmin(String username) {
+        return userRepository.searchByUsernameAsAdmin(username);
+    }
+
+    @Override
+    public List<User> searchByPhoneNumberAsAdmin(String phoneNum) {
+        return userRepository.searchByPhoneNumberAsAdmin(phoneNum);
+    }
+
+    @Override
+    public List<User> searchByEmailAsAdmin(String email) {
+        return userRepository.searchByEmailAsAdmin(email);
+    }
+
+    @Override
+    public boolean checkIfUserIdExists(int id) {
+        return userRepository.checkIfUserIdExists(id);
     }
 
     private double getSum(int userId) {

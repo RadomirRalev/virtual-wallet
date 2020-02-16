@@ -18,7 +18,7 @@ import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @RestController
-@RequestMapping("api/card")
+@RequestMapping("api/cards")
 
 public class CardController {
 

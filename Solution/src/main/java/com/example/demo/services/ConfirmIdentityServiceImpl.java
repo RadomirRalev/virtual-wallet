@@ -62,6 +62,5 @@ public class ConfirmIdentityServiceImpl implements ConfirmIdentityService {
     public boolean isUserHaveConfirmIdentityRequest(int userId) {
         return confirmIdentityRepository.isUserHaveConfirmIdentityRequest(userId);
     }
-
 }
 
