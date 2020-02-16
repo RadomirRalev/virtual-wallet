@@ -76,7 +76,6 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     public CardDetails updateCard(CardUpdateDTO cardUpdateDTO, int updatedCardId, String username) {
         CardDetails cardToUpdate = getById(updatedCardId);
         User currentUser = userService.getByUsername(username);
-
         if (cardToUpdate.getUser().getId() != currentUser.getId()) {
             throw new InvalidPermission(USER_HAVE_NOT_PERMISSION_TO_UPDATE_CARD, currentUser.getUsername());
         }

@@ -6,6 +6,7 @@ import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.transaction.*;
 import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
+import com.example.demo.models.wallet.WalletCreationDTO;
 import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.UserService;
 import com.example.demo.services.WalletService;
@@ -90,6 +91,10 @@ public class Factory {
 
     public static CardRegistrationDTO createCardRegistrationDTO() {
         return new CardRegistrationDTO();
+    }
+
+    public static WalletCreationDTO createWalletCreationDTO() {
+        return new WalletCreationDTO();
     }
 
     public static CardUpdateDTO createCardUpdateDTO() {
