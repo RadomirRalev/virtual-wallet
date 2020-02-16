@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.exceptions.DuplicateIdempotencyKeyException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.transaction.*;
@@ -54,6 +55,8 @@ public class TransactionServiceTests {
     TransactionMapper transactionMapper;
     @Mock
     Internal internal;
+    @Mock
+    Wallet wallet;
 
     @InjectMocks
     TransactionServiceImpl transactionService;
@@ -124,7 +127,7 @@ public class TransactionServiceTests {
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
 
         //Act
-        Deposit deposit = transactionMapper.createDeposit(transactionDTO);
+        Deposit deposit = createDeposit();
         List<Deposit> list = new ArrayList<>();
         list.add(deposit);
         Deposit depositTest = list.get(0);
@@ -138,7 +141,7 @@ public class TransactionServiceTests {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
-        Internal betweenWallets = transactionMapper.createInternalTransaction(transactionDTO);
+        Internal betweenWallets = createInternal();
         List<Internal> list = new ArrayList<>();
         list.add(betweenWallets);
 
@@ -154,7 +157,7 @@ public class TransactionServiceTests {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
-        Withdrawal withdrawal = transactionMapper.createWithdrawal(transactionDTO);
+        Withdrawal withdrawal = createWithdrawal();
         List<Withdrawal> list = new ArrayList<>();
         list.add(withdrawal);
 
@@ -170,30 +173,13 @@ public class TransactionServiceTests {
         //Arrange
         TransactionDTO transactionDTO = createTransactionDTO();
         TransactionMapper transactionMapper = new TransactionMapper(userService, cardDetailsService, walletService);
-        Withdrawal withdrawal = transactionMapper.createWithdrawal(transactionDTO);
+        Withdrawal withdrawal = createWithdrawal();
         withdrawal.setIdempotencyKey("1");
         Mockito.when(transactionService.checkIfIdempotencyKeyExists("1"))
                 .thenThrow(DuplicateIdempotencyKeyException.class);
 
         //Act
         transactionService.checkIfIdempotencyKeyExists("1");
-
-    }
-
-    @Test(expected = InsufficientFundsException.class)
-    public void createWithdrawalShouldThrowException_WhenWalletMoneyAreNotEnough() {
-
-        //Arrange
-        TransactionDTO transactionDTO = createTransactionDTO();
-        Withdrawal withdrawal = createWithdrawal();
-        CardDetails cardDetails = createCard();
-        Wallet wallet = createWallet();
-        generateWithdrawalWithInSufficientAmount(withdrawal, cardDetails, wallet);
-        Mockito.when(transactionService.getWithdrawal(transactionDTO))
-                .thenReturn(withdrawal);
-
-        //Act
-        transactionService.createWithdrawal(transactionDTO);
 
     }
 
@@ -208,16 +194,60 @@ public class TransactionServiceTests {
 
         Mockito.when(transactionService.getWithdrawal(transactionDTO))
                 .thenReturn(withdrawal);
+//        Mockito.when(userService.isBlocked(withdrawal.getSenderName()))
+//                .thenReturn(false);
         Mockito.when(transactionService.checkIfWalletIdExists(wallet.getId()))
                 .thenReturn(true);
         Mockito.when(transactionService.checkIfCardIdExists(cardDetails.getId()))
                 .thenReturn(true);
 
         //Act
-        transactionService.createWithdrawal(transactionDTO);
+        transactionService.createWithdrawal(transactionDTO, "sender");
 
         //Assert
         Mockito.verify(transactionRepository, Mockito.times(1)).createWithdrawal(withdrawal, BALANCE_NOT_ENOUGH, cardDetails.getId());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void createWithdrawalShouldThrowException_WhenSenderIdDoesNotExist() {
+        //Arrange
+        TransactionDTO transactionDTO = createTransactionDTO();
+        Wallet walletSender = createWallet();
+        CardDetails cardReceiver = createCard();
+        Withdrawal withdrawal = createWithdrawal();
+        generateWithdrawalWithSufficientAmount(withdrawal, cardReceiver, walletSender);
+
+        Mockito.when(transactionService.getWithdrawal(transactionDTO))
+                .thenReturn(withdrawal);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(withdrawal.getIdempotencyKey()))
+                .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        transactionService.createWithdrawal(transactionDTO, "sender");
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void createWithdrawalShouldThrowException_WhenReceiverIdDoesNotExist() {
+        //Arrange
+        TransactionDTO transactionDTO = createTransactionDTO();
+        Wallet walletSender = createWallet();
+        CardDetails cardReceiver = createCard();
+        Withdrawal withdrawal = createWithdrawal();
+        generateWithdrawalWithSufficientAmount(withdrawal, cardReceiver, walletSender);
+
+        Mockito.when(transactionService.getWithdrawal(transactionDTO))
+                .thenReturn(withdrawal);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(withdrawal.getIdempotencyKey()))
+                .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
+        Mockito.when(transactionService.checkIfCardIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        transactionService.createWithdrawal(transactionDTO, "sender");
     }
 
     @Test(expected = InsufficientFundsException.class)
@@ -232,7 +262,7 @@ public class TransactionServiceTests {
                 .thenReturn(betweenWallets);
 
         //Act
-        transactionService.createInternal(transactionDTO);
+        transactionService.createInternal(transactionDTO, "sender");
     }
 
     @Test(expected = DuplicateIdempotencyKeyException.class)
@@ -251,7 +281,7 @@ public class TransactionServiceTests {
 
 
         //Act
-        transactionService.createInternal(transactionDTO);
+        transactionService.createInternal(transactionDTO, "sender");
 
     }
 
@@ -275,7 +305,7 @@ public class TransactionServiceTests {
 
 
         //Act
-        transactionService.createInternal(transactionDTO);
+        transactionService.createInternal(transactionDTO, "sender");
 
         //Assert
         Mockito.verify(transactionRepository,
@@ -285,6 +315,26 @@ public class TransactionServiceTests {
                         walletReceiver.getBalance() + TRANSACTION_AMOUNT,
                         walletSender.getId(),
                         walletReceiver.getId());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void createInternalShouldThrowException_WhenReceiverIdDoesNotExist() {
+        //Arrange
+        TransactionDTO transactionDTO = createTransactionDTO();
+        Wallet walletSender = createWallet();
+        Wallet walletReceiver = createWallet();
+        Internal internal = createInternal();
+        generateInternalWithSufficientAmount(internal, walletSender, walletReceiver);
+
+        Mockito.when(transactionService.getInternal(transactionDTO))
+                .thenReturn(internal);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(internal.getIdempotencyKey()))
+                .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        transactionService.createInternal(transactionDTO, "sender");
     }
 
     @Test(expected = DuplicateIdempotencyKeyException.class)
@@ -298,9 +348,54 @@ public class TransactionServiceTests {
                 .thenReturn(true);
 
         //Act
-        transactionService.createDeposit(transactionDTO);
+        transactionService.createDeposit(transactionDTO, "sender");
     }
 
+    @Test
+    public void createDepositShouldCallRepository_Save() {
+        //Arrange
+        TransactionDTO transactionDTO = createTransactionDTO();
+        Wallet wallet = createWallet();
+        Deposit deposit = createDeposit();
+        generateCorrectDeposit(deposit, wallet);
+        Mockito.when(transactionService.getDeposit(transactionDTO))
+                .thenReturn(deposit);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(deposit.getIdempotencyKey()))
+                .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
+        Mockito.when(walletRepository.getWalletById(anyInt()))
+                .thenReturn(wallet);
+
+        //Act
+        transactionService.createDeposit(transactionDTO, "sender");
+
+        //Assert
+        Mockito.verify(transactionRepository, Mockito.times(1))
+                .createDeposit(deposit, BALANCE_ENOUGH + deposit.getAmount(), wallet.getId());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void createDepositShouldThrowException_WhenReceiverIdExists() {
+        //Arrange
+        TransactionDTO transactionDTO = createTransactionDTO();
+        Wallet wallet = createWallet();
+        Deposit deposit = createDeposit();
+        deposit.setIdempotencyKey("1");
+        deposit.setAmount(100);
+        deposit.setDescription("This is description");
+        deposit.setCurrency("BGN");
+        deposit.setReceiver(wallet);
+        Mockito.when(transactionService.getDeposit(transactionDTO))
+                .thenReturn(deposit);
+        Mockito.when(transactionService.checkIfIdempotencyKeyExists(deposit.getIdempotencyKey()))
+                .thenReturn(false);
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        transactionService.createDeposit(transactionDTO, "sender");
+    }
 
     @Test
     public void getTransactionsbyUserIdShould_CallRepository() {
@@ -355,6 +450,64 @@ public class TransactionServiceTests {
 
         //Assert
         Assert.assertEquals(2, list.size());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void checkIfUserIdExistsShould_ThrowExceptionIfUserDoesNotExist() {
+
+        Mockito.when(transactionService.checkIfUserIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        List<Transaction> list = transactionService.getTransactionsByUserId(anyInt(), PAGE);
+
+    }
+
+    @Test
+    public void getTransactionsbyWalletIdShould_CallRepository() {
+        //Arrange
+        List<Transaction> transactionsList = new ArrayList<>();
+        Wallet wallet = createWallet();
+
+        Mockito.when(transactionRepository.getTransactionsbyWalletId(wallet.getId(), PAGE))
+                .thenReturn(transactionsList);
+        Mockito.when(transactionService.checkIfWalletIdExists(wallet.getId()))
+                .thenReturn(true);
+        //Act
+        transactionService.getTransactionsbyWalletId(wallet.getId(), PAGE);
+
+        //Assert
+        Assert.assertSame(transactionService.getTransactionsbyWalletId(wallet.getId(), PAGE), transactionsList);
+    }
+
+    @Test
+    public void getTransactionsbyWalletIdShould_ReturnListWhenThereAreTransactions() {
+        //Arrange
+        Internal internal = createInternal();
+        Withdrawal withdrawal = createWithdrawal();
+        Wallet wallet = createWallet();
+
+        Mockito.when(transactionRepository.getTransactionsbyWalletId(wallet.getId(), PAGE))
+                .thenReturn(Arrays.asList(internal, withdrawal));
+        Mockito.when(transactionService.checkIfWalletIdExists(wallet.getId()))
+                .thenReturn(true);
+
+        //Act
+        List<Transaction> list = transactionService.getTransactionsbyWalletId(wallet.getId(), PAGE);
+
+
+        //Assert
+        Assert.assertEquals(2, list.size());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void checkIfWalletIdExistsShould_ThrowExceptionIfUserDoesNotExist() {
+
+        Mockito.when(transactionService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        List<Transaction> list = transactionService.getTransactionsbyWalletId(anyInt(), PAGE);
     }
 
 }

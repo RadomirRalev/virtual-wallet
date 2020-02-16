@@ -11,7 +11,7 @@ public class ExceptionConstants {
     public static final String USER_ALREADY_CONFIRMED_HIS_IDENTITY = "User %s has already confirmed his identity.";
     public static final String USER_ALREADY_HAVE_CONFIRM_IDENTITY = "User %s already have confirm identity.";
     public static final String CONFIRM_YOUR_IDENTITY_TO_REGISTER_CARD = "Confirm your identity to register a card!";
-    public static final String SENDER_IS_BOCKED = "%s you are blocked and can`t make transactions!";
+    public static final String SENDER_IS_BLOCKED = "%s you are blocked and can`t make transactions!";
     public static final String RECEIVER_IS_BLOCKED = "User with username %s you are blocked and you can`t send him transaction!";
     //TODO ???
     public static final String USER_TOKEN_NOT_FOUND = "User with id %d haven`t token.";

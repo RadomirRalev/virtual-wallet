@@ -30,9 +30,6 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
                     " where id = :id and enabled = :status ", CardDetails.class);
             query.setParameter("id", id);
             query.setParameter("status", ENABLE);
-            if (query.list().size() != 1) {
-                throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
-            }
             return query.list().get(0);
         }
     }
@@ -44,9 +41,6 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
                     " where number = :number and enabled = :status ", CardDetails.class);
             query.setParameter("number", number);
             query.setParameter("status", ENABLE);
-            if (query.list().size() != 1) {
-                throw new EntityNotFoundException(CARD_WITH_NUMBER_NOT_EXISTS, number);
-            }
             return query.list().get(0);
         }
     }

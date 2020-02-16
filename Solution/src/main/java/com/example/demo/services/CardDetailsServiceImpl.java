@@ -33,11 +33,17 @@ public class CardDetailsServiceImpl implements CardDetailsService {
 
     @Override
     public CardDetails getById(int id) {
+        if (!checkIfCardIdExists(id)) {
+            throw new EntityNotFoundException(CARD_WITH_ID_NOT_EXISTS, id);
+        }
         return cardDetailsRepository.getById(id);
     }
 
     @Override
     public CardDetails getByNumber(String number) {
+        if (!checkIfCardNumberExists(number)) {
+            throw new EntityNotFoundException(CARD_WITH_NUMBER_NOT_EXISTS, number);
+        }
         return cardDetailsRepository.getByNumber(number);
     }
 
@@ -95,5 +101,13 @@ public class CardDetailsServiceImpl implements CardDetailsService {
     @Override
     public boolean isUserIsOwner(int cardId, int userId) {
         return cardDetailsRepository.isUserIsOwner(cardId, userId);
+    }
+
+    public boolean checkIfCardIdExists(int cardId) {
+        return cardDetailsRepository.checkIfCardIdExists(cardId);
+    }
+
+    public boolean checkIfCardNumberExists(String cardNumber) {
+        return cardDetailsRepository.checkIfCardNumberExists(cardNumber);
     }
 }

@@ -33,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository,
                                   TransactionMapper transactionMapper, WalletRepository walletRepository,
-                                  CardDetailsRepository cardDetailsRepository) {
+                                  CardDetailsRepository cardDetailsRepository, UserService userService) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
         this.userService = userService;
@@ -65,7 +65,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Deposit createDeposit(TransactionDTO transactionDTO, String sender) {
         if (userService.isBlocked(sender)) {
-            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+            throw new InvalidPermission(SENDER_IS_BLOCKED, sender);
         }
 
         Deposit deposit = getDeposit(transactionDTO);
@@ -84,7 +84,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Internal createInternal(TransactionDTO transactionDTO, String sender) {
         if (userService.isBlocked(sender)) {
-            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+            throw new InvalidPermission(SENDER_IS_BLOCKED, sender);
         }
 
         if (userService.isBlocked(transactionDTO.getReceiverId())) {
@@ -112,7 +112,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Withdrawal createWithdrawal(TransactionDTO transactionDTO, String sender) {
         if (userService.isBlocked(sender)) {
-            throw new InvalidPermission(SENDER_IS_BOCKED, sender);
+            throw new InvalidPermission(SENDER_IS_BLOCKED, sender);
         }
         Withdrawal withdrawal = getWithdrawal(transactionDTO);
 
@@ -183,7 +183,7 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId, page);
     }
 
-    private List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId, int page) {
+    public List<Transaction> getTransactionsByDate(String direction, String start, String end, int userId, int page) {
         LocalDate startDate = parseDate(start);
         LocalDate endDate = parseDate(end);
         return transactionRepository.getTransactionsByUserId(direction, startDate, endDate, userId, page);
@@ -204,7 +204,7 @@ public class TransactionServiceImpl implements TransactionService {
         return LocalDate.parse(dateString, formatter);
     }
 
-    private void checkIfFundsAreEnough(Wallet sender, double amount) {
+    public void checkIfFundsAreEnough(Wallet sender, double amount) {
         if (sender.getBalance() - amount < 0) {
             throw new InsufficientFundsException(SENDER_FUNDS_ARE_NOT_SUFFICIENT);
         }
@@ -219,7 +219,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public boolean checkIfUserIdExists(int userId) {
-        return userRepository.checkIfUserIdExists(userId);
+        return userService.checkIfUserIdExists(userId);
     }
 
     public boolean checkIfCardIdExists(int cardId) {
