@@ -3,7 +3,6 @@ package com.example.demo.helpers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.example.demo.constants.ExceptionConstants.*;
 import static java.lang.Integer.parseInt;
 
 public class CardHelper {
@@ -17,19 +16,17 @@ public class CardHelper {
         Date date = new Date();
         SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
         SimpleDateFormat formatterMonth = new SimpleDateFormat("MM");
-        int currentYear = parseInt(formatterYear.format(date))% LAST_TWO_DIGITS;
+        int currentYear = parseInt(formatterYear.format(date)) % LAST_TWO_DIGITS;
         int currentMonth = parseInt(formatterMonth.format(date));
         int expirationMonth = parseInt(expirationDate.substring(BEGIN_INDEX, GET_MONTH));
         int expirationYear = parseInt(expirationDate.substring(GET_YEAR));
 
-        if(expirationMonth == 0 || expirationMonth> DECEMBER){
+        if (expirationMonth == 0 || expirationMonth > DECEMBER) {
             return false;
         }
-
         if (currentMonth > expirationMonth) {
             expirationYear--;
         }
         return (expirationYear >= currentYear);
     }
-
 }

@@ -13,7 +13,4 @@ public class PictureFormat {
     public static boolean isPictureJPG(MultipartFile front_picture) {
         return Objects.equals(FilenameUtils.getExtension(front_picture.getOriginalFilename()), JPG);
     }
-    public static boolean isPictureEMPTY(MultipartFile front_picture) {
-        return Objects.equals(FilenameUtils.getExtension(front_picture.getOriginalFilename()), EMPTY);
-    }
 }

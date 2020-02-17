@@ -4,36 +4,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <title>Update card</title>
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Update Card</title>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <style>
         .fixed-bg {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
 
         .fixed-bg2 {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
     </style>
-
+    <!-- Styles -->
 </head>
 <body itemscope>
 <!-- Pageloader -->
 <div th:insert="fragments/pageloaderfragment :: pageloader"></div>
 <!-- Pageloader -->
 <main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <!-- Header -->
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
-    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Add Card', currentpage = 'cardregistration')"></section>
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
     <!-- Secondary Header Text -->
     <section>
-        <section>
             <div class="spacing">
                 <div class="container">
                     <div class="blog-detail-wrp">

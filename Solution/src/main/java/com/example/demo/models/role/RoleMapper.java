@@ -1,7 +1,6 @@
 package com.example.demo.models.role;
 
 import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
 
 import static com.example.demo.constants.SQLQueryConstants.ROLE_USER;
 
@@ -14,5 +13,4 @@ public class RoleMapper {
         role.setUserId(user.getId());
         return role;
     }
-
 }

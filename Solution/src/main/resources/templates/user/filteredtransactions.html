@@ -27,17 +27,17 @@
 <div th:insert="fragments/pageloaderfragment :: pageloader"></div>
 <!-- Pageloader -->
 <main>
-    <!-- Header -->
-    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
-    <!-- Header -->
-    <!-- Secondary Header -->
-    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
-    <!-- Secondary Header -->
-    <!-- Secondary Header Text -->
-    <section
-            th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
-    <!-- Secondary Header Text -->
-    <section>
+        <!-- Header -->
+        <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
+        <!-- Header -->
+        <!-- Secondary Header -->
+        <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+        <!-- Secondary Header -->
+        <!-- Secondary Header Text -->
+        <section
+                th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+        <!-- Secondary Header Text -->
+        <section>
         <div class="spacing">
             <div class="container">
                 <form class="form-inline" th:action="@{/filteredtransactions}" th:object="${transactionFilterDTO}">

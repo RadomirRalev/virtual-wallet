@@ -20,6 +20,4 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     public void sendEmail(SimpleMailMessage email) {
         javaMailSender.send(email);
     }
-
-
 }

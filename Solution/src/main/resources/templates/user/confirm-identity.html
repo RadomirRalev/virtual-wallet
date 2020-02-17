@@ -7,7 +7,7 @@
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
     <title>Confirm identity</title>
-    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/css/picture.css}"/>
+
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
@@ -34,6 +34,7 @@
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
     <!-- Secondary Header Text -->
     <section>
         <div class="spacing">

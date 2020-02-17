@@ -28,7 +28,6 @@ public class TransactionsController {
     private TransactionService transactionService;
     private WalletService walletService;
 
-
     @Autowired
     public TransactionsController(UserService userService, TransactionService transactionService, WalletService walletService) {
         this.userService = userService;
@@ -122,7 +121,6 @@ public class TransactionsController {
     public String createWalletToWalletTransaction(@Valid @ModelAttribute("walletsTransactionDTO") TransactionDTO transactionDTO,
                                                   @ModelAttribute("receiver") User receiver,
                                                   BindingResult bindingResult, Model model) {
-
         if (bindingResult.hasErrors()) {
             return "walletstransaction";
         }

@@ -4,7 +4,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.IOException;
 
-import static com.example.demo.helpers.UserHelper.setOptionalFields;
 import static com.example.demo.constants.TypesConstants.EMPTY;
 
 public class UserMapper {
@@ -20,7 +19,6 @@ public class UserMapper {
         user.setPicture(userRegistrationDTO.getFile().getBytes());
         user.setFirstName(EMPTY);
         user.setLastName(EMPTY);
-        setOptionalFields(user);
         user.setBlocked(false);
         return user;
     }

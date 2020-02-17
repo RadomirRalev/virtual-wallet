@@ -62,5 +62,4 @@ public interface UserService {
     List<User> searchByEmailAsAdmin(String email);
 
     boolean checkIfUserIdExists(int id);
-
 }

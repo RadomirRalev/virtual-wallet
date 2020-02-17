@@ -42,7 +42,7 @@ public class UserController {
     public User create(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO) {
         try {
             return userService.createUser(userRegistrationDTO);
-        } catch (DuplicateEntityException | InvalidOptionalFieldParameter | InvalidPasswordException |
+        } catch (DuplicateEntityException | InvalidPasswordException |
                 InvalidPictureFormat | IOException e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
         }

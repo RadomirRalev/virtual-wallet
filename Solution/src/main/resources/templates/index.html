@@ -38,34 +38,31 @@
 </div><!-- Pageloader -->
 <main>
     <header class="stick style1">
-        <div class="topbar">
-            <div class="container">
-                <ul class="tp-lnks float-left">
-                    <li sec:authorize="!isAuthenticated()"><a class="theme-clr" th:href="@{/login}">LOGIN</a>
-                        OR <a class="theme-clr" th:href="@{/registration}">SIGNUP</a></li>
-                    <li sec:authorize="isAuthenticated()"><a class="theme-clr" th:href="@{/logout}">LOG OUT</a></li>
-
-                    <!--                    <li>-->
-                    <!--                                                    <div class="slc-wrp">-->
-                    <!--                                                        <select>-->
-                    <!--                                                            <option data-icon="fab fa-btc">BTC</option>-->
-                    <!--                                                            <option data-icon="fa fa-bold">ETM</option>-->
-                    <!--                                                            <option data-icon="fa fa-dollar-sign">STLR</option>-->
-                    <!--                                                        </select>-->
-                    <!--                                                    </div>-->
-                    </li>
-                </ul>
-            </div>
-        </div><!-- Topbar -->
         <div class="menu-sec">
             <div class="container">
                 <div class="menu-sec-inner">
                     <div class="logo"><a href="#" title="" itemprop="url"><img src="..static/images/logo1.png"
-                                                                                        th:src="@{/images/logo1.png}"
-                                                                                        alt="logo1.png"
-                                                                                        itemprop="image"></a></div>
+                                                                               th:src="@{/images/logo1.png}"
+                                                                               alt="logo1.png"
+                                                                               itemprop="image"></a>
+                    </div>
+                    <nav>
+                        <div>
+                            <ul>
+                                <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a></li>
+                            </ul>
+                        </div>
+                    </nav>
                     <nav class="one-page-scrol">
                         <div>
+                            <a sec:authorize="!isAuthenticated()" class="btn-caption btn-outline-warning btn-lg" th:href="@{/login}">LOGIN</a>
+                            <a sec:authorize="!isAuthenticated()" class="btn-caption btn-outline-warning btn-lg " th:href="@{/registration}">SIGNUP</a>
+                            <ul>
+                                <li sec:authorize="!isAuthenticated()"></li>
+                                <li sec:authorize="!isAuthenticated()"></li>
+                                <li sec:authorize="!isAuthenticated()"></li>
+                                <li sec:authorize="!isAuthenticated()"></li>
+                            </ul>
                             <ul>
                                 <li><a href="#about" title="" itemprop="url">About</a></li>
                                 <li><a href="#team" title="" itemprop="url">Team</a></li>
@@ -258,6 +255,7 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
+                                 th:href="@{/registration}"
                                  style="color: #fff;font-weight:700;font-family: 'exo 2';letter-spacing: .2px;">Buy &
                                 Sell Crypto <br> <span class="theme-clr" style="font-weight: 300;">Profit with us</span>
                             </div>
@@ -280,6 +278,7 @@
                                  data-paddingright="[0,0,0,0]"
                                  data-paddingbottom="[0,0,0,0]"
                                  data-paddingleft="[0,0,0,0]"
+                                 th:href="@{/registration}"
                                  style="color: #fff;font-weight: 400;font-family: lato;letter-spacing: .2px;">Our crypto
                                 guides will help get you up to speed. <br> While the concept is simple, we know that
                                 aspects of cryptocurrency can seem a bit complex. <br> Our service will help you buy and
@@ -305,6 +304,7 @@
                                  data-paddingright="[55,45,45,40]"
                                  data-paddingbottom="[13,14,14,11]"
                                  data-paddingleft="[55,45,45,40]"
+                                 th:href="@{/registration}"
                                  style="cursor:pointer;line-height: 25px;display: inline-block;font-weight: 700;font-family: 'exo 2';letter-spacing: .2px;">
                                 GET STARTED
                             </div>
@@ -312,53 +312,6 @@
                     </ul>
                 </div>
             </div><!-- END REVOLUTION SLIDER -->
-            <div class="ico-cunt-sec text-center">
-                <div class="ico-cunt-inr blue-bg brd-rd5">
-                    <div class="ico-cunt">
-                        <h5 itemprop="headline">Next Bonus Sale at 5% Discount <br> Starts In</h5>
-                        <ul class="countdown">
-                            <li>
-                                <span class="days">5</span>
-                                <p class="days_ref theme-clr">days</p>
-                            </li>
-                            <li>
-                                <span class="hours">08</span>
-                                <p class="hours_ref theme-clr">hours</p>
-                            </li>
-                            <li>
-                                <span class="minutes">23</span>
-                                <p class="minutes_ref theme-clr">min</p>
-                            </li>
-                            <li>
-                                <span class="seconds">48</span>
-                                <p class="seconds_ref theme-clr">sec</p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="ico-rasd theme-bg">
-                        <a class="brd-rd30 tcn-rgstr-btn" href="#" title="" itemprop="url" th:href="@{/registration}">REGISTER
-                            TO BUY TOKENS</a>
-                        <span>67.421 <small>ETH</small></span>
-                        <i>Worth of STMX tokens</i>
-                        <!--                            <div class="progress-wrp">-->
-                        <!--&lt;!&ndash;                                <div class="progress brd-rd5">&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                    <div class="progress-bar blue-bg width30"></div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;                                </div>&ndash;&gt;-->
-                        <!--                                <span class="float-left">RAISED: $31,224.19</span>-->
-                        <!--                                <span class="float-right">$21,202.1</span>-->
-                        <!--                            </div>-->
-                    </div>
-                    <div class="ico-acp">
-                        <strong>WE ACCEPT:</strong>
-                        <img src="..static/images/crd1.png" th:src="@{/images/crd1.png}" alt="crd1.png"
-                             itemprop="image">
-                        <img src="..static/images/crd2.png" th:src="@{/images/crd2.png}" alt="crd2.png"
-                             itemprop="image">
-                        <img src="..static/images/crd3.png" th:src="@{/images/crd3.png}" alt="crd3.png"
-                             itemprop="image">
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
     <section>
@@ -417,10 +370,6 @@
                                     maintaining full reserves, healthy banking relationships and the highest standards
                                     of legal compliance.</p>
                                 <p itemprop="description">No registrations, no fees. Trade cryptos with us!</p>
-                                <!--                                    <div class="btns">-->
-                                <!--                                        <a class="theme-btn theme-bg brd-rd30" href="about.html" title="" itemprop="url">LEARN MORE</a>-->
-                                <!--                                        <a class="theme-btn blue-bg brd-rd30" href="https://www.youtube.com/watch?v=kubGCSj5y3k&t=5s" title="" itemprop="url" target="_blank">VIDEO SHOWCASE</a>-->
-                                <!--                                    </div>-->
                             </div>
                         </div>
                         <div class="col-md-1 col-sm-12 col-lg-1"></div>
@@ -436,27 +385,6 @@
             </div>
         </div>
     </section>
-    <!--        <section>-->
-    <!--            <div class="spacing no-spacing">-->
-    <!--                <div class="container">-->
-    <!--                    <div class="glb-ntwrks">-->
-    <!--                        <div class="row">-->
-    <!--                            <div class="col-md-3 col-sm-12 col-lg-3">-->
-    <!--                                <h3 itemprop="headline">Growing Global Network</h3>-->
-    <!--                            </div>-->
-    <!--                            <div class="col-md-9 col-sm-12 col-lg-9">-->
-    <!--                                <div class="glb-car owl-carousel text-center">-->
-    <!--                                    <div class="glb-itm"><a href="#" title="" itemprop="url"><img src="..static/images/resources/glb-img1.png" th:src="@{/images/resources/glb-img1.png}" alt="glb-img1.png" itemprop="image"></a></div>-->
-    <!--                                    <div class="glb-itm"><a href="#" title="" itemprop="url"><img src="..static/images/resources/glb-img2.png" th:src="@{/images/resources/glb-img2.png}" alt="glb-img2.png" itemprop="image"></a></div>-->
-    <!--                                    <div class="glb-itm"><a href="#" title="" itemprop="url"><img src="..static/images/resources/glb-img3.png" th:src="@{/images/resources/glb-img3.png}" alt="glb-img3.png" itemprop="image"></a></div>-->
-    <!--                                    <div class="glb-itm"><a href="#" title="" itemprop="url"><img src="..static/images/resources/glb-img4.png" th:src="@{/images/resources/glb-img4.png}" alt="glb-img4.png" itemprop="image"></a></div>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </section>-->
     <section id="team" class="pg-scn">
         <div class="spacing top-spac60">
             <div class="container">
@@ -523,7 +451,7 @@
                                 <div class="team-inf">
                                     <h5 itemprop="headline"><a href="team-detail.html" title="" itemprop="url">Vasil
                                         Dinchev</a></h5>
-                                    <span>Co-Founder & Crypto-Guru</span>
+                                    <span>Co-Founder</span>
                                 </div>
                             </div>
                         </div>
@@ -560,196 +488,11 @@
             </div>
         </div>
     </section>
-    <!--        <section id="solutions" class="pg-scn">-->
-    <!--            <div class="spacing blue-bg-layer opc7">-->
-    <!--                <div class="fixed-bg" style="background-image: url(..static/images/parallax1.jpg);"></div>-->
-    <!--                <div class="container">-->
-    <!--                    <div class="wht-ico">-->
-    <!--                        <div class="row">-->
-    <!--                            <div class="col-md-6 col-sm-12 col-lg-6 fadeInLeft wow" data-wow-duration="1s" data-wow-delay=".2s">-->
-    <!--                                <div class="ico-mckp text-center">-->
-    <!--                                    <img src="..static/images/resources/ico-mckp.png" th:src="@{/images/resources/ico-mckp.png}" alt="ico-mckp.png" itemprop="image">-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                            <div class="col-md-6 col-sm-12 col-lg-6 fadeInRight wow" data-wow-duration="1s" data-wow-delay=".2s">-->
-    <!--                                <div class="ico-inf">-->
-    <!--                                    <h2 itemprop="headline">What is <span class="theme-clr">VIRTUAL WALLET?</span></h2>-->
-    <!--                                    <p itemprop="description">We offer you the chance to exchange money without additional fees and taxes, and to buy and sell cryptocurrencies without additional registrations.</p>-->
-    <!--                                    <ul>-->
-    <!--                                        <li>Wallet For Buying, Storing and Using Cryptos.</li>-->
-    <!--                                        <li>Online Trading Platform for currency exchange.</li>-->
-    <!--                                        <li>Reliable service for support in anything you may need.</li>-->
-    <!--                                    </ul>-->
-    <!--                                    <a class="theme-btn theme-bg brd-rd30" href="about.html" title="" itemprop="url">LEARN MORE</a>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </section>-->
-    <!--        <section id="strategy" class="pg-scn">-->
-    <!--            <div class="spacing gray-layer opc55">-->
-    <!--                <div class="fixed-bg" style="background-image: url(..static/images/parallax2.jpg);"></div>-->
-    <!--                <div class="container">-->
-    <!--                    <div class="title-sec text-center">-->
-    <!--                        <div class="title-sec-inr">-->
-    <!--                            <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">-->
-    <!--                            <h2 itemprop="headline">STRATEGY & ROADMAP</h2>-->
-    <!--                            <p itemprop="description">With a team of technology and finance professionals, we will endeavor into the financial evolution together.</p>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="ico-hstry-wrap">-->
-    <!--                        <div class="row">-->
-    <!--                            <div class="col-md-5 col-sm-12 col-lg-5">-->
-    <!--                                <div class="row">-->
-    <!--                                    <div class="col-md-6 col-sm-6 col-lg-6 fadeIn wow" data-wow-duration="1s" data-wow-delay=".2s">-->
-    <!--                                        <div class="ico-hstry-bx">-->
-    <!--                                            <div class="ico-hstry text-center brd-rd50">-->
-    <!--                                                <div class="ico-hstry-inr blue-bg"><span>MAY</span>2018</div>-->
-    <!--                                            </div>-->
-    <!--                                            <div class="ico-hstry-bx-inr">-->
-    <!--                                                <h5 itemprop="headline">ICO Platform launched</h5>-->
-    <!--                                                <p itemprop="description">Use to make instant, private payments online or in-store using our secure open source platform hosted.</p>-->
-    <!--                                                <span>M</span>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                    <div class="col-md-6 col-sm-6 col-lg-6 fadeIn wow" data-wow-duration="1s" data-wow-delay=".3s">-->
-    <!--                                        <div class="ico-hstry-bx rev">-->
-    <!--                                            <div class="ico-hstry text-center brd-rd50">-->
-    <!--                                                <div class="ico-hstry-inr blue-bg"><span>JUNE</span>2018</div>-->
-    <!--                                            </div>-->
-    <!--                                            <div class="ico-hstry-bx-inr">-->
-    <!--                                                <h5 itemprop="headline">ICO Token First Pre-sale</h5>-->
-    <!--                                                <p itemprop="description">Use to make instant, private payments online or in-store using our secure open source platform hosted.</p>-->
-    <!--                                                <span>J</span>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                            <div class="col-md-2 col-sm-12 col-lg-2"></div>-->
-    <!--                            <div class="col-md-5 col-sm-12 col-lg-5">-->
-    <!--                                <div class="row">-->
-    <!--                                    <div class="col-md-6 col-sm-6 col-lg-6 fadeIn wow" data-wow-duration="1s" data-wow-delay=".4s">-->
-    <!--                                        <div class="ico-hstry-bx">-->
-    <!--                                            <div class="ico-hstry text-center brd-rd50">-->
-    <!--                                                <div class="ico-hstry-inr blue-bg"><span>JULY</span>2018</div>-->
-    <!--                                            </div>-->
-    <!--                                            <div class="ico-hstry-bx-inr">-->
-    <!--                                                <h5 itemprop="headline">Cryptrocick ICO Concept</h5>-->
-    <!--                                                <p itemprop="description">Use to make instant, private payments online or in-store using our secure open source platform hosted.</p>-->
-    <!--                                                <span>J</span>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                    <div class="col-md-6 col-sm-6 col-lg-6 fadeIn wow" data-wow-duration="1s" data-wow-delay=".5s">-->
-    <!--                                        <div class="ico-hstry-bx rev">-->
-    <!--                                            <div class="ico-hstry text-center brd-rd50">-->
-    <!--                                                <div class="ico-hstry-inr blue-bg"><span>AUGUST</span>2018</div>-->
-    <!--                                            </div>-->
-    <!--                                            <div class="ico-hstry-bx-inr">-->
-    <!--                                                <h5 itemprop="headline">ICO Mobile App Release</h5>-->
-    <!--                                                <p itemprop="description">Use to make instant, private payments online or in-store using our secure open source platform hosted.</p>-->
-    <!--                                                <span>A</span>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>&lt;!&ndash; ICO History Wrap &ndash;&gt;-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </section>-->
-    <section id="token-sales" class="pg-scn">
-        <div class="spacing remove-bottom">
-            <div class="container">
-                <div class="title-sec text-center">
-                    <div class="title-sec-inr">
-                        <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}"
-                             alt="tl-icn.png" itemprop="image">
-                        <h2 itemprop="headline">OUR OFFER</h2>
-                        <p itemprop="description">This is our offer for the purchase and sale of tokens</p>
-                    </div>
-                </div>
-                <div class="ico-stat-tabl brd-rd5 overlap-305">
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>NAME</th>
-                            <th>MARKET CAP</th>
-                            <th>BUY PRICE</th>
-                            <th>SELL PRICE</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn1.png"
-                                             th:src="@{/images/resources/bit-icn1.png}" alt="bit-icn1.png"
-                                             itemprop="image">Bitcoin</strong></td>
-                            <td>$190,540,485,450</td>
-                            <td>$11,322.00</td>
-                            <td>$11,322.00</td>
-                        </tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn2.png"
-                                             th:src="@{/images/resources/bit-icn2.png}" alt="bit-icn2.png"
-                                             itemprop="image">Ethereum</strong></td>
-                            <td>$27,318,473,255</td>
-                            <td>$1,613.20</td>
-                            <td>$1,613.20</td>
-                        </tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn3.png"
-                                             th:src="@{/images/resources/bit-icn3.png}" alt="bit-icn3.png"
-                                             itemprop="image">Ripple</strong></td>
-                            <td>$104,682,678,413</td>
-                            <td>$0.613236</td>
-                            <td>$0.613236</td>
-                            </td></tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn4.png"
-                                             th:src="@{/images/resources/bit-icn4.png}" alt="bit-icn4.png"
-                                             itemprop="image">Zcash</strong></td>
-                            <td>$190,540,485,450</td>
-                            <td>$178.91</td>
-                            <td>$178.91</td>
-                        </tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn5.png"
-                                             th:src="@{/images/resources/bit-icn5.png}" alt="bit-icn5.png"
-                                             itemprop="image">Aidcoin</strong></td>
-                            <td>$190,540,485,450</td>
-                            <td>$11,322.00</td>
-                            <td>$11,322.00</td>
-                        </tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn6.png"
-                                             th:src="@{/images/resources/bit-icn6.png}" alt="bit-icn6.png"
-                                             itemprop="image">Stellar</strong></td>
-                            <td>$9,829,908,532</td>
-                            <td>$0.613236</td>
-                            <td>$0.613236</td>
-                        </tr>
-                        <tr>
-                            <td><strong><img src="..static/images/resources/bit-icn7.png"
-                                             th:src="@{/images/resources/bit-icn7.png}" alt="bit-icn7.png"
-                                             itemprop="image">Litecoin</strong></td>
-                            <td>$190,540,485,450</td>
-                            <td>$1,613.20</td>
-                            <td>$1,613.20</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div><!-- ICO Stats Table -->
-            </div>
-        </div>
-    </section>
+
+
+
     <section id="contact">
-        <div class="spacing blue-bg-layer opc95 top-spac360">
-            <div id="particles-js2" class="particles-js"></div>
+        <div class="spacing blue-bg-layer opc95">
             <div class="container">
                 <div class="faq-crypt-prc">
                     <div class="row">
@@ -760,8 +503,8 @@
                                         <div class="cnt-inf-bx">
                                             <i class="flaticon-black-back-closed-envelope-shape theme-bg brd-rd50"></i>
                                             <div class="cnt-inf">
-                                                <h5 itemprop="headline">EMAIL ID:</h5>
-                                                <a href="#" title="" itemprop="url">adminname@domain.com</a>
+                                                <h5 itemprop="headline">EMAIL:</h5>
+                                                <a href="mailto:virtualwalletrrvv@gmail.com" title="" itemprop="url">virtualwalletrrvv@gmail.com</a>
                                             </div>
                                         </div>
                                     </div>
@@ -794,9 +537,7 @@
                                 <p itemprop="description">Wallet For Buying, Storing and Using Cryptos.<br>
                                     Online Trading Platform for currency exchange.<br>
                                     Reliable service for support in anything you may need.<br></p>
-                                <!--                                    <div class="btns">-->
-                                <!--                                        <a class="theme-btn theme-bg brd-rd30" href="https://www.youtube.com/watch?v=kubGCSj5y3k&amp;t=5s" title="" data-fancybox itemprop="url" target="_blank">VIDEO SHOWCASE</a>-->
-                                <!--                                    </div>-->
+
                             </div>
                         </div>
                         <div class="col-md-5 col-sm-12 col-lg-5 fadeInRight wow" data-wow-duration="1s"
@@ -811,157 +552,6 @@
             </div>
         </div>
     </section>
-    <!--        <section id="news" class="pg-scn">-->
-    <!--            <div class="spacing">-->
-    <!--                <div class="container">-->
-    <!--                    <div class="title-sec text-center">-->
-    <!--                        <div class="title-sec-inr">-->
-    <!--                            <img src="..static/images/resources/tl-icn.png" th:src="@{/images/resources/tl-icn.png}" alt="tl-icn.png" itemprop="image">-->
-    <!--                            <h2 itemprop="headline">NEWS & UPDATES</h2>-->
-    <!--                            <p itemprop="description">With a team of top technology and finance professionals, the nonprofit Lymcoin expands access to low-cost financial services to fight poverty and maximize.</p>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                    <div class="remove-ext9">-->
-    <!--                        <div class="row">-->
-    <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".2s">-->
-    <!--                                <div class="post-box">-->
-    <!--                                    <div class="post-thumb brd-rd5"><a href="registration.html" title="" itemprop="url"><img src="..static/images/resources/post-img1.jpg" th:src="@{/images/resources/post-img1.png}" alt="post-img1.jpg" itemprop="image"></a></div>-->
-    <!--                                    <div class="post-inf">-->
-    <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-    <!--                                        <h5 itemprop="headline"><a href="registration.html" title="" itemprop="url">Great Experience to Work</a></h5>-->
-    <!--                                        <ul class="post-meta">-->
-    <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
-    <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
-    <!--                                        </ul>-->
-    <!--                                    </div>-->
-    <!--                                </div>&lt;!&ndash; Post Box &ndash;&gt;-->
-    <!--                            </div>-->
-    <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".3s">-->
-    <!--                                <div class="post-box">-->
-    <!--                                    <div class="post-thumb brd-rd5"><a href="registration.html" title="" itemprop="url"><img src="..static/images/resources/post-img2.jpg" th:src="@{/images/resources/post-img2.png}" alt="post-img2.jpg" itemprop="image"></a></div>-->
-    <!--                                    <div class="post-inf">-->
-    <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-    <!--                                        <h5 itemprop="headline"><a href="registration.html" title="" itemprop="url">We'll Ovbiously keypto-chain</a></h5>-->
-    <!--                                        <ul class="post-meta">-->
-    <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
-    <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
-    <!--                                        </ul>-->
-    <!--                                    </div>-->
-    <!--                                </div>&lt;!&ndash; Post Box &ndash;&gt;-->
-    <!--                            </div>-->
-    <!--                            <div class="col-md-4 col-sm-6 col-lg-4 fadeInUp wow" data-wow-duration=".8s" data-wow-delay=".4s">-->
-    <!--                                <div class="post-box">-->
-    <!--                                    <div class="post-thumb brd-rd5"><a href="registration.html" title="" itemprop="url"><img src="..static/images/resources/post-img3.jpg" th:src="@{/images/resources/post-img3.png}" alt="post-img3.jpg" itemprop="image"></a></div>-->
-    <!--                                    <div class="post-inf">-->
-    <!--                                        <span class="post-date blue-clr"><i class="flaticon-calendar"></i> <a href="#" title="" itemprop="url">18 August, 2018</a></span>-->
-    <!--                                        <h5 itemprop="headline"><a href="registration.html" title="" itemprop="url">Keypto-chain is Money Exchanger</a></h5>-->
-    <!--                                        <ul class="post-meta">-->
-    <!--                                            <li><i class="flaticon-profile"></i> Posted By <a class="blue-clr" href="#" title="" itemprop="url">Curtis Welch</a></li>-->
-    <!--                                            <li><i class="flaticon-chat"></i> <a href="#" title="" itemprop="url">8 Comments</a></li>-->
-    <!--                                        </ul>-->
-    <!--                                    </div>-->
-    <!--                                </div>&lt;!&ndash; Post Box &ndash;&gt;-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </section>-->
-    <!--        <section>-->
-    <!--            <div class="spacing no-spacing">-->
-    <!--                <div class="loc-map-wrp">-->
-    <!--                    <div class="loc-map" id="loc-map"></div>-->
-    <!--                    <div class="cnt-inf-wrp">-->
-    <!--                        <div class="container">-->
-    <!--                            <div class="title-sec text-center">-->
-    <!--                                <div class="title-sec-inr">-->
-    <!--                                    <h2 itemprop="headline">WE CAN HELP YOU</h2>-->
-    <!--                                    <p itemprop="description">With a team of top technology and finance professionals, the nonprofit Lymcoin expands access to low-cost financial services to fight poverty and maximize.</p>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                            <div class="cnt-inf-inr">-->
-    <!--                                <div class="remove-ext3">-->
-    <!--                                    <div class="row">-->
-    <!--                                        <div class="col-md-4 col-sm-6 col-lg-4">-->
-    <!--                                            <div class="cnt-inf-bx">-->
-    <!--                                                <i class="flaticon-black-back-closed-envelope-shape theme-bg brd-rd50"></i>-->
-    <!--                                                <div class="cnt-inf">-->
-    <!--                                                    <h5 itemprop="headline">EMAIL ID:</h5>-->
-    <!--                                                    <a href="#" title="" itemprop="url">adminname@domain.com</a>-->
-    <!--                                                </div>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                        <div class="col-md-4 col-sm-6 col-lg-4">-->
-    <!--                                            <div class="cnt-inf-bx">-->
-    <!--                                                <i class="fas fa-map-marker-alt theme-bg brd-rd50"></i>-->
-    <!--                                                <div class="cnt-inf">-->
-    <!--                                                    <h5 itemprop="headline">ADDRESS:</h5>-->
-    <!--                                                    <span>Main Street Block 22/x Pt. London</span>-->
-    <!--                                                </div>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                        <div class="col-md-4 col-sm-6 col-lg-4">-->
-    <!--                                            <div class="cnt-inf-bx">-->
-    <!--                                                <i class="flaticon-telephone theme-bg brd-rd50"></i>-->
-    <!--                                                <div class="cnt-inf">-->
-    <!--                                                    <h5 itemprop="headline">PHONE:</h5>-->
-    <!--                                                    <span>123 (456) 78910</span>-->
-    <!--                                                </div>-->
-    <!--                                            </div>-->
-    <!--                                        </div>-->
-    <!--                                    </div>-->
-    <!--                                </div>-->
-    <!--                            </div>-->
-    <!--                        </div>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </section>-->
-    <footer>
-        <div class="spacing black-layer opc5">
-            <div class="fixed-bg" style="background-image: url(/images/parallax1.jpg);"></div>
-            <div class="container">
-                <div class="remove-ext6 footer-widgets">
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="widget">
-                                <div class="logo"><a href="index.html" title="" itemprop="url"><img
-                                        src="..static/images/logo1.png" th:src="@{/images/logo1.png}" alt="logo1.png"
-                                        itemprop="image"></a></div>
-                                <p itemprop="description">Send money from any device at any time. Send money online with
-                                    peace of mind.</p>
-                                <p itemprop="description">We offer fast and reliable money transfers that your loved one
-                                    can either collect from agent locations or receive direct to their bank account.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="widget">
-                                <h5 itemprop="headline">Useful Links</h5>
-                                <ul>
-                                    <li><a href="#about" title="" itemprop="url">About</a></li>
-                                    <li><a href="#team" title="" itemprop="url">Team</a></li>
-                                    <li><a href="#contact" title="" itemprop="url">Contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-lg-4">
-                            <div class="widget">
-                                <h5 itemprop="headline">Subscribe Newsletter</h5>
-                                <form>
-                                    <span>Sign up for Alerts, Special <a class="theme-clr" href="#" title=""
-                                                                         itemprop="url">Offers Updates.</a></span>
-                                    <input class="brd-rd30" type="email" placeholder="Enter your Email Address">
-                                    <button class="theme-btn theme-bg brd-rd30" type="submit"><i
-                                            class="flaticon-mail"></i>SUBSCRIBE
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- Footer Widgets -->
-            </div>
-        </div>
-    </footer>
     <div class="bottom-bar text-center">
         <div class="container">
             <p itemprop="description">Copyright &copy; 2020. All rights reserved by Team 20 Star&Tup - Rado & Vasko </p>

@@ -6,22 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Virtual Wallet</title>
-    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>
+    <title>Edit Profile</title>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <style>
         .fixed-bg {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
 
         .fixed-bg2 {
-            background-image: url(../../static/images/pg-tp-bg.jpg);
+            background-image: url(images/pg-tp-bg.jpg);
         }
     </style>
     <!-- Styles -->
-
 </head>
 <body itemscope>
 <!-- Pageloader -->
@@ -29,14 +27,14 @@
 <!-- Pageloader -->
 <main>
     <!-- Header -->
-    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
     <!-- Header -->
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
-    <section
-            th:replace="fragments/headerfragment :: secondary-header-text(headline='', currentpage = 'Edit Profile')"></section>
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+    <!-- Secondary Header Text -->
     <section>
         <div class="spacing">
             <div class="container">

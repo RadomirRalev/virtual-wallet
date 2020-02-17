@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="..static/css/responsive.css" th:href="@{/css/responsive.css}"/><!-- Responsive -->
     <link rel="stylesheet" href="..static/css/color.css" th:href="@{/css/color.css}"/><!-- Default Color Scheme -->
 
-
-
 </head>
 <body>
 
@@ -27,9 +25,9 @@
                         <div>
                             <ul>
                                 <li><a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Admin Panel</a></li>
+                                <li><a th:href="@{/}">Home</a></li>
                                 <li><a th:href="@{/deposit}">Deposit Money</a></li>
                                 <li><a th:href="@{/withdrawal}" title="" itemprop="url">Withdraw Money</a></li>
-                                <li><a href="about.html" title="" itemprop="url">Send Money</a></li>
                                 <li><a th:href="@{/mywallets}" title="" itemprop="url">My Wallets</a></li>
                                 <li><a th:href="@{/card-registration}">Add Card</a></li>
                                 <li><a th:href="@{/transactionhistory}" title="" itemprop="url">Transaction History</a></li>
@@ -104,13 +102,13 @@
         <div class="fixed-bg2"></div>
         <div class="container">
             <div class="pg-tp-wrp">
-                <div class="pg-tp-tl float-left">
-                    <h2 itemprop="headline" th:text="${headline}">Headline</h2>
-                </div>
-                <ol class="breadcrumb float-right">
-                    <li class="breadcrumb-item"><a th:href="@{/}" title="" itemprop="url">Home</a></li>
-                    <li class="breadcrumb-item active" th:text="${currentpage}">Current page</li>
-                </ol>
+<!--                <div class="pg-tp-tl float-left">-->
+<!--                    <h2 itemprop="headline" th:text="${headline}">Headline</h2>-->
+<!--                </div>-->
+<!--                <ol class="breadcrumb float-right">-->
+<!--                    <li class="breadcrumb-item"><a th:href="@{/}" title="" itemprop="url">Home</a></li>-->
+<!--                    <li class="breadcrumb-item active" th:text="${currentpage}">Current page</li>-->
+<!--                </ol>-->
             </div><!-- Page Top Wrap -->
         </div>
     </div>
