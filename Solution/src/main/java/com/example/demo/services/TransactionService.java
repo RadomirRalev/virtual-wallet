@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    List<Transaction> getAllTransactions();
+    List<Transaction> getAllTransactions(int page);
 
     List<Transaction> getTransactionsbyWalletId(int id, int page);
 
@@ -25,6 +25,8 @@ public interface TransactionService {
     Deposit getDeposit(TransactionDTO transactionDTO);
 
     List<Transaction> getFilteredTransactions(String direction, String startDate, String endDate, String recipientSearchString, int userId, int page);
+
+    List<Transaction> getFilteredTransactionsAdmin(String direction, String startDate, String endDate,String senderSearchString, String recipientSearchString, int userId, int page);
 
     List<Transaction> sortTransactions(List<Transaction> filteredTransactions, String sort);
 }

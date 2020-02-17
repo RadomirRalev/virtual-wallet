@@ -19,4 +19,6 @@ public interface CardDetailsService {
     boolean isCardExist(String number);
 
     boolean isUserIsOwner(int cardId, int userId);
+
+    boolean checkIfCardIdValid(int cardId);
 }

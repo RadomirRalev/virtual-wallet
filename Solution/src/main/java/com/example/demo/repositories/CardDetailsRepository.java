@@ -18,6 +18,8 @@ public interface CardDetailsRepository {
 
     boolean checkIfCardIdExists(int cardId);
 
+    boolean checkIfCardIdValid(int cardId);
+
     boolean isUserIsOwner(int cardId, int userId);
 
 }

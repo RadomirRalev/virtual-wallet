@@ -102,6 +102,11 @@ public class CardDetailsServiceImpl implements CardDetailsService {
         return cardDetailsRepository.isUserIsOwner(cardId, userId);
     }
 
+    @Override
+    public boolean checkIfCardIdValid(int cardId) {
+        return cardDetailsRepository.checkIfCardIdValid(cardId);
+    }
+
     public boolean checkIfCardIdExists(int cardId) {
         return cardDetailsRepository.checkIfCardIdExists(cardId);
     }

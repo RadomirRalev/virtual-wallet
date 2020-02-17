@@ -77,16 +77,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> getTransactions() {
+    public List<Transaction> getTransactions(int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<Transaction> queryInternal = session.createQuery(FROM_INTERNAL, Transaction.class);
             Query<Transaction> queryDeposit = session.createQuery(FROM_DEPOSIT, Transaction.class);
             Query<Transaction> queryWithdrawal = session.createQuery(FROM_WITHDRAWAL, Transaction.class);
-            List<Transaction> result = new ArrayList<>();
-            result.addAll(queryInternal.list());
-            result.addAll(queryDeposit.list());
-            result.addAll(queryWithdrawal.list());
-            return result;
+
+            return getTransactions(queryInternal, queryDeposit, queryWithdrawal, page);
         }
     }
 
@@ -279,6 +276,14 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         result.addAll(queryInternalSender.list());
         result.addAll(queryInternalReceiver.list());
         result.addAll(queryDepositReceiver.list());
+        result.addAll(queryWithdrawal.list());
+        return getPaginatedResult(page, result);
+    }
+
+    private List<Transaction> getTransactions(Query<Transaction> queryInternal, Query<Transaction> queryDeposit, Query<Transaction> queryWithdrawal, int page) {
+        List<Transaction> result = new ArrayList<>();
+        result.addAll(queryInternal.list());
+        result.addAll(queryDeposit.list());
         result.addAll(queryWithdrawal.list());
         return getPaginatedResult(page, result);
     }

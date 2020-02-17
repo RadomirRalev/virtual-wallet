@@ -59,7 +59,7 @@
                                                             th:text="${user.getPhoneNumber()}"></span></li>
                                                     <li><i class="far fa-envelope-open theme-clr"></i><span
                                                             th:text="${user.getEmail()}"></span></li>
-                                                    <th:block th:each="card : ${user.getCardDetails()}">
+                                                    <th:block th:each="card : ${user.getCardDetails()}" th:if="${card.isEnabled()}">
                                                         <li><i class="far fa-credit-card theme-clr"></i><a th:text="${card.getCardNumber()}" th:href="@{/card/{id}(id=${card.id})}"></a></li>
                                                     </th:block>
                                                 </ul>

@@ -10,6 +10,7 @@ import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.repositories.WalletRepository;
+import com.example.demo.services.CardDetailsService;
 import com.example.demo.services.TransactionService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.smartcardio.Card;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -27,15 +29,14 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 @Controller
 public class ProfileController {
     private UserService userService;
-    private WalletRepository walletRepository;
+
     private TransactionService transactionService;
 
 
     @Autowired
-    public ProfileController(UserService userService, WalletRepository walletRepository,
+    public ProfileController(UserService userService,
                              TransactionService transactionService) {
         this.userService = userService;
-        this.walletRepository = walletRepository;
         this.transactionService = transactionService;
     }
 
@@ -104,9 +105,9 @@ public class ProfileController {
     public String account(@PathVariable("username") String username, Model model) {
         String currentUser = currentPrincipalName();
 
-            User user = userService.getByUsername(currentPrincipalName());
-            String availableSum = userService.getAvailableSum(user.getId());
-            model.addAttribute("availableSum", availableSum);
+        User user = userService.getByUsername(currentPrincipalName());
+        String availableSum = userService.getAvailableSum(user.getId());
+        model.addAttribute("availableSum", availableSum);
 
         model.addAttribute("user", userService.getByUsername(username));
         model.addAttribute("currentuser", currentUser);

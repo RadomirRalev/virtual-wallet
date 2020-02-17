@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TransactionRepository {
-    List<Transaction> getTransactions();
+    List<Transaction> getTransactions(int page);
 
     List<Transaction> getTransactionsbyWalletId(int id, int page);
 

@@ -1,7 +1,9 @@
 package com.example.demo.controllers.mvccontrollers.cards;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidCardException;
+import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.user.User;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
+import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 @Controller
@@ -59,6 +62,10 @@ public class CardControllerMVC {
     @GetMapping("/card/{cardId}")
     public String updateCard(@PathVariable int cardId, Model model) {
         User user = userService.getByUsername(currentPrincipalName());
+        if (!cardDetailsService.checkIfCardIdValid(cardId)) {
+            return "access-denied";
+        }
+
         if (!cardDetailsService.isUserIsOwner(cardId, user.getId())) {
             return "access-denied";
         }
@@ -86,4 +93,15 @@ public class CardControllerMVC {
         return "messages/success-card-update";
     }
 
+    @PostMapping("/card/{cardId}/delete")
+    public String DeleteCard(@PathVariable int cardId, Model model) {
+        try {
+            CardDetails cardDetails = cardDetailsService.getById(cardId);
+            cardDetailsService.setCardStatus(cardDetails.getCardNumber(), DISABLE);
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
+        return "messages/success-card-delete";
+    }
 }

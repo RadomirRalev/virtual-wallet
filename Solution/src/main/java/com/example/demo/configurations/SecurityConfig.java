@@ -43,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/mywallets/**").hasRole("USER")
                 .antMatchers("/confirm-identity/**").hasRole("USER")
                 .antMatchers("/card-registration/**").hasRole("USER")
-
+                .antMatchers("/card/**").hasRole("USER")
+                .antMatchers("/transactionhistory/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin()

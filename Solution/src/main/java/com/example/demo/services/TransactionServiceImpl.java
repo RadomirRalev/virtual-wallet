@@ -24,16 +24,15 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     private TransactionRepository transactionRepository;
-    private UserRepository userRepository;
     private WalletRepository walletRepository;
     private UserService userService;
     private TransactionMapper transactionMapper;
     private CardDetailsRepository cardDetailsRepository;
 
     @Autowired
-    public TransactionServiceImpl(TransactionRepository transactionRepository, UserRepository userRepository,
-                                  TransactionMapper transactionMapper, WalletRepository walletRepository,
-                                  CardDetailsRepository cardDetailsRepository, UserService userService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, TransactionMapper transactionMapper,
+                                  WalletRepository walletRepository, CardDetailsRepository cardDetailsRepository,
+                                  UserService userService) {
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
         this.userService = userService;
@@ -42,8 +41,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getAllTransactions() {
-        return transactionRepository.getTransactions();
+    public List<Transaction> getAllTransactions(int page) {
+        return transactionRepository.getTransactions(page);
     }
 
     @Override
@@ -156,6 +155,29 @@ public class TransactionServiceImpl implements TransactionService {
             return getTransactionsByRecipientAndDate(direction, startDate, endDate, recipientSearchString, userId, page);
         }
         return getTransactionsByUserId(userId, page);
+    }
+
+    @Override
+    public List<Transaction> getFilteredTransactionsAdmin(String direction,
+                                                          String startDate,
+                                                          String endDate,
+                                                          String senderSearchString,
+                                                          String recipientSearchString,
+                                                          int userId,
+                                                          int page) {
+        if ((!startDate.isEmpty() && !endDate.isEmpty()) && recipientSearchString.isEmpty() && senderSearchString.isEmpty()) {
+            return getTransactionsByDate(direction, startDate, endDate, userId, page);
+        }
+        if ((startDate.isEmpty() && endDate.isEmpty()) && !recipientSearchString.isEmpty() && senderSearchString.isEmpty()) {
+            return getTransactionsByRecipient(direction, recipientSearchString, userId, page);
+        }
+        if ((startDate.isEmpty() && endDate.isEmpty()) && recipientSearchString.isEmpty() && !senderSearchString.isEmpty()) {
+            return getTransactionsByRecipient(direction, senderSearchString, userId, page);
+        }
+        if (!startDate.isEmpty() && !endDate.isEmpty()) {
+            return getTransactionsByRecipientAndDate(direction, startDate, endDate, recipientSearchString, userId, page);
+        }
+        return getAllTransactions(page);
     }
 
     @Override

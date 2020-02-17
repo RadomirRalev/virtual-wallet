@@ -27,57 +27,73 @@
 <!-- Pageloader -->
 <main>
     <!-- Header -->
-    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
     <!-- Header -->
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
-    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
     <!-- Secondary Header Text -->
     <section>
-            <div class="spacing">
-                <div class="container">
-                    <div class="blog-detail-wrp">
-                        <div class="row">
-                            <div class="col-md-9 col-sm-12 col-lg-9">
-                                <div class="blog-detail">
-                                    <div class="comment-reply">
-                                        <h5 itemprop="headline">UPDATE FORM</h5>
-                                        <form class="reply-form" th:action="@{/card/{cardId}(cardId=${cardId})}" th:object="${cardUpdateDTO}" method="post">
-                                            <div class="row" style="text-align: center">
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <p>
-                                                        <i th:if="${error != null}" th:text="${error}"
-                                                           class="error-field"></i>
-                                                    </p>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <p class="error-field" th:errors="*{securityCode}"></p>
-                                                    <input type="number" name="txt_username" id="txt_cvc" class="form-control" placeholder="CVC" th:field="*{securityCode}" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12" id="card-number-field">
-                                                    <p class="error-field" th:errors="*{cardNumber}"></p>
-                                                    <input type="text"  class="form-control" placeholder="Card Number" onkeyup="addHyphen(this)" th:field="*{cardNumber}" required>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12 col-lg-12">
-                                                    <p class="error-field" th:errors="*{expirationDate}"></p>
-                                                    <input type="text" name="txt_username" id="txt_expiration" class="form-control" placeholder="Expiration date" th:field="*{expirationDate}" required>
-                                                </div>
+        <div class="spacing">
+            <div class="container">
+                <div class="blog-detail-wrp">
+                    <div class="row">
+                        <div class="col-md-9 col-sm-12 col-lg-9">
+                            <div class="blog-detail">
+                                <div class="comment-reply">
+                                    <h5 itemprop="headline">UPDATE FORM</h5>
+                                    <form class="reply-form" th:action="@{/card/{cardId}(cardId=${cardId})}"
+                                          th:object="${cardUpdateDTO}" method="post">
+                                        <div class="row" style="text-align: center">
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <p>
+                                                    <i th:if="${error != null}" th:text="${error}"
+                                                       class="error-field"></i>
+                                                </p>
                                             </div>
                                             <div class="col-md-12 col-sm-12 col-lg-12">
-                                                <button class="theme-btn theme-bg brd-rd30" type="submit">REGISTER CARD
-                                                </button>
+                                                <p class="error-field" th:errors="*{securityCode}"></p>
+                                                <input type="number" name="txt_username" id="txt_cvc"
+                                                       class="form-control" placeholder="CVC" th:field="*{securityCode}"
+                                                       required>
                                             </div>
-                                        </form>
-                                    </div><!-- Comment Reply -->
-                                </div>
+                                            <div class="col-md-12 col-sm-12 col-lg-12" id="card-number-field">
+                                                <p class="error-field" th:errors="*{cardNumber}"></p>
+                                                <input type="text" class="form-control" placeholder="Card Number"
+                                                       onkeyup="addHyphen(this)" th:field="*{cardNumber}" required>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                                <p class="error-field" th:errors="*{expirationDate}"></p>
+                                                <input type="text" name="txt_username" id="txt_expiration"
+                                                       class="form-control" placeholder="Expiration date"
+                                                       th:field="*{expirationDate}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-sm-12 col-lg-12">
+                                            <button class="theme-btn btn-outline-success brd-rd30" type="submit">UPDATE
+                                                CARD
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <form class="reply-form" th:action="@{/card/{cardId}/delete(cardId=${cardId})}"
+                                          method="post">
+                                        <div class="col-md-12 col-sm-12 col-lg-12">
+                                            <button class="theme-btn btn-outline-danger brd-rd30" type="submit">DELETE
+                                                CARD
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div><!-- Comment Reply -->
                             </div>
                         </div>
-                    </div><!-- Blog Detail Wrap -->
-                </div>
+                    </div>
+                </div><!-- Blog Detail Wrap -->
             </div>
-        </section>
+        </div>
+    </section>
 
     </section>
     <!--        footer-->
@@ -92,9 +108,10 @@
 <!--<script src="..static/js/registration/script.js" th:src="@{/js/registration/script.js}"></script>-->
 <!--<script src="..static/js/registration/jquery.payform.min.js" th:src="@{/js/registration/jquery.payform.min.js}"></script>-->
 
-<script src="..static/js/registration/jquery.creditCardValidator.js" th:src="@{/js/registration/registration/jquery.creditCardValidator.js}"></script>
+<script src="..static/js/registration/jquery.creditCardValidator.js"
+        th:src="@{/js/registration/registration/jquery.creditCardValidator.js}"></script>
 <script>
-    function addHyphen (element) {
+    function addHyphen(element) {
         let ele = document.getElementById(element.id);
         ele = ele.value.split('-').join('');    // Remove dash (-) if mistakenly entered.
 

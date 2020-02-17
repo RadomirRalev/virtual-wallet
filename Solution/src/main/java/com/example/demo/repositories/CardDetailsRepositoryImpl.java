@@ -98,6 +98,16 @@ public class CardDetailsRepositoryImpl implements CardDetailsRepository {
     }
 
     @Override
+    public boolean checkIfCardIdValid(int cardId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from CardDetails " +
+                    " where id = :cardId and enabled = true ", CardDetails.class)
+                    .setParameter("cardId", cardId)
+                    .list().isEmpty();
+        }
+    }
+
+    @Override
     public boolean isUserIsOwner(int cardId, int userId) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from CardDetails " +

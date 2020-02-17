@@ -23,18 +23,15 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 public class TransactionController {
 
     private TransactionService transactionService;
-    private TransactionMapper transactionMapper;
-
 
     @Autowired
-    public TransactionController(TransactionService transactionService, TransactionMapper transactionMapper) {
+    public TransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-        this.transactionMapper = transactionMapper;
     }
 
     @GetMapping
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
+    public List<Transaction> getAllTransactions(@RequestParam(required = false, defaultValue = "1") Integer page) {
+        return transactionService.getAllTransactions(page);
     }
 
     @GetMapping("/{id}")
