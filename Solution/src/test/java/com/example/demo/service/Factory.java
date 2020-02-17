@@ -12,9 +12,9 @@ import com.example.demo.models.user.UserRegistrationDTO;
 import com.example.demo.models.verificationToken.VerificationToken;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
-import com.example.demo.services.CardDetailsService;
-import com.example.demo.services.UserService;
-import com.example.demo.services.WalletService;
+import com.example.demo.services.contracts.CardDetailsService;
+import com.example.demo.services.contracts.UserService;
+import com.example.demo.services.contracts.WalletService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.models.verificationToken.VerificationToken;
-import com.example.demo.repositories.VerificationTokenRepository;
-import com.example.demo.services.VerificationTokenServiceImpl;
+import com.example.demo.repositories.contracts.VerificationTokenRepository;
+import com.example.demo.services.implementations.VerificationTokenServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

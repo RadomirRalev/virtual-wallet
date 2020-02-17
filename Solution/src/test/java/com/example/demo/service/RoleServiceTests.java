@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.models.role.Role;
-import com.example.demo.repositories.RoleRepository;
-import com.example.demo.services.RoleServiceImpl;
+import com.example.demo.repositories.contracts.RoleRepository;
+import com.example.demo.services.implementations.RoleServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

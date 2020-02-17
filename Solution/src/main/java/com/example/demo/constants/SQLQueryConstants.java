@@ -24,6 +24,12 @@ public class SQLQueryConstants {
             "where have_request = true";
 
     //Transactions
+    public static final String FROM_INTERNAL_SENDERID = "from Internal " +
+            " where sender.user.id = :userId";
+    public static final String FROM_WITHDRAWAL_SENDERID = "from Withdrawal " +
+            "where sender.user.id = :userId";
+    public static final String FROM_INTERNAL_RECEIVERID = "from Internal " +
+            "where receiver.user.id = :userId";
     public static final String FROM_INTERNAL_DATE_SENDERID = "from Internal " +
             " where date between :startDate and :endDate and sender.user.id = :userId";
     public static final String FROM_INTERNAL_DATE_RECEIVERID = "from Internal " +

@@ -1,8 +1,8 @@
 package com.example.demo.models.transaction;
 
-import com.example.demo.services.CardDetailsService;
-import com.example.demo.services.UserService;
-import com.example.demo.services.WalletService;
+import com.example.demo.services.contracts.CardDetailsService;
+import com.example.demo.services.contracts.UserService;
+import com.example.demo.services.contracts.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

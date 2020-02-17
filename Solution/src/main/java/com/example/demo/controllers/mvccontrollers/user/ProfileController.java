@@ -9,17 +9,14 @@ import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.ProfileUpdateDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.repositories.WalletRepository;
-import com.example.demo.services.CardDetailsService;
-import com.example.demo.services.TransactionService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.contracts.TransactionService;
+import com.example.demo.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.smartcardio.Card;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -150,6 +147,7 @@ public class ProfileController {
 
     @GetMapping("filteredtransactions")
     public String filterTransactions(Model model,
+                                     @Valid @ModelAttribute("transactionFilterDTO") TransactionFilterDTO transactionFilterDTO,
                                      @RequestParam(required = false, defaultValue = "1") Integer page,
                                      @RequestParam String startDate,
                                      @RequestParam String endDate,
@@ -158,11 +156,22 @@ public class ProfileController {
                                      @RequestParam String sort) {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
-        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page);
-        filteredTransactions = transactionService.sortTransactions(filteredTransactions, sort);
+        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
+        String[] tagsList = getStrings(transactionFilterDTO);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        model.addAttribute("tagsList", tagsList);
         model.addAttribute("page", page);
         return "user/filteredtransactions";
+    }
+
+    private String[] getStrings(@ModelAttribute("transactionFilterDTO") @Valid TransactionFilterDTO transactionFilterDTO) {
+        String[] tagsList = new String[5];
+        tagsList[0] = transactionFilterDTO.getStartDate();
+        tagsList[1] = transactionFilterDTO.getEndDate();
+        tagsList[2] = transactionFilterDTO.getSearchRecipient();
+        tagsList[3] = transactionFilterDTO.getDirection();
+        tagsList[4] = transactionFilterDTO.getSort();
+        return tagsList;
     }
 }

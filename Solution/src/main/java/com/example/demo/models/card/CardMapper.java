@@ -1,6 +1,6 @@
 package com.example.demo.models.card;
 
-import com.example.demo.services.UserService;
+import com.example.demo.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

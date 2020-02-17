@@ -6,7 +6,7 @@ import com.example.demo.exceptions.InvalidWalletException;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
 import com.example.demo.models.wallet.WalletUpdateDTO;
-import com.example.demo.services.WalletService;
+import com.example.demo.services.contracts.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

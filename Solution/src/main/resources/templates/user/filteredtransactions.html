@@ -61,19 +61,19 @@
                         <input type="text" class="form-control" th:field="*{searchRecipient}" placeholder="Search by recipient">
                     </div>
                     <div class="form-group" style="padding: 6px">
-                        <select th:field="*{direction}" type='text' class="form-control" style="height: 34px">
-                            <option th:value="'All'" th:text="All" selected>All</option>
+                        <select id="selectID" th:field="*{direction}" type='text' class="form-control" style="height: 34px">
+                            <option th:value="'All'" th:text="All">All</option>
                             <option th:value="'Outgoing'" th:text="Outgoing">Outgoing</option>
                             <option th:value="'Incoming'" th:text="Incoming">Incoming</option>
                         </select>
                     </div>
                     <div class="form-group" style="padding: 6px">
-                        <select type='text' class="form-control" style="height: 34px">
-                            <option selected>Sort</option>
-                            <option>Sort by Amount - Ascending</option>
-                            <option>Sort by Amount - Descending</option>
-                            <option>Sort by Date - Ascending</option>
-                            <option>Sort by Date - Descending</option>
+                        <select th:field="*{sort}" type='text' class="form-control" style="height: 34px">
+                            <option th:value="'None'" th:text="Sort" selected>Sort</option>
+                            <option th:value="'AmountAsc'" th:text="'Sort by Amount - Ascending'">Sort by Amount - Ascending</option>
+                            <option th:value="'AmountDes'" th:text="'Sort by Amount - Descending'">Sort by Amount - Descending</option>
+                            <option th:value="'DateAsc'" th:text="'Sort by Date - Ascending'">Sort by Date - Ascending</option>
+                            <option th:value="'DateDes'" th:text="'Sort by Date - Descending'">Sort by Date - Descending</option>
                         </select>
                     </div>
                         <div class="form-group">
@@ -122,13 +122,13 @@
                 <div class="pagination-wrap text-center">
                     <div class="pagination">
                         <div class="page-item prev brd-rd50" th:if="${page - 1} > 0">
-                            <a class="page-link" th:href="@{/filteredtransactions(page=${page - 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
+                            <a class="page-link" th:href="@{/filteredtransactions(page=${page - 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
                         </div>
                         <div class="page-item brd-rd30">
                             <a class="page-link" th:href="@{/filteredtransactions(page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
                         </div>
                         <div class="page-item next brd-rd50">
-                            <a class="page-link" th:href="@{/filteredtransactions(page=${page + 1}, startDate=${transactionFilterDTO.getStartDate()}, endDate=${transactionFilterDTO.getEndDate()}, searchRecipient=${transactionFilterDTO.getSearchRecipient()}, direction=${transactionFilterDTO.getDirection()}, sort=${transactionFilterDTO.getSort()})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
+                            <a class="page-link" th:href="@{/filteredtransactions(page=${page + 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
                         </div>
                     </div>
                 </div><!-- Pagination Wrap -->
@@ -173,7 +173,6 @@
         });
     });
 </script>
-
 <!--scripts-->
 </body>
 </html>

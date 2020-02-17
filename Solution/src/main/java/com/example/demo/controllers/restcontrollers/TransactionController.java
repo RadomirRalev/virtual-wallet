@@ -5,7 +5,7 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.models.transaction.*;
-import com.example.demo.services.TransactionService;
+import com.example.demo.services.contracts.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

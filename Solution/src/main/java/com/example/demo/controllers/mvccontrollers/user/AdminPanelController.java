@@ -3,8 +3,8 @@ package com.example.demo.controllers.mvccontrollers.user;
 import com.example.demo.models.transaction.Transaction;
 import com.example.demo.models.transaction.TransactionFilterDTO;
 import com.example.demo.models.user.User;
-import com.example.demo.services.TransactionService;
-import com.example.demo.services.UserService;
+import com.example.demo.services.contracts.TransactionService;
+import com.example.demo.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,8 +106,7 @@ public class AdminPanelController {
                                      @RequestParam String sort) {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
-        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page);
-        filteredTransactions = transactionService.sortTransactions(filteredTransactions, sort);
+        List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
         model.addAttribute("page", page);

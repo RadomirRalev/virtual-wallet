@@ -6,7 +6,7 @@ import com.example.demo.exceptions.InvalidCardException;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.CardUpdateDTO;
-import com.example.demo.services.CardDetailsService;
+import com.example.demo.services.contracts.CardDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
