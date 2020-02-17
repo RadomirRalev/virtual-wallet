@@ -68,13 +68,13 @@ public class TransactionServiceTests {
         //Arrange
         List<Transaction> transactionsList = new ArrayList<>();
 
-        Mockito.when(transactionRepository.getTransactions())
+        Mockito.when(transactionRepository.getTransactions(PAGE))
                 .thenReturn(transactionsList);
         //Act
-        transactionService.getAllTransactions();
+        transactionService.getAllTransactions(PAGE);
 
         //Assert
-        Assert.assertSame(transactionService.getAllTransactions(), transactionsList);
+        Assert.assertSame(transactionService.getAllTransactions(PAGE), transactionsList);
     }
 
     @Test
@@ -82,13 +82,13 @@ public class TransactionServiceTests {
         //Arrange
         List<Transaction> transactionsList = new ArrayList<>();
 
-        Mockito.when(transactionRepository.getTransactions())
+        Mockito.when(transactionRepository.getTransactions(PAGE))
                 .thenReturn(transactionsList);
         //Act
-        transactionService.getAllTransactions();
+        transactionService.getAllTransactions(PAGE);
 
         //Assert
-        Assert.assertTrue(transactionService.getAllTransactions().isEmpty());
+        Assert.assertTrue(transactionService.getAllTransactions(PAGE).isEmpty());
     }
 
     @Test
@@ -97,10 +97,10 @@ public class TransactionServiceTests {
         Internal internal = createInternal();
         Withdrawal withdrawal = createWithdrawal();
 
-        Mockito.when(transactionRepository.getTransactions())
+        Mockito.when(transactionRepository.getTransactions(PAGE))
                 .thenReturn(Arrays.asList(internal, withdrawal));
         //Act
-        List<Transaction> list = transactionService.getAllTransactions();
+        List<Transaction> list = transactionService.getAllTransactions(PAGE);
 
         //Assert
         Assert.assertEquals(2, list.size());
@@ -427,7 +427,7 @@ public class TransactionServiceTests {
         transactionService.getTransactionsByUserId(user.getId(), PAGE);
 
         //Assert
-        Assert.assertTrue(transactionService.getAllTransactions().isEmpty());
+        Assert.assertTrue(transactionService.getAllTransactions(PAGE).isEmpty());
     }
 
     @Test
