@@ -1,6 +1,7 @@
 package com.example.demo.controllers.mvccontrollers.transactions;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.InsufficientFundsException;
 import com.example.demo.exceptions.InvalidPermission;
 import com.example.demo.exceptions.InvalidTransactionException;
 import com.example.demo.models.transaction.TransactionDTO;
@@ -89,9 +90,10 @@ public class TransactionsController {
         }
         try {
             transactionService.createWithdrawal(transactionDTO, currentPrincipalName());
-        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission e) {
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission |
+                InsufficientFundsException e) {
             model.addAttribute("error", e.getMessage());
-            return "withdrawal";
+            return "error";
         }
         return "redirect:mywallets";
     }
@@ -126,9 +128,10 @@ public class TransactionsController {
         }
         try {
             transactionService.createInternal(transactionDTO, currentPrincipalName());
-        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission e) {
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission |
+                InsufficientFundsException e) {
             model.addAttribute("error", e.getMessage());
-            return "walletstransaction";
+            return "error";
         }
         return "redirect:mywallets";
     }
