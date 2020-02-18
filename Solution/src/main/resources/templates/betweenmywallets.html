@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Withdrawal</title>
-    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/css/picture.css}"/>
+    <title>Deposit</title>
+    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
@@ -22,13 +22,14 @@
 <!-- Pageloader -->
 <main>
     <!-- Header -->
-    <header class="stick style1" th:insert="fragments/headerfragment :: header"> </header>
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
     <!-- Header -->
     <!-- Secondary Header -->
     <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
     <!-- Secondary Header -->
     <!-- Secondary Header Text -->
-    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='', currentpage = 'Deposit')"></section>
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='', currentpage = 'Deposit')"></section>
     <!-- Secondary Header Text -->
     <section>
         <div class="spacing">
@@ -40,39 +41,48 @@
                                 <div class="team-detail-inf-inr">
                                     <div class="row">
                                         <div class="col-md-9 col-sm-12 col-lg-9">
-                                            <h6 itemprop="headline">WITHDRAW MONEY</h6>
+                                            <h6 itemprop="headline">TRANSFER MONEY BETWEEN MY WALLETS</h6>
                                             <div class="team-detail-inf-itm">
-                                                <form th:action="@{/withdrawal}" th:object="${withdrawalDTO}" method="post">
+                                                <form th:action="@{/betweenmywallets}"
+                                                      th:object="${walletsTransactionDTO}" method="post">
                                                     <div class="form-row">
                                                         <div class="form-group col-md-9">
                                                             <label for="inputSum">Sum</label>
                                                             <p class="error-field" th:errors="*{amount}"></p>
-                                                            <input th:field="*{amount}" type="number" step=".01" min="0" onKeyPress="if(this.value.length===7) return false;" class="form-control" id="inputSum" placeholder="Insert sum" required>
+                                                            <input th:field="*{amount}" type="number" step=".01" min="0"
+                                                                   onKeyPress="if(this.value.length===7) return false;"
+                                                                   class="form-control" id="inputSum"
+                                                                   placeholder="Insert sum" required>
                                                         </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label for="inputCard">Pick card</label>
-                                                            <select th:field="*{receiverId}" id="inputCard" class="form-control">
-                                                                <option th:each="card : ${user.getCardDetails()}"
-                                                                        th:value="${card.id}"
-                                                                        th:text="${card.cardNumber}">...</option>
+                                                        <div class="form-group">
+                                                            <select th:field="*{receiverId}" class="form-control"
+                                                                    id="wallet" style="display: none;">
+                                                                <option th:value="${receiverWallet.getId()}"
+                                                                        th:text="${receiverWallet.getId()}"></option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="inputCard">Pick wallet (Default wallet pre-selected)</label>
-                                                            <select id="senderId" name="senderId" class="form-control">
-                                                                <option th:each="wallet1 : ${user.getWallets()}"
+                                                            <label for="senderId">Pick wallet to get the money</label>
+                                                            <select th:field="*{senderId}" id="senderId" name="receiverId"
+                                                                    class="form-control">
+                                                                <option th:each="wallet1 : ${sender.getWallets()}"
+                                                                        th:if="${wallet1.id != receiverWallet.getId()}"
                                                                         th:value="${wallet1.id}"
                                                                         th:text="${wallet1.name}"
-                                                                        th:selected="${wallet1.isWalletDefault()}">...</option>
+                                                                        th:selected="${wallet1.isWalletDefault()}">...
+                                                                </option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="exampleFormControlTextarea1">Add description</label>
-                                                        <textarea th:field="*{description}" class="form-control" id="exampleFormControlTextarea1" rows="3" minlength="2" maxlength="200" required></textarea>
+                                                        <textarea th:field="*{description}" class="form-control"
+                                                                  id="exampleFormControlTextarea1" rows="3"
+                                                                  minlength="2" maxlength="200" required></textarea>
                                                     </div>
                                                     <div class="col-md-12 col-sm-12 col-lg-12">
-                                                        <button class="theme-btn theme-bg brd-rd30" type="submit">WITHDRAW
+                                                        <button class="theme-btn theme-bg brd-rd30" type="submit">SEND
+                                                            MONEY
                                                         </button>
                                                     </div>
                                                 </form>
@@ -88,7 +98,8 @@
                                 <div class="widget">
                                     <h6 itemprop="headline">TOTAL MONEY AVAILABLE</h6>
                                     <form class="srch-frm">
-                                        <h5 itemprop="headline" style="text-align: center">$<span th:text="${availableSum}"></span></h5>
+                                        <h5 itemprop="headline" style="text-align: center">$<span
+                                                th:text="${availableSum}"></span></h5>
                                     </form>
                                 </div>
                             </div><!-- Sidebar Wrap -->
@@ -110,17 +121,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
 </script>
 <script>
-    $("#inputSum").on("input", function() {
+    $("#inputSum").on("input", function () {
         if (/^0/.test(this.value)) {
             this.value = this.value.replace(/^0/, "")
         }
     })</script>
 <script>
-    $("#inputSum").blur(function(){
+    $("#inputSum").blur(function () {
         var num = parseFloat($(this).val());
         var cleanNum = num.toFixed(2);
         $(this).val(cleanNum);
-        if(num/cleanNum < 1){
+        if (num / cleanNum < 1) {
             $('#error').text('Please enter only 2 decimal places');
         }
     });
@@ -128,4 +139,3 @@
 <!--scripts-->
 </body>
 </html>
-

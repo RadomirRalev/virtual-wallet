@@ -98,7 +98,7 @@ public class TransactionsController {
         return "redirect:mywallets";
     }
 
-    @GetMapping("/walletstransaction")
+    @GetMapping("walletstransaction")
     public String makeWalletToWalletTransaction(@RequestParam int receiverId,
                                                 Model model) {
         User sender = userService.getByUsername(currentPrincipalName());
@@ -119,7 +119,7 @@ public class TransactionsController {
         return "walletstransaction";
     }
 
-    @PostMapping("/walletstransaction")
+    @PostMapping("walletstransaction")
     public String createWalletToWalletTransaction(@Valid @ModelAttribute("walletsTransactionDTO") TransactionDTO transactionDTO,
                                                   @ModelAttribute("receiver") User receiver,
                                                   BindingResult bindingResult, Model model) {
@@ -128,6 +128,40 @@ public class TransactionsController {
         }
         try {
             transactionService.createInternal(transactionDTO, currentPrincipalName());
+        } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission |
+                InsufficientFundsException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
+        return "redirect:mywallets";
+    }
+
+    @GetMapping("betweenmywallets")
+    public String makeTransactionBetweenMyWallets(@RequestParam int walletReceiverId,
+                                                Model model) {
+        User sender = userService.getByUsername(currentPrincipalName());
+        if (sender.isBlocked()) {
+            return "messages/access-denied-sender-blocked";
+        }
+        Wallet receiverWallet = walletService.getWalletById(walletReceiverId);
+        String availableSum = userService.getAvailableSum(sender.getId());
+        model.addAttribute("availableSum", availableSum);
+        model.addAttribute("walletsTransactionDTO", new TransactionDTO());
+        model.addAttribute("sender", sender);
+        model.addAttribute("receiverWallet", receiverWallet);
+        return "betweenmywallets";
+    }
+
+    @PostMapping("betweenmywallets")
+    public String createTransactionBetweenMyWallets(@Valid @ModelAttribute("walletsTransactionDTO") TransactionDTO walletsTransactionDTO,
+                                                  @ModelAttribute("receiverWallet") Wallet receiverWallet,
+                                                  @ModelAttribute("sender") User sender,
+                                                  BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "mywallets";
+        }
+        try {
+            transactionService.createInternal(walletsTransactionDTO, currentPrincipalName());
         } catch (DuplicateEntityException | InvalidTransactionException | InvalidPermission |
                 InsufficientFundsException e) {
             model.addAttribute("error", e.getMessage());

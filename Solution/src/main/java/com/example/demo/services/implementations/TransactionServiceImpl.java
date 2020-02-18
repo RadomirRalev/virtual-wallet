@@ -91,8 +91,8 @@ public class TransactionServiceImpl implements TransactionService {
             throw new InvalidPermission(SENDER_IS_BLOCKED, sender);
         }
 
-        if (userService.isBlocked(transactionDTO.getReceiverId())) {
-            throw new InvalidPermission(RECEIVER_IS_BLOCKED, sender);
+        if (userService.isBlocked(transactionDTO.getReceiverName())) {
+            throw new InvalidPermission(RECEIVER_IS_BLOCKED, transactionDTO.getReceiverName());
         }
 
         Internal internal = getInternal(transactionDTO);

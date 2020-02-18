@@ -10,15 +10,8 @@
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
-    <style>
-        .fixed-bg {
-            background-image: url(images/pg-tp-bg.jpg);
-        }
+    <div th:insert="fragments/stylesheetfragment :: header-photos"></div>
 
-        .fixed-bg2 {
-            background-image: url(images/pg-tp-bg.jpg);
-        }
-    </style>
     <!-- Styles -->
 
 </head>
@@ -43,7 +36,7 @@
                                 <h5 itemprop="headline">Are you sure you wish to set <span th:text="*{wallet.getName()}"></span> as your default wallet?</h5>
                                 <form th:action="@{/mywallets/setdefault}" th:object="${walletUpdateDTO}" class="reply-form" method="post" name="form1">
                                     <div class="form-group">
-                                        <select th:field="*{id}" class="form-control" id="beerid" style="display: none;">
+                                        <select th:field="*{id}" class="form-control" id="wallet" style="display: none;">
                                             <option th:value="${wallet.getId()}"
                                                     th:text="${wallet.getId()}"></option>
                                         </select>
