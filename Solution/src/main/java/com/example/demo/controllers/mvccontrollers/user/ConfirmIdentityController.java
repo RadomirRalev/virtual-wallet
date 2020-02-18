@@ -113,6 +113,4 @@ public class ConfirmIdentityController {
         confirmIdentityService.setStatus(userToUpdate.getId(), DISABLE);
         return "messages/success-delete-identity";
     }
-
-
 }

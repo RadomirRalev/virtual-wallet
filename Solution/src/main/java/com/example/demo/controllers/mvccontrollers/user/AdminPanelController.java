@@ -8,12 +8,10 @@ import com.example.demo.services.contracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
@@ -98,6 +96,7 @@ public class AdminPanelController {
 
     @GetMapping("/admin/filtered-transactions")
     public String filterTransactions(Model model,
+                                     @Valid @ModelAttribute("transactionFilterDTO") TransactionFilterDTO transactionFilterDTO,
                                      @RequestParam(required = false, defaultValue = "1") Integer page,
                                      @RequestParam String startDate,
                                      @RequestParam String endDate,
@@ -107,9 +106,21 @@ public class AdminPanelController {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
+        String[] tagsList = getStrings(transactionFilterDTO);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        model.addAttribute("tagsList", tagsList);
         model.addAttribute("page", page);
         return "admin/filtered-transactions";
+    }
+
+    private String[] getStrings(@ModelAttribute("transactionFilterDTO") @Valid TransactionFilterDTO transactionFilterDTO) {
+        String[] tagsList = new String[5];
+        tagsList[0] = transactionFilterDTO.getStartDate();
+        tagsList[1] = transactionFilterDTO.getEndDate();
+        tagsList[2] = transactionFilterDTO.getSearchRecipient();
+        tagsList[3] = transactionFilterDTO.getDirection();
+        tagsList[4] = transactionFilterDTO.getSort();
+        return tagsList;
     }
 }
