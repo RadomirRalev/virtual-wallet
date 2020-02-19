@@ -262,7 +262,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.checkIfUserIdExists(id);
     }
 
-    private double getSum(int userId) {
+    public double getSum(int userId) {
         List<Wallet> list = walletRepository.getWalletsbyUserId(userId);
         return list.stream()
                 .mapToDouble(Wallet::getBalance)

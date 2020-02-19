@@ -191,7 +191,7 @@ public class TransactionServiceImpl implements TransactionService {
         return getAllTransactions(page);
     }
 
-    private List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId, int page, String sort) {
+    public List<Transaction> getTransactionsByRecipientAndDate(String direction, String start, String end, String recipientSearchString, int userId, int page, String sort) {
         LocalDate startDate = parseDate(start);
         LocalDate endDate = parseDate(end);
         return transactionFilterRepository.getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId, page, sort);
@@ -203,11 +203,11 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionFilterRepository.getTransactionsByUserId(direction, startDate, endDate, userId, page, sort);
     }
 
-    private List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId, int page, String sort) {
+    public List<Transaction> getTransactionsByRecipient(String direction, String recipientSearchString, int userId, int page, String sort) {
         return transactionFilterRepository.getTransactionsByUserId(direction, recipientSearchString, userId, page, sort);
     }
 
-    private List<Transaction> getTransactionsByDirection(String direction, int userId, int page, String sort) {
+    public List<Transaction> getTransactionsByDirection(String direction, int userId, int page, String sort) {
         return transactionFilterRepository.getTransactionsByUserId(direction, userId, page, sort);
     }
 

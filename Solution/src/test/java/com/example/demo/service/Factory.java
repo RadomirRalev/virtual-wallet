@@ -6,9 +6,7 @@ import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.confirmIdentity.ConfirmIdentityRegistrationDTO;
 import com.example.demo.models.role.Role;
 import com.example.demo.models.transaction.*;
-import com.example.demo.models.user.ProfileUpdateDTO;
-import com.example.demo.models.user.User;
-import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.user.*;
 import com.example.demo.models.verificationToken.VerificationToken;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
@@ -28,6 +26,7 @@ public class Factory {
     public static final int BALANCE_ENOUGH = 101;
     public static final int BALANCE_NOT_ENOUGH = 1;
     public static final int PAGE = 1;
+    public static final double BALANCE_ENOUGH_DOUBLE = 101.56;
     public static final String DIRECTION_ALL = "All";
     public static final String DIRECTION_OUTGOING = "Outgoing";
     public static final String DIRECTION_INCOMING = "Incoming";
@@ -68,6 +67,8 @@ public class Factory {
     }
 
     public static User createUser() { return new User(); }
+
+    public static PasswordUpdateDTO createPasswordUpdateDTO() { return new PasswordUpdateDTO(); }
 
     public static List<Transaction> createTransactions() {
         List<Transaction> transactionList = new ArrayList<>();
@@ -112,6 +113,10 @@ public class Factory {
 
     public static UserRegistrationDTO createUserRegistrationDTO() {
         return new UserRegistrationDTO();
+    }
+
+    public static UserNamesDTO createUserNamesDTO() {
+        return new UserNamesDTO();
     }
 
     public static VerificationToken createVerificationToken() {

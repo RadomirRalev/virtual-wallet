@@ -73,7 +73,7 @@ public class Wallet {
         this.isWalletDeleted = isWalletDeleted;
     }
 
-    public boolean setIsWalletDeleted() {
+    public boolean getIsWalletDeleted() {
         return isWalletDeleted;
     }
 

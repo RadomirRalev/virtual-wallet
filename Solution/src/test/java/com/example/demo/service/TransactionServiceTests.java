@@ -12,9 +12,9 @@ import com.example.demo.repositories.contracts.TransactionRepository;
 import com.example.demo.repositories.contracts.UserRepository;
 import com.example.demo.repositories.contracts.WalletRepository;
 import com.example.demo.services.contracts.CardDetailsService;
-import com.example.demo.services.implementations.TransactionServiceImpl;
 import com.example.demo.services.contracts.UserService;
 import com.example.demo.services.contracts.WalletService;
+import com.example.demo.services.implementations.TransactionServiceImpl;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
@@ -505,7 +505,74 @@ public class TransactionServiceTests {
                 .thenReturn(false);
 
         //Act
-        List<Transaction> list = transactionService.getTransactionsbyWalletId(anyInt(), PAGE);
+        transactionService.getTransactionsbyWalletId(anyInt(), PAGE);
     }
 
+//    @Test
+//    public void getTransactionsByRecipientAndDateShould_CallRepository() {
+//        String direction = "direction";
+//        String start = "08/12/2018";
+//        String end = "08/12/2020";
+//        String recipientSearchString = "recipient";
+//        int userId = 1;
+//        String sort = "sort";
+//        LocalDate startDate = parseDate(start);
+//        LocalDate endDate = parseDate(end);
+//
+//        //Act
+//        transactionService.getTransactionsByRecipientAndDate(direction, start, end, recipientSearchString, userId, PAGE, sort);
+//
+//        //Assert
+//        Mockito.verify(transactionFilterRepository, Mockito.times(1))
+//                .getTransactionsByUserId(direction, startDate, endDate, recipientSearchString, userId, PAGE, sort);
+//    }
+//
+//    @Test
+//    public void getTransactionsByRecipient_CallRepository() {
+//        String direction = "direction";
+//        String recipientSearchString = "recipient";
+//        int userId = 1;
+//        String sort = "sort";
+//
+//        //Act
+//        transactionService.getTransactionsByRecipient(direction, recipientSearchString, userId, PAGE, sort);
+//
+//        //Assert
+//        Mockito.verify(transactionFilterRepository, Mockito.times(1))
+//                .getTransactionsByUserId(direction, recipientSearchString, userId, PAGE, sort);
+//    }
+//
+//    @Test
+//    public void getTransactionsByDateShould_CallRepository() {
+//        String direction = "direction";
+//        String start = "08/12/2018";
+//        String end = "08/12/2020";
+//        String recipientSearchString = "recipient";
+//        int userId = 1;
+//        String sort = "sort";
+//        LocalDate startDate = parseDate(start);
+//        LocalDate endDate = parseDate(end);
+//
+//        //Act
+//        transactionService.getTransactionsByDate(direction, start, end, userId, PAGE, sort);
+//
+//        //Assert
+//        Mockito.verify(transactionFilterRepository, Mockito.times(1))
+//                .getTransactionsByUserId(direction, startDate, endDate, userId, PAGE, sort);
+//    }
+//
+//    @Test
+//    public void getTransactionsByDirectionShould_CallRepository() {
+//        String direction = "direction";
+//        int userId = 1;
+//        String sort = "sort";
+//
+//        //Act
+//        transactionService.getTransactionsByDirection(direction, userId, PAGE, sort);
+//
+//        //Assert
+//        Mockito.verify(transactionRepository, Mockito.times(1))
+//                .getTransactionsByUserId(userId, PAGE);
+//    }
+//
 }

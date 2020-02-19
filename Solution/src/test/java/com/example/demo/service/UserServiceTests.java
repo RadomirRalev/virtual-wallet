@@ -1,13 +1,17 @@
 package com.example.demo.service;
 
 import com.example.demo.exceptions.DuplicateEntityException;
+import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidPasswordException;
 import com.example.demo.exceptions.InvalidPictureFormat;
 import com.example.demo.helpers.PictureFormat;
+import com.example.demo.models.user.PasswordUpdateDTO;
 import com.example.demo.models.user.User;
 import com.example.demo.models.user.UserRegistrationDTO;
+import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.contracts.RoleRepository;
 import com.example.demo.repositories.contracts.UserRepository;
+import com.example.demo.repositories.contracts.WalletRepository;
 import com.example.demo.services.implementations.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +39,8 @@ public class UserServiceTests {
     PictureFormat pictureFormat;
     @Mock
     RoleRepository roleRepository;
+    @Mock
+    WalletRepository walletRepository;
 
 
     @InjectMocks
@@ -223,4 +230,234 @@ public class UserServiceTests {
         Assert.assertSame(userToReturn, user);
 
     }
+
+    @Test(expected = InvalidPasswordException.class)
+    public void changePasswordShouldThrowExceptionWhen_PasswordsDoNotMatch() {
+        User user = createUser();
+        PasswordUpdateDTO passwordUpdateDTO = createPasswordUpdateDTO();
+        passwordUpdateDTO.setOldPassword("1");
+        passwordUpdateDTO.setNewPassword("2");
+
+        //Act
+        userService.changePassword(user, passwordUpdateDTO);
+    }
+
+    @Test(expected = InvalidPasswordException.class)
+    public void changePasswordShouldThrowExceptionWhen_EncodedPasswordsDoNotMatch() {
+        User user = createUser();
+        PasswordUpdateDTO passwordUpdateDTO = createPasswordUpdateDTO();
+        passwordUpdateDTO.setOldPassword("1");
+        passwordUpdateDTO.setNewPassword("1");
+
+        //Act
+        userService.changePassword(user, passwordUpdateDTO);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void setStatusUserShouldThrowExceptionWhen_UsernameDoesNotExist() {
+        User user = createUser();
+
+        Mockito.when(userService.isUsernameExist(user.getUsername()))
+                .thenReturn(false);
+
+        //Act
+        userService.setStatusUser(user.getUsername(), true);
+
+    }
+
+    @Test
+    public void setStatusUserShouldCallRepository_Save() {
+        User user = createUser();
+
+        Mockito.when(userService.isUsernameExist(user.getUsername()))
+                .thenReturn(true);
+
+        //Act
+        userService.setStatusUser(user.getUsername(), true);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .setStatusUser(user.getUsername(), true);
+
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void setBlockedStatusShouldThrowExceptionWhen_UsernameDoesNotExist() {
+        User user = createUser();
+
+        Mockito.when(userService.isUsernameExist(user.getUsername()))
+                .thenReturn(false);
+
+        //Act
+        userService.setBlockedStatus(user.getUsername(), true);
+
+    }
+
+    @Test
+    public void setBlockedStatusShouldCallRepository_Save() {
+        User user = createUser();
+
+        Mockito.when(userService.isUsernameExist(user.getUsername()))
+                .thenReturn(true);
+
+        //Act
+        userService.setBlockedStatus(user.getUsername(), true);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .setBlockedStatus(user.getUsername(), true);
+
+    }
+
+    @Test(expected = DuplicateEntityException.class)
+    public void setStatusIdentityShouldThrowExceptionWhen_UsernameDoesNotExist() {
+        User user = createUser();
+
+        Mockito.when(userService.isIdentityConfirm(user.getUsername()))
+                .thenReturn(true);
+
+        //Act
+        userService.setStatusIdentity(user.getUsername(), true);
+
+    }
+
+    @Test
+    public void setStatusIdentityShouldCallRepository_Save() {
+        User user = createUser();
+
+        Mockito.when(userService.isUsernameExist(user.getUsername()))
+                .thenReturn(false);
+
+        //Act
+        userService.setStatusIdentity(user.getUsername(), true);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .setStatusIdentity(user.getUsername(), true);
+    }
+
+    @Test
+    public void getAvailableSum_ShouldReturnSum() {
+        User user = createUser();
+        Wallet wallet = createWallet();
+        wallet.setUser(user);
+        wallet.setBalance(BALANCE_ENOUGH_DOUBLE);
+        List<Wallet> list = new ArrayList<>();
+        list.add(wallet);
+        String sum = String.valueOf(wallet.getBalance());
+        Mockito.when(walletRepository.getWalletsbyUserId(user.getId()))
+                .thenReturn(list);
+
+        Assert.assertEquals(sum, userService.getAvailableSum(user.getId()));
+
+    }
+
+    @Test
+    public void isBlockedShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.isBlocked(user.getUsername());
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .isBlocked(user.getUsername());
+    }
+
+    @Test
+    public void isEnabledShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.isEnabled(user.getUsername());
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .isEnabled(user.getUsername());
+    }
+
+    @Test
+    public void searchByNameShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByUsername(user.getUsername(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByUsername(user.getUsername(), PAGE);
+    }
+
+    @Test
+    public void searchByPhoneNumberShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByPhoneNumber(user.getPhoneNumber(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByPhoneNumber(user.getPhoneNumber(), PAGE);
+    }
+
+    @Test
+    public void searchByEmailNumberShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByEmail(user.getEmail(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByEmail(user.getEmail(), PAGE);
+    }
+
+    @Test
+    public void searchByUsernameAsAdminShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByUsernameAsAdmin(user.getUsername(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByUsernameAsAdmin(user.getUsername(), PAGE);
+    }
+
+    @Test
+    public void searchByPhoneNumberAsAdminShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByPhoneNumberAsAdmin(user.getPhoneNumber(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByPhoneNumberAsAdmin(user.getPhoneNumber(), PAGE);
+    }
+
+    @Test
+    public void searchByEmailAsAdminAsAdminShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.searchByEmailAsAdmin(user.getEmail(), PAGE);
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .searchByEmailAsAdmin(user.getEmail(), PAGE);
+    }
+
+    @Test
+    public void checkIfUserExistsShould_CallRepository() {
+        User user = createUser();
+
+        //Act
+        userService.checkIfUserIdExists(user.getId());
+
+        //Assert
+        Mockito.verify(userRepository, Mockito.times(1))
+                .checkIfUserIdExists(user.getId());
+    }
+
 }

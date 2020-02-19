@@ -50,7 +50,7 @@
                                                             <label for="inputSum">Sum</label>
                                                             <p class="error-field" th:errors="*{amount}"></p>
                                                             <input th:field="*{amount}" type="number" step=".01" min="0"
-                                                                   onKeyPress="if(this.value.length===7) return false;"
+                                                                   onKeyPress="if(this.value.length === 7) return false;"
                                                                    class="form-control" id="inputSum"
                                                                    placeholder="Insert sum" required>
                                                         </div>
@@ -66,7 +66,7 @@
                                                             <select th:field="*{senderId}" id="senderId" name="receiverId"
                                                                     class="form-control">
                                                                 <option th:each="wallet1 : ${sender.getWallets()}"
-                                                                        th:if="${wallet1.id != receiverWallet.getId()}"
+                                                                        th:if="${wallet1.id != receiverWallet.getId() and !wallet1.getIsWalletDeleted()}"
                                                                         th:value="${wallet1.id}"
                                                                         th:text="${wallet1.name + ' - $' + wallet1.balance}">...
                                                                 </option>

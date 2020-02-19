@@ -6,7 +6,6 @@ import javax.validation.constraints.Size;
 
 public class WalletUpdateDTO {
     @NotNull
-    @Size(max = 11, message = "Walled id too long")
     private int id;
     @Size(max = 50, message = "Wallet name too long")
     private String name;

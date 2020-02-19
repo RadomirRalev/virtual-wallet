@@ -61,6 +61,7 @@
                                                             <label for="inputCard">Pick wallet (Default wallet pre-selected)</label>
                                                             <select id="senderId" name="senderId" class="form-control">
                                                                 <option th:each="wallet1 : ${user.getWallets()}"
+                                                                        th:if="${!wallet1.getIsWalletDeleted()}"
                                                                         th:value="${wallet1.id}"
                                                                         th:text="${wallet1.name}"
                                                                         th:selected="${wallet1.isWalletDefault()}">...</option>

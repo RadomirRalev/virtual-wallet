@@ -6,12 +6,10 @@ import javax.validation.constraints.Size;
 
 public class WalletCreationDTO {
     @NotNull
-    @Size(max = 11, message = "Walled id too long")
     private int id;
     @NotNull
     private double balance;
     @NotNull
-    @Size(max = 11)
     private int userId;
     @NotNull
     @Size(max = 50, message = "Wallet name too long")
