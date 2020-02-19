@@ -1,9 +1,7 @@
 package com.example.demo.controllers.mvccontrollers.cards;
 
 import com.example.demo.exceptions.DuplicateEntityException;
-import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.InvalidCardException;
-import com.example.demo.models.card.CardDetails;
 import com.example.demo.models.card.CardRegistrationDTO;
 import com.example.demo.models.card.CardUpdateDTO;
 import com.example.demo.models.user.User;
@@ -32,6 +30,11 @@ public class CardControllerMVC {
     public CardControllerMVC(CardDetailsService cardDetailsService, UserService userService) {
         this.cardDetailsService = cardDetailsService;
         this.userService = userService;
+    }
+
+    @GetMapping("/managecards")
+    public String manageCards() {
+        return "card/managecards";
     }
 
     @GetMapping("/card-registration")
@@ -93,15 +96,27 @@ public class CardControllerMVC {
         return "messages/success-card-update";
     }
 
-    @PostMapping("/card/{cardId}/delete")
-    public String DeleteCard(@PathVariable int cardId, Model model) {
-        try {
-            CardDetails cardDetails = cardDetailsService.getById(cardId);
-            cardDetailsService.setCardStatus(cardDetails.getCardNumber(), DISABLE);
-        } catch (EntityNotFoundException e) {
-            model.addAttribute("error", e.getMessage());
-            return "error";
+    @GetMapping("/card-deletion")
+    public String setCardStatusDisabled(Model model) {
+        User user = userService.getByUsername(currentPrincipalName());
+        CardUpdateDTO cardUpdateDTO = new CardUpdateDTO();
+        model.addAttribute("user", user);
+        model.addAttribute("cardUpdateDTO", cardUpdateDTO);
+        return "card/card-deletion";
+    }
+
+    @PostMapping("/card-deletion")
+    public String updateCard(@Valid @ModelAttribute("cardUpdateDTO") CardUpdateDTO cardUpdateDTO,
+                             @Valid @ModelAttribute("user") User user,
+                             BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/card-deletion";
         }
-        return "messages/success-card-delete";
+        try {
+            cardDetailsService.setCardStatus(cardUpdateDTO.getCardNumber(), DISABLE);
+        } catch (DuplicateEntityException | InvalidCardException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "card/managecards";
     }
 }

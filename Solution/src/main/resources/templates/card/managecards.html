@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Manage cards</title>
+
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <style>
+        .fixed-bg {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+
+        .fixed-bg2 {
+            background-image: url(images/pg-tp-bg.jpg);
+        }
+    </style>
+    <!-- Styles -->
+
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+<main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
+    <!-- Header -->
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <section th:replace="fragments/headerfragment :: secondary-header-text(headline='Search Result', currentpage = 'Search Result')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+    <div class="spacing">
+        <div class="container">
+            <div class="blog-detail-wrp">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="blog-detail">
+                            <div class="comment-reply">
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                    <form th:action="@{/card-registration}">
+                                    <button style="margin:15px;" class="theme-btn theme-bg brd-rd30" type="submit">ADD CARD
+                                    </button>
+                                    </form>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                <form th:action="@{/card-deletion}">
+                                    <button style="margin:15px;" class="theme-btn theme-bg brd-rd30" type="submit">DELETE CARD
+                                    </button>
+                                </form>
+                            </div>
+                            </div><!-- Comment Reply -->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- Blog Detail Wrap -->
+        </div>
+    </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
+<!--scripts-->
+<div th:insert="fragments/scriptsfragments :: scripts"></div>
+
+<!--scripts-->
+</body>
+</html>

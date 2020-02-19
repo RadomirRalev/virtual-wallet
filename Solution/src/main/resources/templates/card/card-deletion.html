@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content=""/>
+    <meta name="keywords" content=""/>
+    <title>Delete card</title>
+    <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>
+
+    <!-- Styles -->
+    <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
+    <div th:insert="fragments/stylesheetfragment :: header-photos"></div>
+
+    <!-- Styles -->
+
+</head>
+<body itemscope>
+<!-- Pageloader -->
+<div th:insert="fragments/pageloaderfragment :: pageloader"></div>
+<!-- Pageloader -->
+<main>
+    <!-- Header -->
+    <header class="stick style1" th:insert="fragments/headerfragment :: header"></header>
+    <!-- Header -->
+    <!-- Secondary Header -->
+    <div class="res-header" th:insert="fragments/headerfragment :: secondary-header"></div>
+    <!-- Secondary Header -->
+    <!-- Secondary Header Text -->
+    <section
+            th:replace="fragments/headerfragment :: secondary-header-text(headline='', currentpage = 'Deposit')"></section>
+    <!-- Secondary Header Text -->
+    <section>
+        <div class="spacing">
+            <div class="container">
+                <div class="blog-detail-wrp">
+                    <div class="row">
+                        <div class="col-md-9 col-sm-12 col-lg-9">
+                            <div class="blog-detail">
+                                <div class="team-detail-inf-inr">
+                                    <div class="row">
+                                        <div class="col-md-9 col-sm-12 col-lg-9">
+                                            <div class="team-detail-inf-itm">
+                                                <form th:action="@{/card-deletion}"
+                                                      th:object="${cardUpdateDTO}" method="post">
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            <label for="senderId">Which card do you wish to delete?</label>
+                                                            <select th:field="*{cardNumber}" id="senderId" name="receiverId"
+                                                                    class="form-control">
+                                                                <option th:each="cardToDelete : ${user.getCardDetails()}"
+                                                                        th:value="${cardToDelete.cardNumber}"
+                                                                        th:text="${cardToDelete.cardNumber}">...
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                        <button class="theme-btn theme-bg brd-rd30" type="submit">DELETE CARD
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- Post Author -->
+                                <!-- Comment Reply -->
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- Blog Detail Wrap -->
+            </div>
+        </div>
+    </section>
+    <!--        footer-->
+    <footer th:insert="fragments/footerfragment :: footer"></footer>
+    <!--        footer-->
+    <!--        copyright-->
+    <div th:insert="fragments/footerfragment :: copyright"></div>
+    <!--        copyright-->
+</main><!-- Project Main Wrapper -->
+<!--scripts-->
+<div th:insert="fragments/scriptsfragments :: scripts"></div>
+<!--scripts-->
+</body>
+</html>

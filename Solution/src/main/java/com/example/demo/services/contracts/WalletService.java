@@ -21,4 +21,6 @@ public interface WalletService {
     Wallet setAsDefault(Wallet walletToBeUpdated, User user);
 
     Wallet getDefaultWallet(int userId);
+
+    Wallet deleteWallet(Wallet walletToBeUpdated);
 }

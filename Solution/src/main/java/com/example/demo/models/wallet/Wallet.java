@@ -19,6 +19,8 @@ public class Wallet {
     private String name;
     @Column(name = "is_default")
     private boolean isWalletDefault;
+    @Column(name = "is_deleted")
+    private boolean isWalletDeleted;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -65,6 +67,14 @@ public class Wallet {
 
     public boolean isWalletDefault() {
         return isWalletDefault;
+    }
+
+    public void setIsWalletDeleted(boolean isWalletDeleted) {
+        this.isWalletDeleted = isWalletDeleted;
+    }
+
+    public boolean setIsWalletDeleted() {
+        return isWalletDeleted;
     }
 
 }

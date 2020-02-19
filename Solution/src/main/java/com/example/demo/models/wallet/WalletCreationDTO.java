@@ -1,10 +1,20 @@
 package com.example.demo.models.wallet;
 
+import com.sun.istack.NotNull;
+
+import javax.validation.constraints.Size;
+
 public class WalletCreationDTO {
+    @NotNull
+    @Size(max = 11, message = "Walled id too long")
     private int id;
+    @NotNull
     private double balance;
+    @NotNull
+    @Size(max = 11)
     private int userId;
-    //TODO validation
+    @NotNull
+    @Size(max = 50, message = "Wallet name too long")
     private String name;
 
     public WalletCreationDTO() {

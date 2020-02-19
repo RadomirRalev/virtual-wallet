@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.exceptions.DefaultWalletDeletionException;
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.WalletBalancePositiveDeletionException;
 import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
@@ -111,6 +113,8 @@ public class WalletServiceTests {
     public void updateWalletShouldCallRepository_Update() {
         //Arrange
         Wallet wallet = createWallet();
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
 
         //Act
         walletService.updateWallet(wallet);
@@ -146,6 +150,8 @@ public class WalletServiceTests {
         Wallet wallet = createWallet();
         Wallet walletCurrentDefault = createWallet();
         User user = createUser();
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
         Mockito.when(walletRepository.getDefaultWallet(user.getId()))
                 .thenReturn(walletCurrentDefault);
         Mockito.when(walletRepository.disableDefaultWallet(walletCurrentDefault.getId()))
@@ -157,5 +163,72 @@ public class WalletServiceTests {
         //Assert
         Mockito.verify(walletRepository, Mockito.times(1))
                 .setAsDefault(wallet);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void updateWalletShould_ThrowExceptionWhenNoSuchWallet() {
+        Wallet wallet = createWallet();
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        walletService.updateWallet(wallet);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void setAsDefaultShould_ThrowExceptionWhenNoSuchWallet() {
+        Wallet wallet = createWallet();
+        User user = createUser();
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        walletService.setAsDefault(wallet, user);
+    }
+
+    @Test(expected = DefaultWalletDeletionException.class)
+    public void setAsDefaultShould_ThrowExceptionWhenWalletIsDefault() {
+        Wallet wallet = createWallet();
+        User user = createUser();
+        wallet.setWalletDefault(true);
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
+
+        //Act
+        walletService.setAsDefault(wallet, user);
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void deleteWalletShould_ThrowExceptionWhenNoSuchWallet() {
+        Wallet wallet = createWallet();
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(false);
+
+        //Act
+        walletService.deleteWallet(wallet);
+    }
+
+    @Test(expected = DefaultWalletDeletionException.class)
+    public void deleteWalletShould_ThrowExceptionWhenWalletIsDefault() {
+        Wallet wallet = createWallet();
+        wallet.setWalletDefault(true);
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
+
+        //Act
+        walletService.deleteWallet(wallet);
+    }
+
+    @Test(expected = WalletBalancePositiveDeletionException.class)
+    public void deleteWalletShould_ThrowExceptionWhenBalanceNotZero() {
+        Wallet wallet = createWallet();
+        wallet.setWalletDefault(false);
+        Mockito.when(walletService.checkIfWalletIdExists(anyInt()))
+                .thenReturn(true);
+        Mockito.when(walletService.isBalancePositive(anyInt()))
+                .thenReturn(true);
+
+        //Act
+        walletService.deleteWallet(wallet);
     }
 }

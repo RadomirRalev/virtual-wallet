@@ -40,4 +40,8 @@ public class ExceptionConstants {
     public static final String ALLOW_PICTURE_FORMAT = "Allow picture format is jpg.";
     public static final String IDENTITY_CONFIRM_REQUEST_PROCESSED = "Your identity confirm request is being processed.";
     public static final String IDENTITY_CONFIRM_SUCCESS = "Your identity confirm request was successful.";
+    public static final String CANNOT_DELETE_DEFAULT_WALLET = "A default wallet cannot be deleted.";
+    public static final String CANNOT_DELETE_WALLET_WITH_POSITIVE_BALANCE = "A wallet with positive balance cannot be deleted.";
+    public static final String WALLET_ALREADY_DEFAULT = "The wallet has already been set as default.";
+
 }

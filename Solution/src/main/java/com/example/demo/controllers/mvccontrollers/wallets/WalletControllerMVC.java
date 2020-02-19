@@ -1,7 +1,9 @@
 package com.example.demo.controllers.mvccontrollers.wallets;
 
+import com.example.demo.exceptions.DefaultWalletDeletionException;
 import com.example.demo.exceptions.DuplicateEntityException;
 import com.example.demo.exceptions.InvalidWalletException;
+import com.example.demo.exceptions.WalletBalancePositiveDeletionException;
 import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.models.wallet.WalletCreationDTO;
@@ -71,7 +73,7 @@ public class WalletControllerMVC {
     }
 
     @PostMapping("mywallets/editwallet")
-    public String updateWallet(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
+    public String updateWallet(@Valid @ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
         Wallet walletToUpdate = walletService.getWalletById(walletUpdateDTO.getId());
         walletToUpdate.setName(walletUpdateDTO.getName());
         walletService.updateWallet(walletToUpdate);
@@ -92,10 +94,36 @@ public class WalletControllerMVC {
     }
 
     @PostMapping("/mywallets/setdefault")
-    public String setAsDefault(@ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
+    public String setAsDefault(@Valid @ModelAttribute("walletUpdateDTO") WalletUpdateDTO walletUpdateDTO) {
         Wallet walletToUpdate = walletService.getWalletById(walletUpdateDTO.getId());
         User user = walletToUpdate.getUser();
         walletService.setAsDefault(walletToUpdate, user);
+        return "redirect:/mywallets";
+    }
+
+    @GetMapping("/mywallets/deletewallet")
+    public String deleteWallet(@RequestParam int id, Model model) {
+        Wallet wallet = walletService.getWalletById(id);
+        User user = wallet.getUser();
+        if (!user.getUsername().equals(currentPrincipalName())) {
+            return "messages/access-denied";
+        }
+        WalletUpdateDTO walletToDeleteDTO = new WalletUpdateDTO();
+        model.addAttribute("wallet", wallet);
+        model.addAttribute("walletToDeleteDTO", walletToDeleteDTO);
+        return "/deletewallet";
+    }
+
+    @PostMapping("/mywallets/deletewallet")
+    public String setWalletAsDeleted(@Valid @ModelAttribute("walletToDeleteDTO") WalletUpdateDTO walletToDeleteDTO,
+                                     Model model) {
+        Wallet walletToDelete = walletService.getWalletById(walletToDeleteDTO.getId());
+        try {
+            walletService.deleteWallet(walletToDelete);
+        } catch (DefaultWalletDeletionException | WalletBalancePositiveDeletionException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
         return "redirect:/mywallets";
     }
 }

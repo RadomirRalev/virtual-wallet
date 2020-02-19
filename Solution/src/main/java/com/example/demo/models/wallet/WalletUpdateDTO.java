@@ -1,10 +1,19 @@
 package com.example.demo.models.wallet;
 
+import com.sun.istack.NotNull;
+
+import javax.validation.constraints.Size;
+
 public class WalletUpdateDTO {
+    @NotNull
+    @Size(max = 11, message = "Walled id too long")
     private int id;
-    //TODO validation
+    @Size(max = 50, message = "Wallet name too long")
     private String name;
+    @NotNull
     private boolean isWalletDefault;
+    @NotNull
+    private boolean isWalletDeleted;
 
     public WalletUpdateDTO() {
     }
@@ -30,7 +39,15 @@ public class WalletUpdateDTO {
     }
 
     public void setWalletDefault(boolean walletDefault) {
-        isWalletDefault = walletDefault;
+        this.isWalletDefault = walletDefault;
+    }
+
+    public boolean isWalletDeleted() {
+        return isWalletDeleted;
+    }
+
+    public void setWalletDeleted(boolean isWalletDeleted) {
+        this.isWalletDeleted = isWalletDeleted;
     }
 
 }

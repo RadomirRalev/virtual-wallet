@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Edit Wallet Name</title>
+    <title>Set Default Wallet</title>
 
     <!-- Styles -->
     <div th:insert="fragments/stylesheetfragment :: stylesheets"></div>
     <div th:insert="fragments/stylesheetfragment :: header-photos"></div>
+
     <!-- Styles -->
 
 </head>
@@ -32,21 +33,16 @@
                     <div class="col-md-12 col-sm-12 col-lg-12">
                         <div class="blog-detail">
                             <div class="comment-reply">
-                                <h5 itemprop="headline">Change name of "<span th:text="*{wallet.getName()}"></span>"?</h5>
-                                <form th:action="@{/mywallets/editwallet}" th:object="${walletUpdateDTO}" class="reply-form" method="post" name="form1">
+                                <h5 itemprop="headline">Are you sure you wish to delete <span th:text="*{wallet.getName()}"></span>?</h5>
+                                <form th:action="@{/mywallets/deletewallet}" th:object="${walletToDeleteDTO}" class="reply-form" method="post" name="form1">
                                     <div class="form-group">
-                                        <select th:field="*{id}" class="form-control" id="walletid" style="display: none;">
+                                        <select th:field="*{id}" class="form-control" id="wallet" style="display: none;">
                                             <option th:value="${wallet.getId()}"
                                                     th:text="${wallet.getId()}"></option>
                                         </select>
                                     </div>
-                                    <div class="row" style="text-align: center">
-                                        <div class="col-md-12 col-sm-12 col-lg-12">
-                                            <input type="text" name="txt_username" id="txt_username" class="form-control" th:field="*{name}" placeholder="Your Wallet's new name" minlength=3 maxlength=30 required>
-                                        </div>
-                                    </div>
                                     <div class="col-md-12 col-sm-12 col-lg-12">
-                                        <button class="theme-btn theme-bg brd-rd30" type="submit">EDIT WALLET
+                                        <button class="theme-btn theme-bg brd-rd30" type="submit">DELETE
                                         </button>
                                     </div>
                                 </form>

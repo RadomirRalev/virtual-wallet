@@ -39,32 +39,40 @@
                 </div>
                 <div class="ico-stat-tabl brd-rd5">
                     <table>
-                        <thead><tr><th>NAME</th><th>AMOUNT</th><th>IS DEFAULT?</th><th>SET AS DEFAULT</th><th>TRANSFER</th><th>DELETE WALLET</th><th></th></tr></thead>
+                        <thead><tr><th>NAME</th><th>AMOUNT</th><th>SET AS DEFAULT</th><th>EDIT</th><th>TRANSFER $ TO WALLET</th><th>DELETE WALLET</th><th></th></tr></thead>
                         <tbody th:each="wallet : ${walletList}">
                         <tr>
                             <!--                            Wallet Name-->
-                            <td><div th:text="${wallet.name}" style="font-size: 14px"></div></td>
+                            <td><div th:text="${wallet.name}" style="font-size: 16px"></div></td>
                             <!--                        First name-->
-                            <td><div style="font-size: 14px">$<span
-                                    th:text="${wallet.balance}"></span></div></td>
+                            <td><div style="font-size: 16px">$<span
+                                    th:text="${wallet.balance}" style="font-size: 16px"></span></div></td>
                             <!--                        Last name-->
-                            <td><div th:text="${wallet.isWalletDefault()}" style="font-size: 14px"></div></td>
-                            <!--                        Send money-->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
-                                <form th:if="${!wallet.isWalletDefault()}" th:action="@{/mywallets/setdefault}">
-                                    <button th:name="id" th:value="${wallet.getId()}" class="theme-btn theme-bg brd-rd30" type="submit">SET DEFAULT
+                                <form th:if="${!wallet.isWalletDefault()}">
+                                    <a th:href="@{/mywallets/setdefault(id=${wallet.getId()})}"><i class="service-icon fa fa-toggle-off" style="font-size:50px; color:#00002A"></i></a>
+                                </form>
+                                <form th:unless="${!wallet.isWalletDefault()}">
+                                    <i class="service-icon fa fa-toggle-on"  style="font-size:50px; color:#00002A"></i>
+                                </form>
+                            </div></td>
+                            <!--                        Set default-->
+                            <td><div class="col-md-12 col-sm-12 col-lg-12">
+                                <form th:action="@{/mywallets/editwallet}">
+                                    <button th:name="id" th:value="${wallet.getId()}" class="theme-btn theme-bg brd-rd30" type="submit" style="padding-left: 20px; padding-right: 20px">CHANGE NAME
                                     </button>
                                 </form>
                             </div></td>
+                            <!--                        Edit wallet-->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
                                 <form th:action="@{/betweenmywallets}">
-                                    <button th:name="walletReceiverId" th:value="${wallet.getId()}" class="theme-btn theme-bg brd-rd30" style="color: white; background-color: green; border-color: green" type="submit">TRANSFER $
+                                    <button th:name="walletReceiverId" th:value="${wallet.getId()}" class="theme-btn theme-bg brd-rd30" style="color: white; background-color: green; border-color: green" type="submit">TRANSFER
                                     </button>
                                 </form>
                             </div></td>
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
-                                <form>
-                                    <button class="theme-btn theme-bg brd-rd30" style="color: white; background-color: red; border-color: red" type="submit">DELETE
+                                <form th:action="@{/mywallets/deletewallet}">
+                                    <button th:name="id" th:value="${wallet.getId()}" class="theme-btn theme-bg brd-rd30" style="color: white; background-color: red; border-color: red; padding-left: 20px; padding-right: 20px">DELETE
                                     </button>
                                 </form>
                             </div></td>

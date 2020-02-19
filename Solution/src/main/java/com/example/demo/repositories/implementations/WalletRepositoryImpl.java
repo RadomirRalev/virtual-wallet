@@ -1,6 +1,7 @@
 package com.example.demo.repositories.implementations;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.models.user.User;
 import com.example.demo.models.wallet.Wallet;
 import com.example.demo.repositories.contracts.WalletRepository;
 import org.hibernate.Session;
@@ -50,8 +51,9 @@ public class WalletRepositoryImpl implements WalletRepository {
     public boolean checkIfWalletIdExists(int walletId) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from Wallet " +
-                    " where id = :walletId", Wallet.class)
+                    " where id = :walletId and is_deleted = :status", Wallet.class)
                     .setParameter("walletId", walletId)
+                    .setParameter("status", DISABLE)
                     .list().isEmpty();
         }
     }
@@ -59,7 +61,9 @@ public class WalletRepositoryImpl implements WalletRepository {
     @Override
     public List<Wallet> getWalletsbyUserId(int userId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Wallet> query = session.createQuery("from Wallet where user_id = :userId", Wallet.class);
+            Query<Wallet> query = session.createQuery("from Wallet " +
+                    "where user_id = :userId and is_deleted = :status", Wallet.class);
+            query.setParameter("status", DISABLE);
             query.setParameter("userId", userId);
             return query.list();
         }
@@ -78,7 +82,8 @@ public class WalletRepositoryImpl implements WalletRepository {
     @Override
     public Wallet getDefaultWallet(int userId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Wallet> query = session.createQuery("from Wallet where is_default = :status and user_id = :userid", Wallet.class);
+            Query<Wallet> query = session.createQuery("from Wallet " +
+                    "where is_default = :status and user_id = :userid", Wallet.class);
             query.setParameter("status", ENABLE);
             query.setParameter("userid", userId);
             return query.list().get(0);
@@ -106,6 +111,29 @@ public class WalletRepositoryImpl implements WalletRepository {
             session.saveOrUpdate(wallet);
             session.getTransaction().commit();
             return wallet;
+        }
+    }
+
+    @Override
+    public Wallet deleteWallet(Wallet walletToBeDeleted) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Wallet wallet = session.get(Wallet.class, walletToBeDeleted.getId());
+            wallet.setIsWalletDeleted(ENABLE);
+            session.saveOrUpdate(wallet);
+            session.getTransaction().commit();
+            return wallet;
+        }
+    }
+
+    @Override
+    public boolean checkIfBalanceIsPositive(int walletId) {
+        try (Session session = sessionFactory.openSession()) {
+            return !session.createQuery("from Wallet " +
+                    " where id = :walletId and is_deleted = :status and balance > 0", Wallet.class)
+                    .setParameter("walletId", walletId)
+                    .setParameter("status", DISABLE)
+                    .list().isEmpty();
         }
     }
 }

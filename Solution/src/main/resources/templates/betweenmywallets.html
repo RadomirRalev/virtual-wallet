@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
-    <title>Deposit</title>
+    <title>Between my wallets</title>
     <link rel="stylesheet" href="..static/css/picture.css" th:href="@{/static/css/picture.css}"/>
 
     <!-- Styles -->
@@ -62,14 +62,13 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            <label for="senderId">Pick wallet to get the money</label>
+                                                            <label for="senderId">From which wallet do you wish to send money?</label>
                                                             <select th:field="*{senderId}" id="senderId" name="receiverId"
                                                                     class="form-control">
                                                                 <option th:each="wallet1 : ${sender.getWallets()}"
                                                                         th:if="${wallet1.id != receiverWallet.getId()}"
                                                                         th:value="${wallet1.id}"
-                                                                        th:text="${wallet1.name}"
-                                                                        th:selected="${wallet1.isWalletDefault()}">...
+                                                                        th:text="${wallet1.name + ' - $' + wallet1.balance}">...
                                                                 </option>
                                                             </select>
                                                         </div>

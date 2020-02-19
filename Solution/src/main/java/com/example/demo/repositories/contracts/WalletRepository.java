@@ -22,4 +22,8 @@ public interface WalletRepository {
 
     Wallet setAsDefault(Wallet walletToBeUpdated);
 
+    Wallet deleteWallet(Wallet walletToBeUpdated);
+
+    boolean checkIfBalanceIsPositive(int walletId);
+
 }
