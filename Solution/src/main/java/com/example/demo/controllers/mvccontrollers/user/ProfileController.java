@@ -113,23 +113,33 @@ public class ProfileController {
 
     @GetMapping("/search")
     public String filterUsers(@RequestParam String text,
-                              @RequestParam(value = "criterium") String criterium
+                              @RequestParam(value = "criterium") String criterium,
+                              @RequestParam(required = false, defaultValue = "1") Integer page
             , Model model) {
         List<User> searchResult;
         switch (criterium) {
             case "username":
-                searchResult = userService.searchByUsername(text);
+                searchResult = userService.searchByUsername(text, page);
                 model.addAttribute("users", searchResult);
+                boolean isNextEmpty = userService.searchByUsername(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
             case "phonenumber":
-                searchResult = userService.searchByPhoneNumber(text);
+                searchResult = userService.searchByPhoneNumber(text, page);
                 model.addAttribute("users", searchResult);
+                isNextEmpty = userService.searchByPhoneNumber(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
             case "email":
-                searchResult = userService.searchByEmail(text);
+                searchResult = userService.searchByEmail(text, page);
                 model.addAttribute("users", searchResult);
+                isNextEmpty = userService.searchByEmail(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
         }
+        model.addAttribute("text", text);
+        model.addAttribute("page", page);
+        model.addAttribute("criterium", criterium);
         return "searchresults";
     }
 
@@ -159,7 +169,7 @@ public class ProfileController {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
-        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page+1, sort).isEmpty();
+        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page + 1, sort).isEmpty();
         String[] tagsList = getStrings(transactionFilterDTO);
         model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", filteredTransactions);

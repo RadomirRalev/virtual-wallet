@@ -80,9 +80,15 @@
                 </div><!-- ICO Stats Table -->
                 <div class="pagination-wrap text-center">
                     <div class="pagination">
-                        <div class="page-item prev brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a></div>
-
-                        <div class="page-item next brd-rd50"><a class="page-link" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a></div>
+                        <div class="page-item next brd-rd50" th:if="${page - 1} > 0">
+                            <a class="page-link" th:href="@{/admin/search(text=${text},criterium=${criterium},page=${page - 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
+                        </div>
+                        <div class="page-item brd-rd30">
+                            <a class="page-link" th:href="@{/admin/search(text=${text},criterium=${criterium},page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
+                        </div>
+                        <div class="page-item next brd-rd50">
+                            <a th:if="!${isNextEmpty}" class="page-link" th:href="@{/admin/search(text=${text},criterium=${criterium},page=${page + 1})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
+                        </div>
                     </div>
                 </div><!-- Pagination Wrap -->
             </div>

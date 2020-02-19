@@ -16,8 +16,6 @@ import java.util.List;
 
 import static com.example.demo.constants.SQLQueryConstants.DISABLE;
 import static com.example.demo.constants.SQLQueryConstants.ENABLE;
-import static com.example.demo.helpers.UserHelper.currentPrincipalName;
-
 
 @Controller
 public class AdminController {
@@ -40,23 +38,36 @@ public class AdminController {
 
     @GetMapping("admin/search")
     public String filterUsers(@RequestParam String text,
-                              @RequestParam(value = "criterium") String criterium, Model model, HttpServletRequest request) {
+                              @RequestParam(value = "criterium") String criterium,
+                              @RequestParam(required = false, defaultValue = "1") Integer page,
+                              HttpServletRequest request,
+                              Model model) {
         List<User> searchResult;
         currentSearchUrl = request.getRequestURL().toString() + "?" + request.getQueryString();
         switch (criterium) {
             case "username":
-                searchResult = userService.searchByUsernameAsAdmin(text);
+                searchResult = userService.searchByUsernameAsAdmin(text, page);
                 model.addAttribute("users", searchResult);
+                boolean isNextEmpty = userService.searchByEmailAsAdmin(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
             case "phonenumber":
-                searchResult = userService.searchByPhoneNumberAsAdmin(text);
+                searchResult = userService.searchByPhoneNumberAsAdmin(text, page);
                 model.addAttribute("users", searchResult);
+                isNextEmpty = userService.searchByEmailAsAdmin(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
             case "email":
-                searchResult = userService.searchByEmailAsAdmin(text);
+                searchResult = userService.searchByEmailAsAdmin(text, page);
                 model.addAttribute("users", searchResult);
+                isNextEmpty = userService.searchByEmailAsAdmin(text, page + 1).isEmpty();
+                model.addAttribute("isNextEmpty", isNextEmpty);
                 break;
         }
+        model.addAttribute("text", text);
+        model.addAttribute("page", page);
+        model.addAttribute("criterium", criterium);
+
         return "admin/search-results";
     }
 
@@ -111,7 +122,7 @@ public class AdminController {
         User user = userService.getByUsername(username);
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
-        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page+1, sort).isEmpty();
+        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page + 1, sort).isEmpty();
         String[] tagsList = getStrings(transactionFilterDTO);
         model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", filteredTransactions);

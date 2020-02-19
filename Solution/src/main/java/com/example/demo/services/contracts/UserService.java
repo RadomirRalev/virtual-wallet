@@ -43,23 +43,21 @@ public interface UserService {
 
     boolean isBlocked(String username);
 
-    boolean isBlocked(int userId);
-
     boolean isEnabled(String username);
 
     String getAvailableSum(int userId);
 
-    List<User> searchByUsername(String username);
+    List<User> searchByUsername(String username, int page);
 
-    List<User> searchByPhoneNumber(String phoneNum);
+    List<User> searchByPhoneNumber(String phoneNum, int page);
 
-    List<User> searchByEmail(String email);
+    List<User> searchByEmail(String email, int page);
 
-    List<User> searchByUsernameAsAdmin(String username);
+    List<User> searchByUsernameAsAdmin(String username, int page);
 
-    List<User> searchByPhoneNumberAsAdmin(String phoneNum);
+    List<User> searchByPhoneNumberAsAdmin(String phoneNum, int page);
 
-    List<User> searchByEmailAsAdmin(String email);
+    List<User> searchByEmailAsAdmin(String email, int page);
 
     boolean checkIfUserIdExists(int id);
 }

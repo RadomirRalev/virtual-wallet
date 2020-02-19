@@ -3,7 +3,6 @@ package com.example.demo.models.transaction;
 public class TransactionFilterDTO {
     private String startDate;
     private String endDate;
-    private String searchSender;
     private String searchRecipient;
     private String direction;
     private String sort;
@@ -25,14 +24,6 @@ public class TransactionFilterDTO {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
-    }
-
-    public String getSearchSender() {
-        return searchSender;
-    }
-
-    public void setSearchSender(String searchSender) {
-        this.searchSender = searchSender;
     }
 
     public String getSearchRecipient() {

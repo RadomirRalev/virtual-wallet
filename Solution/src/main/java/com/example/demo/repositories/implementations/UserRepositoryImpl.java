@@ -224,16 +224,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean isBlocked(int userId) {
-        try (Session session = sessionFactory.openSession()) {
-            return !session.createQuery("from User " +
-                    " where blocked = true and id = :userId ", User.class)
-                    .setParameter("userId", userId)
-                    .list().isEmpty();
-        }
-    }
-
-    @Override
     public boolean isEnabled(String username) {
         try (Session session = sessionFactory.openSession()) {
             return !session.createQuery("from User " +
@@ -254,57 +244,56 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> searchByUsername(String username) {
+    public List<User> searchByUsername(String username, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where username like :username and blocked =  false ");
             query.setParameter("username", "%" + username + "%");
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
     }
 
     @Override
-    public List<User> searchByPhoneNumber(String phoneNum) {
+    public List<User> searchByPhoneNumber(String phoneNum, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum and blocked=false ");
             query.setParameter("phoneNum", phoneNum);
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
     }
 
     @Override
-    public List<User> searchByEmail(String email) {
+    public List<User> searchByEmail(String email, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where email like :email and blocked=false ");
             query.setParameter("email", "%" + email + "%");
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
-
     }
 
     @Override
-    public List<User> searchByUsernameAsAdmin(String username) {
+    public List<User> searchByUsernameAsAdmin(String username, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where username like :username ");
             query.setParameter("username", "%" + username + "%");
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
     }
 
     @Override
-    public List<User> searchByPhoneNumberAsAdmin(String phoneNum) {
+    public List<User> searchByPhoneNumberAsAdmin(String phoneNum, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where phoneNumber like :phoneNum ");
             query.setParameter("phoneNum", phoneNum);
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
     }
 
     @Override
-    public List<User> searchByEmailAsAdmin(String email) {
+    public List<User> searchByEmailAsAdmin(String email, int page) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where email like :email  ");
             query.setParameter("email", "%" + email + "%");
-            return query.list();
+            return getPaginatedQueryResult(page, query);
         }
     }
 }

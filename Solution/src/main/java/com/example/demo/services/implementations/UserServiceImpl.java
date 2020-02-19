@@ -221,10 +221,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.isBlocked(username);
     }
 
-    public boolean isBlocked(int userId) {
-        return userRepository.isBlocked(userId);
-    }
-
     @Override
     public boolean isEnabled(String username) {
         return userRepository.isEnabled(username);
@@ -232,33 +228,33 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> searchByUsername(String username) {
-        return userRepository.searchByUsername(username);
+    public List<User> searchByUsername(String username, int page) {
+        return userRepository.searchByUsername(username, page);
     }
 
     @Override
-    public List<User> searchByPhoneNumber(String phoneNum) {
-        return userRepository.searchByPhoneNumber(phoneNum);
+    public List<User> searchByPhoneNumber(String phoneNum, int page) {
+        return userRepository.searchByPhoneNumber(phoneNum, page);
     }
 
     @Override
-    public List<User> searchByEmail(String email) {
-        return userRepository.searchByEmail(email);
+    public List<User> searchByEmail(String email, int page) {
+        return userRepository.searchByEmail(email, page);
     }
 
     @Override
-    public List<User> searchByUsernameAsAdmin(String username) {
-        return userRepository.searchByUsernameAsAdmin(username);
+    public List<User> searchByUsernameAsAdmin(String username, int page) {
+        return userRepository.searchByUsernameAsAdmin(username, page);
     }
 
     @Override
-    public List<User> searchByPhoneNumberAsAdmin(String phoneNum) {
-        return userRepository.searchByPhoneNumberAsAdmin(phoneNum);
+    public List<User> searchByPhoneNumberAsAdmin(String phoneNum, int page) {
+        return userRepository.searchByPhoneNumberAsAdmin(phoneNum, page);
     }
 
     @Override
-    public List<User> searchByEmailAsAdmin(String email) {
-        return userRepository.searchByEmailAsAdmin(email);
+    public List<User> searchByEmailAsAdmin(String email, int page) {
+        return userRepository.searchByEmailAsAdmin(email, page);
     }
 
     @Override

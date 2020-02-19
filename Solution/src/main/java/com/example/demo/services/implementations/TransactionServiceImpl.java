@@ -25,7 +25,6 @@ import static com.example.demo.helpers.ApiCommunication.communicateWithApi;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-
     private TransactionRepository transactionRepository;
     private TransactionFilterRepository transactionFilterRepository;
     private WalletRepository walletRepository;
