@@ -20,13 +20,13 @@ import static com.example.demo.helpers.UserHelper.currentPrincipalName;
 
 
 @Controller
-public class AdminPanelController {
+public class AdminController {
     private UserService userService;
     private TransactionService transactionService;
     private String currentSearchUrl;
 
     @Autowired
-    public AdminPanelController(UserService userService, TransactionService transactionService) {
+    public AdminController(UserService userService, TransactionService transactionService) {
         this.userService = userService;
         this.transactionService = transactionService;
     }
@@ -84,31 +84,39 @@ public class AdminPanelController {
         return "redirect:" + currentSearchUrl;
     }
 
-    @GetMapping("/admin/transaction-history")
-    public String getTransactionHistory(@RequestParam(required = false, defaultValue = "1") Integer page,
+    @GetMapping("/admin/{username}/transaction-history")
+    public String getTransactionHistory(@PathVariable String username, @RequestParam(required = false, defaultValue = "1") Integer page,
                                         Model model) {
-        List<Transaction> transactionHistory = transactionService.getAllTransactions(page);
+        User user = userService.getByUsername(username);
+        List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId(), page);
+        boolean isNextEmpty = transactionService.getTransactionsByUserId(user.getId(), page + 1).isEmpty();
+        model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", transactionHistory);
+        model.addAttribute("user", user);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
         model.addAttribute("page", page);
         return "admin/transaction-history";
     }
 
-    @GetMapping("/admin/filtered-transactions")
-    public String filterTransactions(Model model,
+    @GetMapping("/admin/{username}/filtered-transactions")
+    public String filterTransactions(@PathVariable String username,
                                      @Valid @ModelAttribute("transactionFilterDTO") TransactionFilterDTO transactionFilterDTO,
                                      @RequestParam(required = false, defaultValue = "1") Integer page,
                                      @RequestParam String startDate,
                                      @RequestParam String endDate,
                                      @RequestParam String searchRecipient,
                                      @RequestParam String direction,
-                                     @RequestParam String sort) {
-        User user = userService.getByUsername(currentPrincipalName());
+                                     @RequestParam String sort,
+                                     Model model) {
+        User user = userService.getByUsername(username);
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
+        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page+1, sort).isEmpty();
         String[] tagsList = getStrings(transactionFilterDTO);
+        model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
+        model.addAttribute("user", user);
         model.addAttribute("tagsList", tagsList);
         model.addAttribute("page", page);
         return "admin/filtered-transactions";

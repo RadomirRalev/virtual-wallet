@@ -138,6 +138,8 @@ public class ProfileController {
                                         Model model) {
         User user = userService.getByUsername(currentPrincipalName());
         List<Transaction> transactionHistory = transactionService.getTransactionsByUserId(user.getId(), page);
+        boolean isNextEmpty = transactionService.getTransactionsByUserId(user.getId(), page + 1).isEmpty();
+        model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", transactionHistory);
         model.addAttribute("user", user);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
@@ -157,7 +159,9 @@ public class ProfileController {
         User user = userService.getByUsername(currentPrincipalName());
         int userId = user.getId();
         List<Transaction> filteredTransactions = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page, sort);
+        boolean isNextEmpty = transactionService.getFilteredTransactions(direction, startDate, endDate, searchRecipient, userId, page+1, sort).isEmpty();
         String[] tagsList = getStrings(transactionFilterDTO);
+        model.addAttribute("isNextEmpty", isNextEmpty);
         model.addAttribute("transactionHistory", filteredTransactions);
         model.addAttribute("transactionFilterDTO", new TransactionFilterDTO());
         model.addAttribute("tagsList", tagsList);

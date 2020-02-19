@@ -41,7 +41,7 @@
         <div class="spacing">
             <div class="container">
                 <div style="padding-left: 45%; padding-bottom: 2%; padding-top: -70%"><h3>Admin panel</h3></div>
-                <form class="form-inline" th:action="@{/admin/filtered-transactions}" th:object="${transactionFilterDTO}">
+                <form class="form-inline" th:action="@{/admin/{username}/filtered-transactions(username=${user.getUsername()})}" th:object="${transactionFilterDTO}">
                     <div class="form-group"  style="padding: 6px">
                         <div class='input-group date' id='datetimepicker6'>
                             <input type='text' class="form-control" th:field="*{startDate}" placeholder="Start Date"/>
@@ -123,13 +123,13 @@
                 <div class="pagination-wrap text-center">
                     <div class="pagination">
                         <div class="page-item prev brd-rd50" th:if="${page - 1} > 0">
-                            <a class="page-link" th:href="@{/admin/filtered-transactions(page=${page - 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
+                            <a class="page-link" th:href="@{/admin/{username}/filtered-transactions(page=${page - 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]}, username=${username})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-left"></i></a>
                         </div>
                         <div class="page-item brd-rd30">
-                            <a class="page-link" th:href="@{/admin/filtered-transactions(page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
+                            <a class="page-link" th:href="@{/admin/{username}/filtered-transactions(page=${page},username=${username})}" th:text="${page}" href="#" title="" itemprop="url"></a>
                         </div>
                         <div class="page-item next brd-rd50">
-                            <a class="page-link" th:href="@{/admin/filtered-transactions(page=${page + 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
+                            <a th:if="!${isNextEmpty}" class="page-link" th:href="@{/admin/{username}/filtered-transactions(page=${page + 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]}, username=${username})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
                         </div>
                     </div>
                 </div><!-- Pagination Wrap -->

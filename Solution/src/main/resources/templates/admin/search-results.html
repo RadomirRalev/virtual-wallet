@@ -45,14 +45,14 @@
                         <tr>
                             <!--                            Username-->
                             <td><div th:text="${user.getUsername()}"></div></td>
-                            <!--                            Picture-->
-                            <td><img th:src="@{'data:image/jpeg; base64,'+${user.getPicture()}}" width="60" height="60"  alt="" src="">
-
-                            <!--                        First name-->
-                            <td><div th:text="${user.getFirstName()}"></div></td>
-                            <!--                        Last name-->
-                            <td><div th:text="${user.getLastName()}"></div></td>
-                            <!--                        Send money-->
+                            <!-- Transactions -->
+                            <td><div class="col-md-12 col-sm-12 col-lg-12">
+                                <form th:action="@{/admin/{username}/transaction-history(username=${user.getUsername()})}" method="get">
+                                    <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-warning brd-rd30" type="submit">Transactions
+                                    </button>
+                                </form>
+                            </div></td>
+                            <!-- Blocked -->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
                                 <form th:if="${!user.isBlocked()}" th:action="@{/admin/{username}/blocked(username=${user.getUsername()})}" method="post">
                                     <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-danger brd-rd30" type="submit">Block
@@ -63,6 +63,7 @@
                                 </button>
                                 </form>
                             </div></td>
+                            <!-- Disable -->
                             <td><div class="col-md-12 col-sm-12 col-lg-12">
                                 <form th:if="${user.isEnabled()}" th:action="@{/admin/{username}/disable(username=${user.getUsername()})}" method="post">
                                     <button th:name="receiverId" th:value="${user.getId()}" class="theme-btn btn-outline-danger brd-rd30" type="submit">Delete

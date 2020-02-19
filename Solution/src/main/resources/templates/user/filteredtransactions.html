@@ -128,7 +128,7 @@
                             <a class="page-link" th:href="@{/filteredtransactions(page=${page})}" th:text="${page}" href="#" title="" itemprop="url"></a>
                         </div>
                         <div class="page-item next brd-rd50">
-                            <a class="page-link" th:href="@{/filteredtransactions(page=${page + 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
+                            <a th:if="!${isNextEmpty}" class="page-link" th:href="@{/filteredtransactions(page=${page + 1}, startDate=${tagsList[0]}, endDate=${tagsList[1]}, searchRecipient=${tagsList[2]}, direction=${tagsList[3]}, sort=${tagsList[4]})}" href="#" title="" itemprop="url"><i class="fa fa-angle-double-right"></i></a>
                         </div>
                     </div>
                 </div><!-- Pagination Wrap -->
