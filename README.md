@@ -5,7 +5,7 @@ Link to Trello board - https://trello.com/b/9xdZn93u/team19-virtualwallet
 
 Swagger link - http://localhost:8181/swagger-ui.html#/
 
-# Virtaul Wallet	
+# Virtual Wallet	
 
 Virtual Wallet is a RESTful web application that enables you to continently manage your budget.
 
